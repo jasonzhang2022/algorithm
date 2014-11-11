@@ -3,9 +3,9 @@ package jason.solution.palindrome;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class DPPalindrome {
+public class DPPalindrome implements LongestPalindromeFinder{
 
-	public static String longPalindrome(String str) {
+	public  String findLongestPalindrome(String str) {
 
 		FoundPalindrome longtest = new FoundPalindrome(0, 1);
 		Queue<FoundPalindrome> foundPalindromes = new LinkedList<>();

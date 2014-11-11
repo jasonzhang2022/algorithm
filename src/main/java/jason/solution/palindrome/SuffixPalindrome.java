@@ -3,7 +3,24 @@ package jason.solution.palindrome;
 import jason.datastructure.SuffixTree;
 import jason.datastructure.rmq.RMQ;
 
-public class SuffixPalindrome {
+public class SuffixPalindrome  implements LongestPalindromeFinder{
+	
+	
+	Class<? extends RMQ> rmqClass;
+	char delimiter;
+	public SuffixPalindrome(Class<? extends RMQ> rmqClass, char delimiter) {
+		this.rmqClass=rmqClass;
+		this.delimiter=delimiter;
+	}
+	
+	public String findLongestPalindrome(String input) {
+		try {
+			return longPalindrome(input, rmqClass.newInstance(), delimiter);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} 
+	}
+	
 	public static String longPalindrome(String str, RMQ rmq, char delimiter) {
 		
 		//do not handle the simple case.
