@@ -9,22 +9,27 @@
  * 
  * DpRMQ: minimum is precomputed for all possible (start, end) combination. 
  * 	      Precompute time is O(N^2), query time is O(1). consume O(N^2) space.
- * SparseTable: 
- * 		minimum is precomputed for almost all possible combination. Precompute Time. N*logN, space is N*logN. Query time is logN.
- * 		Compared with DpRMQ, it uses less process time, but query takes more time.
- * 
- *     Hierarchical structure. Keep overlapped range. Keep more information than segmentTree. 
- *  
- * SqrtPartitionRMQ:  
+ * 			
+ *       Consume too much space. Not practical for big input.
+ *       
+ *SqrtPartitionRMQ:  
  *  	Partition query into equal parts, each part has sqrt(N) elements. 
  *  	Preprocess time O(N), Query time is O(sqrt(N)).
  *  	
  *  	Not keep overlapped range: Flat structure.
+ *	    Very decent: less preprocess timee, less space, resonable query time.
+ *  
+ * SparseTable: 
+ * 		minimum is precomputed for almost all possible combination. Precompute Time. N*logN, space is N*logN. Query time is constant.
+ * 		Compared with DpRMQ, it uses less process time, less space, and constant query time.
+ * 
+ *     Hierarchical structure. Keep overlapped range. Keep more information than segmentTree. 
+ *  
  *      
  *  SegmentTree, 
  *  	Process time  is linear Q(N) One for each tree Node, lookup time is O(logN)
  *  
- *  	Compare with sqrtParition, query is more efficient. But Consuming more space.
+ *  	Compare with SparseTable. It has better preprocess time, less space, but query takes long.
  *  
  *  	Hierarchical strucutre. Keep overlapped range.
  *  

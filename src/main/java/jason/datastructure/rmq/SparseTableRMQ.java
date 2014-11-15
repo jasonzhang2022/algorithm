@@ -5,24 +5,22 @@ public class SparseTableRMQ implements RMQ {
 	int[][] tables;
 	int columnLen;
 	int[] input;
+
 	@Override
 	public int minimum(int i, int j) {
-		
-		int min=Integer.MAX_VALUE;
 		int len=j-i+1;
 		int start=i;
-		for (int k=0; k<columnLen; k++) {
-			int mask=(1<<k);
-			if ( (mask & len)!=0) {
-			
-				if (input[tables[start][k]]<min) {
-					min=input[tables[start][k]];
-				}
-				start+=mask;
-			}	
-		}
+		int k=(int) Math.floor( Math.log(len)/Math.log(2) );
 		
-		return min;
+		
+		int min1=input[tables[start][k]];
+		
+		int min2=input[tables[j+1-(1<<k)][k]];
+		if (min1<min2) {
+			return min1;
+		} else {
+			return min2;
+		}
 	}
 
 	

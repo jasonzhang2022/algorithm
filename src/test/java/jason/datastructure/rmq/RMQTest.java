@@ -36,7 +36,7 @@ public class RMQTest {
 		
 		RMQ segmentTreeRmq=new SegmentTreeRMQ();
 		segmentTreeRmq.init(input);
-		for (int i=0; i<20; i++) {
+		for (int i=0; i<50; i++) {
 			int start=random.nextInt(inputLen);
 			int end=random.nextInt(inputLen);
 			if (start>end) {
@@ -52,6 +52,25 @@ public class RMQTest {
 			assertThat(segmentTreeRmq.minimum(start, end), equalTo(min));
 
 		}
+		
+		
+	}
+	
+	
+	@Test
+	public void TestSparseTable() {
+		int[] input= {20, 30, 15, 17, 3,4,2,1};
+		
+		RMQ scanrmq=new ScanRMQ();
+		scanrmq.init(input);
+	
+		RMQ sparseTableRMQ=new SparseTableRMQ();
+		sparseTableRMQ.init(input);
+		
+		int start=0;
+		int end=6;
+		assertThat(scanrmq.minimum(start, end), equalTo(2));
+		assertThat(sparseTableRMQ.minimum(start, end), equalTo(2));
 		
 		
 	}
