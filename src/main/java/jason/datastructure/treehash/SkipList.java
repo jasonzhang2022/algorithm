@@ -1,4 +1,4 @@
-package jason.datastructure;
+package jason.datastructure.treehash;
 
 import java.util.Date;
 import java.util.List;
