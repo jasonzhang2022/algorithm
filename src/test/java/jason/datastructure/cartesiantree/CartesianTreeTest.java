@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 
-import jason.datastructure.Shuffler;
+import jason.algorithm.Shuffler;
 import jason.datastructure.cartesiantree.CartesianTree.Node;
 
 import org.apache.commons.lang3.ArrayUtils;

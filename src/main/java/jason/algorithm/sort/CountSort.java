@@ -1,4 +1,4 @@
-package jason.datastructure;
+package jason.algorithm.sort;
 
 public class CountSort {
 

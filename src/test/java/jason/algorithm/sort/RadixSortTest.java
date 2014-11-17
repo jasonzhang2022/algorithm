@@ -1,7 +1,7 @@
-package jason;
+package jason.algorithm.sort;
 
 import static org.junit.Assert.*;
-import jason.datastructure.RadixSort;
+import jason.algorithm.sort.RadixSort;
 
 import java.util.Arrays;
 

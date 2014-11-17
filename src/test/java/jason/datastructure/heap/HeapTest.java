@@ -1,13 +1,14 @@
 package jason.datastructure.heap;
 
 import static org.junit.Assert.*;
-import jason.datastructure.Shuffler;
+import jason.algorithm.Shuffler;
 
 import java.util.Date;
 import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.hamcrest.CoreMatchers.*;
 
 public class HeapTest {

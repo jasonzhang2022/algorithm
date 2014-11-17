@@ -2,7 +2,7 @@ package jason.datastructure.segmenttree;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
-import jason.datastructure.Shuffler;
+import jason.algorithm.Shuffler;
 
 import java.util.Arrays;
 import java.util.Date;

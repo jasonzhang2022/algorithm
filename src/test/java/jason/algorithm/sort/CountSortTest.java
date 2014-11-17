@@ -1,7 +1,7 @@
-package jason;
+package jason.algorithm.sort;
 
 import static org.junit.Assert.*;
-import jason.datastructure.CountSort;
+import jason.algorithm.sort.CountSort;
 
 import java.util.Arrays;
 
