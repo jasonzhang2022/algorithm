@@ -41,12 +41,16 @@ public class SortTest {
 	}
 	@Test
 	public void testQuickSort() {
-		long start=System.currentTimeMillis();
-		int[] output=QuickSort.sort(input);
-		long end=System.currentTimeMillis();
-		System.out.println("\nQuick Sort time :"+(end-start));
-		for (int i=0; i<inputLen; i++) {
-			assertThat(output[i], equalTo(i));
+		
+		for (int j=0; j<20; j++) {
+			Shuffler.shuffle(input);
+			long start=System.currentTimeMillis();
+			int[] output=QuickSort.sort(input);
+			long end=System.currentTimeMillis();
+			System.out.println("\nQuick Sort time :"+(end-start));
+			for (int i=0; i<inputLen; i++) {
+				assertThat(output[i], equalTo(i));
+			}
 		}
 		
 	}

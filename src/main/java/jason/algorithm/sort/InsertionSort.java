@@ -1,6 +1,6 @@
 package jason.algorithm.sort;
 
-import javax.swing.text.AbstractDocument.LeafElement;
+import static jason.algorithm.Swaper.swap;
 
 public class InsertionSort {
 
@@ -62,7 +62,7 @@ public class InsertionSort {
 		int insertIndex=binarySearch(input, startIndex, currentIndex-1, input[currentIndex]);
 		
 		while (currentIndex>insertIndex) {
-			QuickSort.swap(input, currentIndex, currentIndex-1);
+			swap(input, currentIndex, currentIndex-1);
 			currentIndex--;
 		}
 	}

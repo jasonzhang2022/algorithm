@@ -1,64 +1,78 @@
 package jason.algorithm.sort;
 
+import static jason.algorithm.Swaper.swap;
+
+import java.util.Date;
+import java.util.Random;
+
 public class QuickSort {
 	public static int[] sort(int[] input) {
-		sort(input, 0, input.length-1);
+		Random random = new Random(new Date().getTime());
+		sort(input, 0, input.length - 1, random);
 		return input;
 	}
-	
-	
-	public static  void swap(int[] input, int i, int j) {
-		int temp=input[i];
-		input[i]=input[j];
-		input[j]=temp;
-	}
-	
-	
-	
-	
-	
-	private static void sort(int [] input, int startIndex, int endIndex) {
-		//base case:
-		if (startIndex>=endIndex) {
-			return;
+
+	/**
+	 * Partition the subarray from startIndex to endIndex(inclusive) into two
+	 * section.
+	 * 
+	 * @param input
+	 * @param startIndex
+	 * @param endIndex
+	 *            inclusive
+	 * @param random
+	 *            the index of pivotal value;
+	 * @return
+	 */
+	public static int partition(int[] input, int startIndex, int endIndex, Random random) {
+		if (endIndex==startIndex) {
+			//one element
+			return startIndex;
 		}
-		if (endIndex-startIndex<=20) {
-			//for short sequenece using insert sort.
-			InsertionSort.sort(input, startIndex, endIndex);
-			return;
-		}
-		int pivotal=input[startIndex];
-		
-		//move pivotal to end to avoid inteference.
-		swap(input, startIndex, endIndex);
-		
-		//if the values is <=pivotal leave it to  left, otherwise leave it to right
-		//endIndex is the index where large value should be placed too.
-		//startIndex the next value to be checked.
-		
-		int begin=startIndex;
-		int end=endIndex-1;
-		
-		while (begin!=end) {
-			if (input[begin]>pivotal) {
+		int pivotalIndex = random.nextInt(endIndex + 1 - startIndex) + startIndex;
+		int pivotal = input[pivotalIndex];
+
+		// move pivotal to end to avoid interferenece
+		swap(input, pivotalIndex, endIndex);
+
+		int begin = startIndex;
+		int end = endIndex - 1;
+
+		while (begin != end) {
+			if (input[begin] > pivotal) {
 				swap(input, begin, end);
 				end--;
 			} else {
 				begin++;
 			}
 		}
-		
-		//move pivotal back to its position.
+
+		// move pivotal back to its position.
 		int pivotalPosition;
-		if (input[begin]>pivotal) {
+		if (input[begin] > pivotal) {
 			swap(input, begin, endIndex);
-			pivotalPosition=begin;
+			pivotalPosition = begin;
 		} else {
-			swap(input, begin+1, endIndex);
-			pivotalPosition=begin+1;
+			swap(input, begin + 1, endIndex);
+			pivotalPosition = begin + 1;
+		}
+		return pivotalPosition;
+	}
+
+	private static void sort(int[] input, int startIndex, int endIndex, Random random) {
+		// base case:
+		if (startIndex >= endIndex) {
+			return;
+		}
+		if (endIndex - startIndex <= 20) {
+			// for short sequenece using insert sort.
+			InsertionSort.sort(input, startIndex, endIndex);
+			return;
 		}
 		
-		sort(input, startIndex, pivotalPosition-1);
-		sort(input, pivotalPosition+1, endIndex);
+		int pivotalPosition=partition(input, startIndex, endIndex, random);
+
+		sort(input, startIndex, pivotalPosition - 1, random);
+		sort(input, pivotalPosition + 1, endIndex, random);
 	}
 }
