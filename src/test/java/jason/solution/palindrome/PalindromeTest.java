@@ -43,6 +43,8 @@ public class PalindromeTest {
 		
 		inputAndResult.put("xabcdefghhgfedcbay", "abcdefghhgfedcba");
 		inputAndResult.put("x1x2x3x4x5x6x7abcdefghhgfedcbay2y3y4y5y6y7y8y9y", "abcdefghhgfedcba");
+		
+		inputAndResult.put("babcbabcbaccba", "abcbabcba");
 	}
 	
 	public void test(LongestPalindromeFinder finder) {
@@ -55,6 +57,10 @@ public class PalindromeTest {
 	@Test
 	public void testDPFinder() {
 		test(new DPPalindrome());
+	}
+	@Test
+	public void testManacher() {
+		test(new ManacherPalindrome('#'));
 	}
 	
 	@Test
