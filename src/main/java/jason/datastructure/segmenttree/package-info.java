@@ -1,4 +1,6 @@
 /**
+ * Segment tree is used to solve Range problem
+ * 
  * @author jason.zhang
  *
  */

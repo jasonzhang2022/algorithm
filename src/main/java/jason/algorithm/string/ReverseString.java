@@ -1,4 +1,4 @@
-package jason.solution;
+package jason.algorithm.string;
 
 public class ReverseString {
 

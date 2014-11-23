@@ -3,7 +3,7 @@ package jason;
 import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.*;
 import static org.hamcrest.CoreMatchers.*;
-import jason.solution.ReverseString;
+import jason.algorithm.string.ReverseString;
 
 import org.junit.Test;
 

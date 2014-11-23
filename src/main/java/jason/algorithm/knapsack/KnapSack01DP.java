@@ -6,7 +6,11 @@ import java.util.List;
 import java.util.Set;
 
 import jason.algorithm.knapsack.KnapSack01.TempResult;
-
+/**
+ * Compare this with all-pair shortest path problem.
+ * @author jason.zhang
+ *
+ */
 public class KnapSack01DP {
 
 	/**

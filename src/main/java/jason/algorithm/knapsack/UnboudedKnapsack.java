@@ -5,9 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public class UnboudedKnapsack {
-	
-	
+
+public class UnboudedKnapsack {	
 	public static class TempResult {
 		int weight;
 		int value;
