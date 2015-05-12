@@ -4,7 +4,24 @@ import static jason.algorithm.Swaper.swap;
 
 import java.util.Date;
 import java.util.Random;
-
+/**
+ * The idea is this:
+ * When do partition, 
+ * 1) leave pivot to the end of array. 
+ * 2) the array is processed from both end: If one value is smaller than pivot, the front index is increased by one.
+ *   If one value is bigger than pivot, swap and the end index is decreased by one. 
+ * 3) Then we come to the final stage: front index is equals to end index. 
+ *     If the value is less than pivot, swap it with pivot (end of array)
+ *     Otherwise swap pivot with the one after this value.
+ * 4) We actually divide the array into three fragments: 
+ * 		the beginning fragment with all value less than pivot
+ *      The pivot itself-----------This is something we forget sometime. This guarantee we always reduce the array by one.
+ *      The end fragment with all values larger than or equal to pivot.
+ *   
+ *  5) we process beginning fragment and end fragment recursively.
+ * @author jason
+ *
+ */
 public class QuickSort {
 	public static int[] sort(int[] input) {
 		Random random = new Random(new Date().getTime());

@@ -19,11 +19,29 @@ public class BinaryHeap<T> implements Heap<T>{
 		nodes=new Node[capacity];
 	}
 	
+	public BinaryHeap(Node<T>[] nodes){
+		this.nodes=nodes;
+		size=nodes.length;
+		buildHeap();
+	}
 	
-	//TODO
 	//can be done in O(n) time.
-	public void buildHeap(ArrayList<Node<T>> values) {
-		throw new UnsupportedOperationException();
+	/*
+	 * The number of tree level is log(values.size()). The first level is 0.
+	 * The index for the first node at level h is pow(2,h)-1 
+	 * All leave nodes at the bottom level are already heapfied since it has only one single node.
+	 */
+	public void buildHeap() {
+
+		//base is 0.
+		int treeHeight=(int)(Math.log(nodes.length)/Math.log(2));
+		for (int j=treeHeight-1; j>=0; j--){
+			int startIndex=(int)Math.pow(2, j)-1;
+			int endIndex=(int)Math.pow(2, j+1)-1;
+			for (int i=startIndex; i<endIndex; i++){
+				shiftDown(nodes[i], i);
+			}
+		}
 	}
 	
 	@Override
@@ -74,6 +92,11 @@ public class BinaryHeap<T> implements Heap<T>{
 		return root.getValue();
 	}
 
+	/**
+	 * shift the node down the tree to maintain heap property.
+	 * @param node the node
+	 * @param index the index for this node
+	 */
 	protected void shiftDown(Node<T> node, int index) {
 		int leftIndex=2*index+1;
 		int rightIndex=2*index+2;

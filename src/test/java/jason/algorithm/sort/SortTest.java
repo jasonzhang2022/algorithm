@@ -39,6 +39,7 @@ public class SortTest {
 			assertThat(needle, equalTo(input[j-1]));
 		}
 	}
+	
 	@Test
 	public void testQuickSort() {
 		
@@ -70,6 +71,18 @@ public class SortTest {
 	public void testMergeSort() {
 		long start=System.currentTimeMillis();
 		int[] output=MergeSort.sort(input);
+		long end=System.currentTimeMillis();
+		System.out.println("\nMerge Sort time :"+(end-start));
+		for (int i=0; i<inputLen; i++) {
+			assertThat(output[i], equalTo(i));
+		}
+		
+	}
+	
+	@Test
+	public void testMergeSort1() {
+		long start=System.currentTimeMillis();
+		int[] output=MergeSort1.sort(input);
 		long end=System.currentTimeMillis();
 		System.out.println("\nMerge Sort time :"+(end-start));
 		for (int i=0; i<inputLen; i++) {
@@ -125,6 +138,32 @@ public class SortTest {
 			assertThat(output[i], equalTo(i));
 		}
 		
+	}
+	
+	@Test
+	public void testSelectionSort() {
+		inputLen=100;
+		input=new int[inputLen];
+		for (int i=0; i<inputLen; i++) {
+			input[i]=i;
+		}
+		Shuffler.shuffle(input);
+		int[] output=SelectionSort.sort(input);
+		for (int i=0; i<inputLen; i++) {
+			assertThat(output[i], equalTo(i));
+		}
+		
+	}
+	
+	@Test
+	public void testMSD() {
+		long start=System.currentTimeMillis();
+		int[] output=RadixSort_MSD_partition.sort(input);
+		long end=System.currentTimeMillis();
+		System.out.println("\nMSD Sort time :"+(end-start));
+		for (int i=0; i<inputLen; i++) {
+			assertThat(output[i], equalTo(i));
+		}
 	}
 
 }

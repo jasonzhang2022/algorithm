@@ -1,8 +1,8 @@
-package jason.datastructure.treehash;
+package jason.datastructure.tree;
 
 import static org.junit.Assert.*;
 import jason.algorithm.Shuffler;
-import jason.datastructure.treehash.Treap;
+import jason.datastructure.tree.Treap;
 
 import java.util.ArrayList;
 import java.util.Arrays;

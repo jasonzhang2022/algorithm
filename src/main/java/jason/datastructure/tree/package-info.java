@@ -27,4 +27,4 @@
  * @author jason.zhang
  *
  */
-package jason.datastructure.treehash;
+package jason.datastructure.tree;

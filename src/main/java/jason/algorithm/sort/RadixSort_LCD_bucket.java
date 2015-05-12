@@ -2,7 +2,7 @@ package jason.algorithm.sort;
 
 import java.util.LinkedList;
 
-public class RadixSort {
+public class RadixSort_LCD_bucket {
 
 	static boolean sortToRadix(int[] input, LinkedList<Integer>[]buckets, int position) {
 		boolean ret=false;

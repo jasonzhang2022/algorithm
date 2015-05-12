@@ -46,5 +46,21 @@ public class HeapTest {
 	public void testFibonnaciHeap() {
 		testHeap(new BinaryHeap<Integer>(inputLen));
 	}
+	
+	@Test
+	public void testBuildHeap() {
+		int inputLen=1000;
+		Node<Integer>[] input=new Node[inputLen];
+		for (int i=0; i<inputLen; i++) {
+			input[i]=new Node<Integer>(inputLen-i, inputLen-i);
+		}
+		
+		BinaryHeap<Integer> heap=new BinaryHeap<Integer>(input);
+		assertThat(heap.delete(), equalTo(1));
+		assertThat(heap.delete(), equalTo(2));
+		
+		
+		
+	}
 
 }

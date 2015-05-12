@@ -1,5 +1,6 @@
 package jason.algorithm.sort;
 
+
 public class MergeSort {
 	
 	public static int[] sort(int[] input) {

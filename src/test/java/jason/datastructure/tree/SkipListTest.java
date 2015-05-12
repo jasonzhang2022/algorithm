@@ -1,7 +1,7 @@
-package jason.datastructure.treehash;
+package jason.datastructure.tree;
 
 import static org.junit.Assert.*;
-import jason.datastructure.treehash.SkipList;
+import jason.datastructure.tree.SkipList;
 
 import java.util.ArrayList;
 import java.util.Collections;
