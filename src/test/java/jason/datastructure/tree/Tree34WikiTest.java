@@ -1,4 +1,4 @@
-package jason.datastructure.treehash;
+package jason.datastructure.tree;
 
 import static org.junit.Assert.*;
 
@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.function.Consumer;
 
-import jason.datastructure.treehash.Tree24Wiki.KeyValue;
+import jason.datastructure.tree.Tree24Wiki;
+import jason.datastructure.tree.Tree24Wiki.KeyValue;
 
 import org.junit.Test;
 

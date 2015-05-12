@@ -1,4 +1,4 @@
-package jason.datastructure.treehash;
+package jason.datastructure.tree;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
