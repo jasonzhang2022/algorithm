@@ -134,7 +134,7 @@ public class Tree24Wiki<T> {
 		
 		//replace
 		int keyIdx=currentNode.keyIdx(kv.key);
-		if (keyIdx>0){
+		if (keyIdx>=0){
 			//replace
 			currentNode.values[keyIdx].value=kv.value;
 			return;
@@ -156,8 +156,8 @@ public class Tree24Wiki<T> {
 			right.children[0]=currentNode.children[2];
 			right.children[1]=currentNode.children[3];
 			if (!currentNode.isLeaf()){
-				right.children[0]=right;
-				right.children[1]=right;
+				right.children[0].parent=right;
+				right.children[1].parent=right;
 			}
 			
 			
@@ -220,5 +220,20 @@ public class Tree24Wiki<T> {
 			}
 			walk(node.children[i+1], consumer);	
 		}
+	}
+	
+	public T get(String key){
+		return get(root, key);
+	}
+	
+	protected T get(Node<T> node, String key){
+		if (node==null){
+			return null;
+		}
+		int keyIdx=node.keyIdx(key);
+		if (keyIdx>=0){
+			return node.values[keyIdx].value;
+		}
+		return get(node.searchChildNode(key), key);
 	}
 }

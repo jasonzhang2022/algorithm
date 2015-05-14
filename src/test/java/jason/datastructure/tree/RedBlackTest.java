@@ -12,16 +12,16 @@ import jason.datastructure.tree.Tree24Wiki.KeyValue;
 
 import org.junit.Test;
 
-public class Tree34WikiTest {
+public class RedBlackTest {
 
 	
-	Consumer<KeyValue<String>> print=(kv)->System.out.printf("%s=%s\n", kv.key, kv.value);
+	Consumer<BinaryNode<String>> print=(kv)->System.out.printf("%s=%s\n", kv.key, kv.value);
 	
 	
 	
 	@Test
 	public void simpleTreTest() {
-		Tree24Wiki tree=new Tree24Wiki();
+		RedBlackTree tree=new RedBlackTree();
 		System.out.println("---------empty tree------");
 		tree.walk(print);
 		
@@ -38,7 +38,7 @@ public class Tree34WikiTest {
 	
 	@Test
 	public void bigTreeTest() {
-		Tree24Wiki tree=new Tree24Wiki();
+		RedBlackTree tree=new RedBlackTree();
 		
 		DecimalFormat formatter=new DecimalFormat("000");
 		for (int i=999; i>0; i--){
@@ -47,7 +47,7 @@ public class Tree34WikiTest {
 		System.out.println("---------empty tree------");
 		tree.walk(print);
 		ArrayList<String>  arrays=new ArrayList<String>(1000);
-		Consumer<KeyValue<String>> collector=(kv)->arrays.add(kv.value);
+		Consumer<BinaryNode<String>> collector=(kv)->arrays.add(kv.value);
 		tree.walk(collector);
 		for (int i=1; i<=999; i++){
 			assertEquals("ping"+i, arrays.get(i-1));
@@ -57,7 +57,7 @@ public class Tree34WikiTest {
 	}
 	@Test
 	public void replaceTest() {
-		Tree24Wiki tree=new Tree24Wiki();
+		RedBlackTree tree=new RedBlackTree();
 		
 		DecimalFormat formatter=new DecimalFormat("000");
 		for (int i=999; i>0; i--){

@@ -17,11 +17,7 @@ import org.junit.experimental.theories.Theories;
  */
 public class Treap {
 
-	public static class Node {
-		Node leftNode;
-		Node rightNode;
-		Node parent;
-		Integer key;
+	public static class Node<T> extends BinaryNode<T>{
 		int priority;
 		int orderStatistics=1;
 	}
@@ -29,7 +25,7 @@ public class Treap {
 	Node root;
 	
 
-	public boolean contains(Integer key) {
+	public boolean contains(String key) {
 
 		Node current = root;
 		while (current != null) {
@@ -37,30 +33,30 @@ public class Treap {
 			if (c == 0) {
 				return true;
 			} else if (c < 0) {
-				current = current.leftNode;
+				current = current.leftChild;
 			} else {
-				current = current.rightNode;
+				current = current.rightChild;
 			}
 
 		}
 		return false;
 	}
 
-	public void collect(List<Integer> results) {
+	public void collect(List<String> results) {
 		collectNode(root, results);
 	}
 	
-	private void collectNode(Node root, List<Integer> results) {
+	private void collectNode(Node root, List<String> results) {
 		if (root==null) {
 			return;
 		}
-		collectNode(root.leftNode, results);
+		collectNode(root.leftChild, results);
 		results.add(root.key);
-		collectNode(root.rightNode, results);
+		collectNode(root.rightChild, results);
 	}
 	
 	Random random=new Random(new Date().getTime());
-	public void add(Integer key) {
+	public void add(String key) {
 		Node node=addNode(root, key);
 		if (node!=null) {
 			root=node;
@@ -75,7 +71,7 @@ public class Treap {
 		return root.orderStatistics;
 	}
 	
-	private Node createNewNode(Integer key) {
+	private Node createNewNode(String key) {
 		Node newNode=new Node();
 		newNode.key=key;
 		newNode.priority=random.nextInt();
@@ -84,11 +80,11 @@ public class Treap {
 	
 	private void updateStatistics(Node node) {
 		int statistics=1; //self
-		if (node.leftNode!=null) {
-			statistics+=node.leftNode.orderStatistics;
+		if (node.leftChild!=null) {
+			statistics+=node.leftChild.orderStatistics;
 		}
-		if (node.rightNode!=null) {
-			statistics+=node.rightNode.orderStatistics;
+		if (node.rightChild!=null) {
+			statistics+=node.rightChild.orderStatistics;
 		}
 		node.orderStatistics=statistics;
 		
@@ -99,11 +95,11 @@ public class Treap {
 		Node grandParent=parent.parent;
 		
 		parent.parent=childNode;
-		parent.rightNode=childNode.leftNode;
+		parent.rightChild=childNode.leftChild;
 		
-		childNode.leftNode=parent;
-		if (parent.rightNode!=null) {
-			parent.rightNode.parent=parent;
+		childNode.leftChild=parent;
+		if (parent.rightChild!=null) {
+			parent.rightChild.parent=parent;
 		}
 		
 		childNode.parent=grandParent;
@@ -112,11 +108,11 @@ public class Treap {
 			int c1=parent.key.compareTo(grandParent.key);
 			if (c1<0) {
 				//parent is at left side of grand parent.
-				grandParent.leftNode=childNode;
+				grandParent.leftChild=childNode;
 				
 			} else {
 				//parent is at the right side of grand parent.
-				grandParent.rightNode=childNode;
+				grandParent.rightChild=childNode;
 			}
 		}
 		updateStatistics(parent);
@@ -128,10 +124,10 @@ public class Treap {
 		Node grandParent=parent.parent;
 		//rotate right;
 		parent.parent=childNode;
-		parent.leftNode=childNode.rightNode;
-		childNode.rightNode=parent;
-		if (parent.leftNode!=null) {
-			parent.leftNode.parent=parent;
+		parent.leftChild=childNode.rightChild;
+		childNode.rightChild=parent;
+		if (parent.leftChild!=null) {
+			parent.leftChild.parent=parent;
 		}
 		childNode.parent=grandParent;
 		if (grandParent!=null) {
@@ -139,11 +135,11 @@ public class Treap {
 			int c1=parent.key.compareTo(grandParent.key);
 			if (c1<0) {
 				//parent is at left side of grand parent.
-				grandParent.leftNode=childNode;
+				grandParent.leftChild=childNode;
 				
 			} else {
 				//parent is at the right side of grand parent.
-				grandParent.rightNode=childNode;
+				grandParent.rightChild=childNode;
 			}
 		} 
 		updateStatistics(parent);
@@ -157,7 +153,7 @@ public class Treap {
 	 * @param key
 	 * @return the latest parent under which node is added, or null if node is not added.
 	 */
-	private Node addNode(Node parent, Integer key) {
+	private Node addNode(Node parent, String key) {
 		if (parent==null) {
 			return createNewNode(key);
 		}
@@ -167,11 +163,11 @@ public class Treap {
 			return null; //already exists, do nothing.
 		}
 		if (c<0) {
-			Node childNode=addNode(parent.leftNode, key);
+			Node childNode=addNode(parent.leftChild, key);
 			if (childNode==null) {
 				return null; //nothing is added
 			}
-			parent.leftNode=childNode;
+			parent.leftChild=childNode;
 			childNode.parent=parent;
 			
 			if (childNode.priority>parent.priority) {
@@ -182,13 +178,13 @@ public class Treap {
 				return parent;
 			}
 		} else {
-			Node childNode=addNode(parent.rightNode, key);
+			Node childNode=addNode(parent.rightChild, key);
 			
 			if (childNode==null) {
 				return null; //nothing is added
 			}
 			
-			parent.rightNode=childNode;
+			parent.rightChild=childNode;
 			childNode.parent=parent;
 			
 			if (childNode.priority<parent.priority) {
@@ -202,16 +198,16 @@ public class Treap {
 	}
 	
 	
-	public void remove(Integer key) {
+	public void remove(String key) {
 		Node current = root;
 		while (current != null) {
 			int c = current.key.compareTo(key);
 			if (c == 0) {
 				break;
 			} else if (c < 0) {
-				current = current.rightNode;
+				current = current.rightChild;
 			} else {
-				current = current.leftNode;
+				current = current.leftChild;
 			}
 
 		}
@@ -235,23 +231,23 @@ public class Treap {
 		child.orderStatistics=child.orderStatistics-1;
 		
 		//parent is child right now.
-		if (parent.leftNode!=null && parent.rightNode!=null) {
-			if (parent.leftNode.priority>parent.rightNode.priority) {
-				rotateDown(parent, parent.leftNode, true);
+		if (parent.leftChild!=null && parent.rightChild!=null) {
+			if (parent.leftChild.priority>parent.rightChild.priority) {
+				rotateDown(parent, parent.leftChild, true);
 				
 			} else {
-				rotateDown(parent, parent.rightNode, false);
+				rotateDown(parent, parent.rightChild, false);
 			}
 			return;
 		}
 		
-		if (parent.leftNode!=null) {
-			rotateDown(parent, parent.leftNode, true);
+		if (parent.leftChild!=null) {
+			rotateDown(parent, parent.leftChild, true);
 			return;
 		}
 		
-		if (parent.rightNode!=null) {
-			rotateDown(parent, parent.rightNode, false);
+		if (parent.rightChild!=null) {
+			rotateDown(parent, parent.rightChild, false);
 			return;
 		}
 		
@@ -260,18 +256,18 @@ public class Treap {
 	
 	
 	private void removeNode(Node node) {
-		node.priority=Integer.MIN_VALUE;
-		if (node.leftNode!=null && node.rightNode!=null) {
-			if (node.leftNode.priority>node.rightNode.priority) {
-				rotateDown(node, node.leftNode, true);
+		node.priority=String.MIN_VALUE;
+		if (node.leftChild!=null && node.rightChild!=null) {
+			if (node.leftChild.priority>node.rightChild.priority) {
+				rotateDown(node, node.leftChild, true);
 				
 			} else {
-				rotateDown(node, node.rightNode, false);
+				rotateDown(node, node.rightChild, false);
 			}
-		}  else if (node.leftNode!=null) {
-			rotateDown(node, node.leftNode, true);
-		} else if (node.rightNode!=null) {
-			rotateDown(node, node.rightNode, false);
+		}  else if (node.leftChild!=null) {
+			rotateDown(node, node.leftChild, true);
+		} else if (node.rightChild!=null) {
+			rotateDown(node, node.rightChild, false);
 		}
 		 /*
 		  * else: the node is a leave node.
@@ -286,10 +282,10 @@ public class Treap {
 		} else {
 			int c=node.key.compareTo(node.parent.key);
 			if (c<0) {
-				node.parent.leftNode=null;
+				node.parent.leftChild=null;
 				node.parent=null;
 			} else {
-				node.parent.rightNode=null;
+				node.parent.rightChild=null;
 				node.parent=null;
 			}
 		}
@@ -303,7 +299,7 @@ public class Treap {
 	}
 	
 	//select the ith value.
-	public Integer select(int index) {
+	public String select(int index) {
 		if (root==null) {
 			throw new ArrayIndexOutOfBoundsException();
 		}
@@ -313,25 +309,25 @@ public class Treap {
 		Node current=root;
 		while (current!=null) {
 			int leftNodes=0;
-			if (current.leftNode!=null) {
-				leftNodes=current.leftNode.orderStatistics;
+			if (current.leftChild!=null) {
+				leftNodes=current.leftChild.orderStatistics;
 			}
 			if (index==leftNodes) {
 				return current.key;
 			}
 			if (index<leftNodes) {
-				current=current.leftNode;
+				current=current.leftChild;
 				continue;
 			}
 			index=index-leftNodes-1;
-			current=current.rightNode;
+			current=current.rightChild;
 		}
 		
 		throw new RuntimeException("Not found");
 	}
 	
 	//return the index the key in the list.
-	public int rank(Integer key) {
+	public int rank(String key) {
 	
 		int startIndex=0;
 		Node current=root;
@@ -339,16 +335,16 @@ public class Treap {
 		while (current!=null) {
 			int c=key.compareTo(current.key);
 			int leftNodes=0;
-			if (current.leftNode!=null) {
-				leftNodes=current.leftNode.orderStatistics;
+			if (current.leftChild!=null) {
+				leftNodes=current.leftChild.orderStatistics;
 			}
 			if (c==0) {	
 				return startIndex+leftNodes;
 			} else if (c<0) {
-				current=current.leftNode;
+				current=current.leftChild;
 			} else {
 				startIndex=startIndex+leftNodes+1;
-				current=current.rightNode;
+				current=current.rightChild;
 			}
 		}
 		throw new RuntimeException("Not found");
