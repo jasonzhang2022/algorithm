@@ -2,103 +2,109 @@ package jason.datastructure.tree;
 
 import java.util.function.Consumer;
 
-
-
 public class BinaryNode<T> {
 
 	public BinaryNode<T> leftChild;
 	public BinaryNode<T> rightChild;
 	public BinaryNode<T> parent;
-	
-	
-	
+
 	public String key;
 	public T value;
-	public BinaryNode(){
+
+	public BinaryNode() {
 		super();
 	}
+
 	public BinaryNode(String key, T value) {
 		super();
 		this.key = key;
 		this.value = value;
 	}
-	
-	public BinaryNode<T> getGrandParent(){
-		if (parent!=null ){
+
+	public BinaryNode<T> getGrandParent() {
+		if (parent != null) {
 			return parent.parent;
 		}
 		return null;
 	}
-	public BinaryNode<T> getUncle(){
-		BinaryNode<T> g=getGrandParent();
-		if (g==null){
+
+	public BinaryNode<T> getUncle() {
+		BinaryNode<T> g = getGrandParent();
+		if (g == null) {
 			return null;
 		}
-		if (g.leftChild==parent){
+		if (g.leftChild == parent) {
 			return g.rightChild;
 		} else {
 			return g.leftChild;
 		}
 	}
-	
-	public void rotateRight(){
-		//hold reference to all moved nodes.
-		BinaryNode<T> g=getGrandParent();
-		BinaryNode<T> p=this.parent;
-		BinaryNode<T> right=this.rightChild;
-		
-		//manage node p
-		p.leftChild=right;
-		if (right!=null){
-			right.parent=p;
+
+	public BinaryNode<T> getSibling() {
+		if (parent == null) {
+			return null;
 		}
-		p.parent=this;
-		
-		
-		//mange self;
-		parent=g;
-		if (g!=null){
-			if (g.leftChild==p){
-				g.leftChild=this;
-			} else{
-				g.rightChild=this;
+		if (parent.leftChild == this) {
+			return parent.rightChild;
+		} else {
+			return parent.leftChild;
+		}
+	}
+
+	public void rotateRight() {
+		// hold reference to all moved nodes.
+		BinaryNode<T> p = this.parent;
+		BinaryNode<T> leftChild = this.leftChild;
+		BinaryNode<T> leftRight = leftChild.rightChild;
+
+		if (p != null) {
+			if (p.leftChild == this) {
+				p.leftChild = leftChild;
+			} else {
+				p.rightChild = leftChild;
 			}
 		}
-		rightChild=p;
-	}
-	public void rotateLeft(){
-		//hold reference to all moved nodes.
-		BinaryNode<T> g=getGrandParent();
-		BinaryNode<T> p=this.parent;
-		BinaryNode<T> left=this.leftChild;
-		
-		//manage node p
-		p.rightChild=left;
-		if (left!=null){
-			left.parent=p;
+		leftChild.parent = p;
+
+		leftChild.rightChild = this;
+		this.parent = leftChild;
+
+		if (leftRight!=null){
+			leftRight.parent = this;
 		}
-		p.parent=this;
-		
-		
-		//mange self;
-		parent=g;
-		if (g!=null){
-			if (g.leftChild==p){
-				g.leftChild=this;
-			} else{
-				g.rightChild=this;
+		this.leftChild = leftRight;
+	}
+
+	public void rotateLeft() {
+		// hold reference to all moved nodes.
+		BinaryNode<T> p = this.parent;
+		BinaryNode<T> rightChild = this.rightChild;
+		BinaryNode<T> rightLeft = rightChild.leftChild;
+
+		if (p != null) {
+			if (p.leftChild == this) {
+				p.leftChild = rightChild;
+			} else {
+				p.rightChild = rightChild;
 			}
 		}
-		leftChild=p;
-		
-	}
+		rightChild.parent = p;
+
+		rightChild.leftChild = this;
+		this.parent = rightChild;
+		if (rightLeft!=null){
+			rightLeft.parent = this;
+		}
 	
-	public void walk(Consumer<BinaryNode<T>> consumer){
-		if (this.leftChild!=null){
+		this.rightChild = rightLeft;
+	}
+
+	public void walk(Consumer<BinaryNode<T>> consumer) {
+		if (this.leftChild != null) {
 			leftChild.walk(consumer);
 		}
 		consumer.accept(this);
-		if (rightChild!=null){
+		if (rightChild != null) {
 			rightChild.walk(consumer);
 		}
 	}
