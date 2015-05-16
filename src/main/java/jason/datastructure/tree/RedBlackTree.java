@@ -36,24 +36,7 @@ public class RedBlackTree<T> {
 		if (node==null){
 			return null;
 		}
-		int cmp=key.compareTo(node.key);
-		if (cmp<0){
-			//we should go left.
-			if (node.leftChild!=null){
-				//has left
-				return _searchForPositionToAdd((Node<T>)node.leftChild, key);
-			} else {
-				return node;
-			}
-		} else if (cmp>0){
-			if (node.rightChild!=null){
-				return _searchForPositionToAdd((Node<T>)node.rightChild, key);
-			} else {
-				return node;
-			}
-		} else {
-			return node;
-		}
+		return (Node<T>) BinaryNode._searchForPositionToAdd(node, key);
 	}
 	
 	
@@ -231,7 +214,7 @@ public class RedBlackTree<T> {
 		}
 		
 		Node<T> sibling=(Node<T>) root.getSibling();
-		
+		Node<T> p=(Node<T>)root.parent;
 		//----------------------convert red sibling into black sibling.
 		if (isRed(sibling)){
 			sibling.setBlack();
@@ -241,6 +224,10 @@ public class RedBlackTree<T> {
 				root.parent.rotateRight();
 			} else {
 				root.parent.rotateLeft();
+			}
+			if (p==root){
+				root=sibling;
+				root.setBlack();
 			}
 		}
 		
@@ -267,7 +254,7 @@ public class RedBlackTree<T> {
 			if (isRed(sibling.leftChild) && isBlack(sibling.rightChild)){
 				sibling.setRed();
 				((Node<T>)sibling.leftChild).setBlack();
-				sibling.rotateLeft();
+				sibling.rotateRight();
 			}
 		} else {
 			if (isRed(sibling.rightChild) && isBlack(sibling.leftChild)){
@@ -279,6 +266,7 @@ public class RedBlackTree<T> {
 		
 		//sibling right child is red.
 		sibling=(Node<T>) root.getSibling();
+		p=(Node<T>)root.parent;
 		boolean isParentRed=isRed(root.parent);
 		((Node<T>)root.parent).setBlack();
 		if (isParentRed){
@@ -288,11 +276,18 @@ public class RedBlackTree<T> {
 		}
 		if (root==root.parent.leftChild){
 			((Node<T>)sibling.rightChild).setBlack();
-			root.parent.rotateRight();
+			root.parent.rotateLeft();
 			
 		} else {
 			((Node<T>)sibling.leftChild).setBlack();
-			root.parent.rotateLeft();
+			root.parent.rotateRight();
+		}
+		/*
+		 * After rotate, we need to check root.
+		 */
+		if (this.root==p){
+			this.root=sibling;
+			this.root.setBlack();
 		}
 		
 	}
@@ -300,13 +295,8 @@ public class RedBlackTree<T> {
 
 	
 	
-	public Node<T>  _searchPredecessor(Node<T>node){
-			
-		Node<T> currentNode=(Node<T>) node.leftChild;
-		while (currentNode.rightChild!=null){
-			currentNode=(Node<T>) currentNode.rightChild;
-		}
-		return currentNode;
+	public Node<T>  _searchPredecessor(Node<T> node){
+		return (Node<T>) BinaryNode._searchPredecessor(node);
 	}
 	
 	

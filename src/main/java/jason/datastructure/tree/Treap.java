@@ -3,6 +3,7 @@ package jason.datastructure.tree;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
 
 import javax.swing.tree.VariableHeightLayoutCache;
 
@@ -15,136 +16,61 @@ import org.junit.experimental.theories.Theories;
  * @author jason.zhang
  *
  */
-public class Treap {
+public class Treap<T> {
 
 	public static class Node<T> extends BinaryNode<T>{
 		int priority;
-		int orderStatistics=1;
 	}
 
-	Node root;
+	Node<T> root;
 	
 
-	public boolean contains(String key) {
-
-		Node current = root;
-		while (current != null) {
-			int c = key.compareTo(current.key);
-			if (c == 0) {
-				return true;
-			} else if (c < 0) {
-				current = current.leftChild;
-			} else {
-				current = current.rightChild;
-			}
-
+	public T get(String key) {
+		if (root==null){
+			return null;
 		}
-		return false;
-	}
-
-	public void collect(List<String> results) {
-		collectNode(root, results);
-	}
-	
-	private void collectNode(Node root, List<String> results) {
-		if (root==null) {
-			return;
+		Node<T> current = (Node<T>) BinaryNode._searchForPositionToAdd(root, key);
+		if (current.key.equals(key)){
+			return current.value;
 		}
-		collectNode(root.leftChild, results);
-		results.add(root.key);
-		collectNode(root.rightChild, results);
+		return null;
+		
 	}
 	
 	Random random=new Random(new Date().getTime());
-	public void add(String key) {
-		Node node=addNode(root, key);
-		if (node!=null) {
+	public void put(String key, T value) {
+		Node<T> node=createNewNode(key, value);
+		Node<T> parent=(Node<T>) BinaryNode._searchForPositionToAdd(root, key);
+		if (parent==null){
 			root=node;
+			return;
 		}
-
+		if (parent.key.equals(key)){
+			parent.value=value;
+			return;
+		}
+		if (key.compareTo(parent.key)<0){
+			parent.leftChild=node;
+			node.parent=parent;
+		}	else {
+			parent.rightChild=node;
+			node.parent=parent;
+		}
+	
+		_adjustPriority(node);
 		
 	}
-	public int size() {
-		if (root==null) {
-			return 0;
-		}
-		return root.orderStatistics;
-	}
 	
-	private Node createNewNode(String key) {
-		Node newNode=new Node();
+	
+	private Node<T> createNewNode(String key, T value) {
+		Node<T> newNode=new Node<T>();
 		newNode.key=key;
+		newNode.value=value;
 		newNode.priority=random.nextInt();
 		return newNode;
 	}
 	
-	private void updateStatistics(Node node) {
-		int statistics=1; //self
-		if (node.leftChild!=null) {
-			statistics+=node.leftChild.orderStatistics;
-		}
-		if (node.rightChild!=null) {
-			statistics+=node.rightChild.orderStatistics;
-		}
-		node.orderStatistics=statistics;
-		
-	}
-	
-	
-	private void leftRotate(Node parent, Node childNode) {
-		Node grandParent=parent.parent;
-		
-		parent.parent=childNode;
-		parent.rightChild=childNode.leftChild;
-		
-		childNode.leftChild=parent;
-		if (parent.rightChild!=null) {
-			parent.rightChild.parent=parent;
-		}
-		
-		childNode.parent=grandParent;
-		if (grandParent!=null) {
-			
-			int c1=parent.key.compareTo(grandParent.key);
-			if (c1<0) {
-				//parent is at left side of grand parent.
-				grandParent.leftChild=childNode;
-				
-			} else {
-				//parent is at the right side of grand parent.
-				grandParent.rightChild=childNode;
-			}
-		}
-		updateStatistics(parent);
-		updateStatistics(childNode);
-	}
-	
-	private void rightRotate(Node parent, Node childNode) {
-		
-		Node grandParent=parent.parent;
-		//rotate right;
-		parent.parent=childNode;
-		parent.leftChild=childNode.rightChild;
-		childNode.rightChild=parent;
-		if (parent.leftChild!=null) {
-			parent.leftChild.parent=parent;
-		}
-		childNode.parent=grandParent;
-		if (grandParent!=null) {
-			
-			int c1=parent.key.compareTo(grandParent.key);
-			if (c1<0) {
-				//parent is at left side of grand parent.
-				grandParent.leftChild=childNode;
-				
-			} else {
-				//parent is at the right side of grand parent.
-				grandParent.rightChild=childNode;
-			}
-		} 
-		updateStatistics(parent);
-		updateStatistics(childNode);
-	}
+
 	
 	
 	/**
@@ -153,201 +79,83 @@ public class Treap {
 	 * @param key
 	 * @return the latest parent under which node is added, or null if node is not added.
 	 */
-	private Node addNode(Node parent, String key) {
-		if (parent==null) {
-			return createNewNode(key);
-		}
-		
-		int c=key.compareTo(parent.key);
-		if (c==0) {
-			return null; //already exists, do nothing.
-		}
-		if (c<0) {
-			Node childNode=addNode(parent.leftChild, key);
-			if (childNode==null) {
-				return null; //nothing is added
-			}
-			parent.leftChild=childNode;
-			childNode.parent=parent;
-			
-			if (childNode.priority>parent.priority) {
-				rightRotate(parent, childNode);
-				return childNode; //new parent node;
+	private void _adjustPriority(Node<T> node) {
+
+		//we use max heap
+		while (node.parent!=null && node.priority>((Node<T>)node.parent).priority){
+			//Node should be parent;
+			if (node==node.parent.leftChild){
+				node.parent.rotateRight();
 			} else {
-				parent.orderStatistics=parent.orderStatistics+1;
-				return parent;
+				node.parent.rotateLeft();
 			}
-		} else {
-			Node childNode=addNode(parent.rightChild, key);
-			
-			if (childNode==null) {
-				return null; //nothing is added
-			}
-			
-			parent.rightChild=childNode;
-			childNode.parent=parent;
-			
-			if (childNode.priority<parent.priority) {
-				leftRotate(parent, childNode);
-				return childNode;
-			} else {
-				parent.orderStatistics=parent.orderStatistics+1;
-				return parent;
-			}
+		}
+		if (node.parent==null){
+			root=node;
 		}
 	}
 	
 	
 	public void remove(String key) {
-		Node current = root;
-		while (current != null) {
-			int c = current.key.compareTo(key);
-			if (c == 0) {
-				break;
-			} else if (c < 0) {
-				current = current.rightChild;
-			} else {
-				current = current.leftChild;
-			}
-
-		}
-		if (current==null) {
-			return; //not found;
-		}
-		removeNode(current);
-	}
-	
-	//used by remove only. the parent node will be removed finally.
-	private void rotateDown(Node parent, Node child, boolean rightRotation) {
-		if (child.priority<parent.priority) {
-			return; //no rotation is needed.
-		}
-		if (rightRotation) {
-			rightRotate(parent, child);
-		} else {
-			leftRotate(parent, child);
-		}
-		//the parent node will be removed.
-		child.orderStatistics=child.orderStatistics-1;
-		
-		//parent is child right now.
-		if (parent.leftChild!=null && parent.rightChild!=null) {
-			if (parent.leftChild.priority>parent.rightChild.priority) {
-				rotateDown(parent, parent.leftChild, true);
-				
-			} else {
-				rotateDown(parent, parent.rightChild, false);
-			}
+		if (root==null){
 			return;
 		}
-		
-		if (parent.leftChild!=null) {
-			rotateDown(parent, parent.leftChild, true);
+		Node<T> targetNode=(Node<T>) BinaryNode._searchForPositionToAdd(root, key);
+		if (!targetNode.key.equals(key)){
 			return;
 		}
-		
-		if (parent.rightChild!=null) {
-			rotateDown(parent, parent.rightChild, false);
-			return;
-		}
-		
-		
-	}
-	
-	
-	private void removeNode(Node node) {
-		node.priority=String.MIN_VALUE;
-		if (node.leftChild!=null && node.rightChild!=null) {
-			if (node.leftChild.priority>node.rightChild.priority) {
-				rotateDown(node, node.leftChild, true);
-				
-			} else {
-				rotateDown(node, node.rightChild, false);
-			}
-		}  else if (node.leftChild!=null) {
-			rotateDown(node, node.leftChild, true);
-		} else if (node.rightChild!=null) {
-			rotateDown(node, node.rightChild, false);
-		}
-		 /*
-		  * else: the node is a leave node.
-		  */
-		
-		Node current=node.parent;
-		//when code comes here. node is a leave node.
-		if (node.parent==null) {
-			//it is root.
-			root=null;
+		if (targetNode.leftChild!=null && targetNode.rightChild!=null){
+			Node<T> predecessor=(Node<T>) BinaryNode._searchPredecessor(targetNode);
 			
+			targetNode.key=predecessor.key;
+			targetNode.value=predecessor.value;
+			
+			predecessor.key=key;
+			targetNode=predecessor;
+		}
+		
+		//switch node with child
+		if (targetNode.leftChild!=null){
+			targetNode.key=targetNode.leftChild.key;
+			targetNode.value=targetNode.leftChild.value;
+			
+			targetNode.leftChild.parent=null;
+			targetNode.leftChild=null;
+		} else if (targetNode.rightChild!=null){
+			
+			targetNode.key=targetNode.rightChild.key;
+			targetNode.value=targetNode.rightChild.value;
+			
+			targetNode.rightChild.parent=null;
+			targetNode.rightChild=null;
 		} else {
-			int c=node.key.compareTo(node.parent.key);
-			if (c<0) {
-				node.parent.leftChild=null;
-				node.parent=null;
+			//has no children
+			if (targetNode==root){
+				root=null;
+				return;
+			} 
+			if (targetNode.parent.leftChild==targetNode){
+				targetNode.parent.leftChild=null;
+				targetNode.parent=null;
 			} else {
-				node.parent.rightChild=null;
-				node.parent=null;
+				targetNode.parent.rightChild=null;
+				targetNode.parent=null;
 			}
 		}
+		return;
 		
-		//make sure parent statistics is correct
-		while (current!=null) {
-			updateStatistics(current);
-			current=current.parent;
+	}
+
+
+	public void walk(Consumer<BinaryNode<T>> collector) {
+		if (root==null){
+			return;
 		}
+		root.walk(collector);
 		
 	}
 	
-	//select the ith value.
-	public String select(int index) {
-		if (root==null) {
-			throw new ArrayIndexOutOfBoundsException();
-		}
-		if (root.orderStatistics<=index) {
-			throw new ArrayIndexOutOfBoundsException();
-		}
-		Node current=root;
-		while (current!=null) {
-			int leftNodes=0;
-			if (current.leftChild!=null) {
-				leftNodes=current.leftChild.orderStatistics;
-			}
-			if (index==leftNodes) {
-				return current.key;
-			}
-			if (index<leftNodes) {
-				current=current.leftChild;
-				continue;
-			}
-			index=index-leftNodes-1;
-			current=current.rightChild;
-		}
-		
-		throw new RuntimeException("Not found");
-	}
 	
-	//return the index the key in the list.
-	public int rank(String key) {
 	
-		int startIndex=0;
-		Node current=root;
-		
-		while (current!=null) {
-			int c=key.compareTo(current.key);
-			int leftNodes=0;
-			if (current.leftChild!=null) {
-				leftNodes=current.leftChild.orderStatistics;
-			}
-			if (c==0) {	
-				return startIndex+leftNodes;
-			} else if (c<0) {
-				current=current.leftChild;
-			} else {
-				startIndex=startIndex+leftNodes+1;
-				current=current.rightChild;
-			}
-		}
-		throw new RuntimeException("Not found");
-		
-	}
+	
 }

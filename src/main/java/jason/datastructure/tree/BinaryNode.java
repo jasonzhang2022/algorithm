@@ -1,5 +1,7 @@
 package jason.datastructure.tree;
 
+import jason.datastructure.tree.RedBlackTree.Node;
+
 import java.util.function.Consumer;
 
 public class BinaryNode<T> {
@@ -108,4 +110,37 @@ public class BinaryNode<T> {
 			rightChild.walk(consumer);
 		}
 	}
+	
+	public static <T> BinaryNode<T> _searchForPositionToAdd(BinaryNode<T> node, String key){
+		if (node==null){
+			return null;
+		}
+		int cmp=key.compareTo(node.key);
+		if (cmp<0){
+			//we should go left.
+			if (node.leftChild!=null){
+				//has left
+				return _searchForPositionToAdd(node.leftChild, key);
+			} else {
+				return node;
+			}
+		} else if (cmp>0){
+			if (node.rightChild!=null){
+				return _searchForPositionToAdd(node.rightChild, key);
+			} else {
+				return node;
+			}
+		} else {
+			return node;
+		}
+	}
+	public static <T> BinaryNode<T>  _searchPredecessor(BinaryNode<T>node){
+		
+		BinaryNode<T> currentNode=node.leftChild;
+		while (currentNode.rightChild!=null){
+			currentNode= currentNode.rightChild;
+		}
+		return currentNode;
+	}
+	
 }

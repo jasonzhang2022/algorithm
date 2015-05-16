@@ -4,108 +4,81 @@ import static org.junit.Assert.*;
 import jason.algorithm.Shuffler;
 import jason.datastructure.tree.Treap;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.function.Consumer;
 
 import org.junit.Test;
 
 public class TreapTest {
 
 
-	
+	DecimalFormat formatter=new DecimalFormat("000");
 	int inputLen=1000;
 	@Test
 	public void test() {
 		ArrayList<Integer> inputsArrayList=new ArrayList<>(inputLen);
-		for (int i=1; i<=inputLen; i++) {
+		for (int i=0; i<inputLen; i++) {
 			inputsArrayList.add(i);
 		}
 		Collections.shuffle(inputsArrayList);
-		Treap treap=new Treap();
-		//1 to 1000 inclusive.
+		Treap<Integer> treap=new Treap<Integer>();
+		//0 to 999 inclusive.
 		for (int value: inputsArrayList) {
-			treap.add(value);
+			treap.put(formatter.format(value), value);
 		}
 		
 		
-		assertTrue(treap.contains(200));
+		assertNotNull(treap.get("200"));
+		ArrayList<Integer>  arrays=new ArrayList<Integer>(1000);
+		Consumer<BinaryNode<Integer>> collector=(kv)->arrays.add(kv.value);
+		treap.walk(collector);
 		
-		ArrayList<Integer> sorted=new ArrayList<>(inputLen);
-		treap.collect(sorted);
-		System.out.println(Arrays.deepToString(sorted.toArray()));
-		assertEquals(inputsArrayList.size(), sorted.size());
-		for (int i=1; i<=inputLen; i++) {
-			assertEquals(sorted.get(i-1).intValue(), i);
-		}
-		
-		assertTrue(treap.contains(98));
-		for (int i=0; i<10;i++) {
-			treap.remove(i*10+3);
-		}
-		for (int i=0; i<10;i++) {
-			assertFalse(treap.contains(i*10+3));
-		}
-		sorted.clear();
-		treap.collect(sorted);
-		assertEquals(sorted.size(), 990);
-		for (int i=0; i<sorted.size()-1; i++) {
-			assertTrue(sorted.get(i)<sorted.get(i+1));
-		}
-		
-	}
-		
-	@Test
-	public void testOrderStatistics() {
-		int[] input=new int[inputLen];
+
+		assertEquals(arrays.size(), inputsArrayList.size());
 		for (int i=0; i<inputLen; i++) {
-			input[i]=i;
-		}
-		Shuffler.shuffle(input);
-		
-		Treap treap=new Treap();
-		//value from 0-999 inclusive
-		for (int value: input) {
-			treap.add(value);
+			assertEquals(arrays.get(i).intValue(), i);
 		}
 		
-		assertEquals(input.length, treap.size());
-		//select
-		assertEquals(0, treap.select(0).intValue());
-		assertEquals(50, treap.select(50).intValue());
-		assertEquals(500, treap.select(500).intValue());
-		assertEquals(999, treap.select(999).intValue());
-		
-		
-		//rank
-		assertEquals(0, treap.rank(0));
-		assertEquals(50, treap.rank(50));
-		assertEquals(500, treap.rank(500));
-		assertEquals(999, treap.rank(999));
-		
-		//make sure everything is right after deletion
-		treap.remove(100);
-		treap.remove(200);
-		treap.remove(300);
-		assertEquals(input.length-3, treap.size());
-		ArrayList<Integer> sorted=new ArrayList<>(inputLen);
-		treap.collect(sorted);
-		for (int i=0; i<sorted.size(); i++) {
-			System.out.println(i+":"+sorted.get(i));
+		assertNotNull(treap.get("098"));
+		for (int i=0; i<10;i++) {
+			treap.remove(formatter.format(i*10+3));
 		}
-		assertEquals(0, treap.select(0).intValue());
-		assertEquals(50, treap.select(50).intValue());
-		assertEquals(500, treap.select(497).intValue());
-		assertEquals(999, treap.select(996).intValue());
-		
-		
-		//rank
-		assertEquals(0, treap.rank(0));
-		assertEquals(50, treap.rank(50));
-		assertEquals(497, treap.rank(500));
-		assertEquals(996, treap.rank(999));
+		for (int i=0; i<10;i++) {
+			assertNull(treap.get(formatter.format(i*10+3)));
+		}
+		arrays.clear();
+		treap.walk(collector);
+		for (int i=0; i<arrays.size()-1; i++) {
+			assertTrue(arrays.get(i)<arrays.get(i+1));
+		}
 		
 	}
+		
 	
+	
+	@Test
+	public void testRemove() {
+		int inputLen=5;
+		ArrayList<Integer> inputsArrayList=new ArrayList<>(inputLen);
+		for (int i=0; i<inputLen; i++) {
+			inputsArrayList.add(i);
+		}
+		Collections.shuffle(inputsArrayList);
+		Treap<Integer> treap=new Treap<Integer>();
+		//0 to 999 inclusive.
+		for (int value: inputsArrayList) {
+			treap.put(formatter.format(value), value);
+		}
+		;
+		for (int i=0; i<inputLen;i++) {
+			treap.remove(formatter.format(i));
+			assertNull(treap.get(formatter.format(i)));
+		}
+		
+	}
+		
 
 }

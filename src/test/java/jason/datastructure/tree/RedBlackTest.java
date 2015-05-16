@@ -65,7 +65,7 @@ public class RedBlackTest {
 		}
 		System.out.println("---------empty tree------");
 		tree.walk(print);
-		tree.delete("jason005");
+		tree.delete("jason003");
 		System.out.println("---------empty tree------");
 		tree.walk(print);
 	}
