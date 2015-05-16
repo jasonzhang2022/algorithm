@@ -22,12 +22,19 @@ public class SkipList {
 	
 	
 	Node head=new  Node(33, null);
-	Node tail=new Node(33, null);
 	Random random=new Random(new Date().getTime());
 	
-	
+	private int _levels = 1;
 	public void add(Integer v) {
-		int level=random.nextInt(33);
+		// Determine the level of the new node. Generate a random number R. The number of
+        // 1-bits before we encounter the first 0-bit is the level of the node. Since R is
+        // 32-bit, the level can be at most 32.
+        int level = 0;
+        for (int R = random.nextInt(); (R & 1) == 1; R >>= 1)
+        {
+            level++;
+            if (level == _levels) { _levels++; break; }
+        }
 		
 		Node newNode=new Node(level+1, v);
 		
@@ -47,7 +54,10 @@ public class SkipList {
 			}
 		}
 	}
-	
+	/**
+	 * @param v
+	 * @return
+	 */
 	public boolean remove(Integer v) {
 		Node current=head;
 		boolean found=false;
@@ -74,7 +84,6 @@ public class SkipList {
 		for (int i=MAX_HEIGHT-1; i>=0; i--) {
 			for (;current.nexts[i]!=null; current=current.nexts[i]) {
 				if (v.compareTo(current.nexts[i].value)==0) {
-					current.nexts[i]=current.nexts[i].nexts[i]; //break the link
 					return true;
 				}
 				

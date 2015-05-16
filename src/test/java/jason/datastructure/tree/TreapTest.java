@@ -3,6 +3,7 @@ package jason.datastructure.tree;
 import static org.junit.Assert.*;
 import jason.algorithm.Shuffler;
 import jason.datastructure.tree.Treap;
+import jason.datastructure.tree.Treap.Node;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -29,10 +30,11 @@ public class TreapTest {
 		for (int value: inputsArrayList) {
 			treap.put(formatter.format(value), value);
 		}
-		
+		 assertPriority(treap.root);
 		
 		assertNotNull(treap.get("200"));
 		ArrayList<Integer>  arrays=new ArrayList<Integer>(1000);
+		
 		Consumer<BinaryNode<Integer>> collector=(kv)->arrays.add(kv.value);
 		treap.walk(collector);
 		
@@ -49,14 +51,31 @@ public class TreapTest {
 		for (int i=0; i<10;i++) {
 			assertNull(treap.get(formatter.format(i*10+3)));
 		}
+		 assertPriority(treap.root);
 		arrays.clear();
 		treap.walk(collector);
 		for (int i=0; i<arrays.size()-1; i++) {
 			assertTrue(arrays.get(i)<arrays.get(i+1));
 		}
 		
+	
 	}
+	
+	public <T> void assertPriority(Node<T> root){
+		if (root.leftChild!=null){
+			assertTrue(((Node<T>)root.leftChild).priority<=root.priority);
+			assertPriority((Node<T>) root.leftChild);
+		}
+		if (root.rightChild!=null){
+			assertTrue(((Node<T>)root.rightChild).priority<=root.priority);
+			assertPriority((Node<T>) root.rightChild);
+		}
+	}
+	
+	
 		
+	
+	
 	
 	
 	@Test

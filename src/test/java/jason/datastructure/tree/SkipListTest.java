@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import jason.datastructure.tree.SkipList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import org.junit.Test;
@@ -41,9 +42,20 @@ public class SkipListTest {
 		}
 		sorted.clear();
 		skipList.collect(sorted);
+		if (sorted.size()<90){
+			System.out.println(Arrays.deepToString(sorted.toArray()));
+		}
 		assertEquals(sorted.size(), 90);
 		for (int i=0; i<sorted.size()-1; i++) {
 			assertTrue(sorted.get(i)<sorted.get(i+1));
+		}
+		
+	}
+	
+	@Test
+	public void Simpletest() {
+		for (int i=0; i<100; i++){
+			test();
 		}
 		
 	}

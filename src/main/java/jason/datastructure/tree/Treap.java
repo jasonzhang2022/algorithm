@@ -1,13 +1,8 @@
 package jason.datastructure.tree;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
-
-import javax.swing.tree.VariableHeightLayoutCache;
-
-import org.junit.experimental.theories.Theories;
 
 
 /**
@@ -22,7 +17,7 @@ public class Treap<T> {
 		int priority;
 	}
 
-	Node<T> root;
+	public Node<T> root;
 	
 
 	public T get(String key) {
@@ -104,43 +99,31 @@ public class Treap<T> {
 		if (!targetNode.key.equals(key)){
 			return;
 		}
-		if (targetNode.leftChild!=null && targetNode.rightChild!=null){
-			Node<T> predecessor=(Node<T>) BinaryNode._searchPredecessor(targetNode);
-			
-			targetNode.key=predecessor.key;
-			targetNode.value=predecessor.value;
-			
-			predecessor.key=key;
-			targetNode=predecessor;
+		
+		/**
+		 * Can not use the predecessor or successor approach since
+		 * we could not balance the tree in that approach.
+		 */
+		while (targetNode.leftChild!=null || targetNode.rightChild!=null){
+			if (targetNode.leftChild!=null && targetNode.rightChild!=null){
+				if (((Node<T>)targetNode.leftChild).priority>((Node<T>)targetNode.rightChild).priority){
+					targetNode.rotateRight();
+				} else{
+					targetNode.rotateLeft();
+				}
+			} else if (targetNode.leftChild!=null){
+				targetNode.rotateRight();
+			} else{
+				targetNode.rotateLeft();
+			}
 		}
 		
-		//switch node with child
-		if (targetNode.leftChild!=null){
-			targetNode.key=targetNode.leftChild.key;
-			targetNode.value=targetNode.leftChild.value;
-			
-			targetNode.leftChild.parent=null;
-			targetNode.leftChild=null;
-		} else if (targetNode.rightChild!=null){
-			
-			targetNode.key=targetNode.rightChild.key;
-			targetNode.value=targetNode.rightChild.value;
-			
-			targetNode.rightChild.parent=null;
-			targetNode.rightChild=null;
+		if (targetNode.parent.leftChild==targetNode){
+			targetNode.parent.leftChild=null;
+			targetNode.parent=null;
 		} else {
-			//has no children
-			if (targetNode==root){
-				root=null;
-				return;
-			} 
-			if (targetNode.parent.leftChild==targetNode){
-				targetNode.parent.leftChild=null;
-				targetNode.parent=null;
-			} else {
-				targetNode.parent.rightChild=null;
-				targetNode.parent=null;
-			}
+			targetNode.parent.rightChild=null;
+			targetNode.parent=null;
 		}
 		return;
 		
@@ -154,8 +137,5 @@ public class Treap<T> {
 		root.walk(collector);
 		
 	}
-	
-	
-	
 	
 }
