@@ -15,14 +15,14 @@ public class TestSuffixTree1 {
 	@Test
 	public void suffixTree1Test(){
 	
-		//verifySuffix("$");
+		verifySuffix("$");
 
-		//verifySuffix("a$");
-		//verifySuffix("aa$");
-		//verifySuffix("abc$");
-		//verifySuffix("xabxa$");
-		//verifySuffix("abcabxabcd$");
-		//verifySuffix("geeksforgeeks$");
+		verifySuffix("a$");
+		verifySuffix("aa$");
+		verifySuffix("abc$");
+		verifySuffix("xabxa$");
+		verifySuffix("abcabxabcd$");
+		verifySuffix("geeksforgeeks$");
 		verifySuffix("AABAACAADAABAAABAA$");
 		
 	}
