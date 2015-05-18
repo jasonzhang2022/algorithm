@@ -3,7 +3,17 @@ package jason.datastructure;
 import java.util.ArrayList;
 
 
-
+/*
+ * https://www.topcoder.com/community/data-science/data-science-tutorials/using-tries/
+ * Trie performs better when number of entries is big.
+ * Trie can perform prefix lookup. Hastable cann't.
+ * 
+ * The tries can insert and find strings in O(L) time (where L represent the length of a single word). This is much faster than set , 
+ * but is it a bit faster than a hash table.
+The set <string> and the hash tables can only find in a dictionary words that match exactly 
+with the single word that we are finding; the trie allow us to find 
+words that have a single character different, a prefix in common, a character missing, etc.
+ */
 
 public class Trie<T>{
 
