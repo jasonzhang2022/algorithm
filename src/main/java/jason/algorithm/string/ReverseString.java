@@ -1,5 +1,11 @@
 package jason.algorithm.string;
 
+
+/**
+ * Reverse every word in the string, but keep order of the word in the string
+ * @author jason
+ *
+ */
 public class ReverseString {
 
 	static void rotate(StringBuilder sb, int start, int end) {

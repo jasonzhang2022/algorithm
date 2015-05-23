@@ -18,6 +18,19 @@ public class BoryeMoore {
 		return table;
 	}
 
+	/*
+	 * http://www.iti.fh-flensburg.de/lang/algorithmen/pattern/kmpen.htm#section2
+	 * 
+	 * A border is a identical string at both end of the target string
+	 * 
+	 * Theorem 1: For a String P with widest border S, the NEXT widest border for P if the widest border of S.
+	 * 
+	 * if f[i] contains width of the widest border for P[0, i-1] (length i),
+	 * we want to find out the widest border for P[0, i] (length i+1), the new character  is P[i]. 
+	 * if P[i]=P[f[i]] (new character matches the character following widest border), the border for P[i] can be extended by one from that for P[i-1].
+	 * If not, we need to find the next possible border to extend. According to theorem 1, It is the widest border for previous border: f[f[i]]
+	 *
+	 */
 	/**
 	 * 
 	 * @param pattern
@@ -33,7 +46,7 @@ public class BoryeMoore {
 
 		/*
 		 * f[i] containing the starting position of widest border for suffix
-		 * starting from i.
+		 * starting from i. The border is pattern[f[i], end];
 		 * 
 		 * j=f[i], In each loop, we try to caluclate the widest border for i-1;
 		 * If the border can be extended: pattern[i-1]==pattern[j-1], then
@@ -56,6 +69,17 @@ public class BoryeMoore {
 					 */
 					s[j] = j - i;
 				}
+				/*
+				
+				Theorem 1: For a String P with widest border S, the NEXT widest border for P if the widest border of S.
+				
+				Current border can not be extended since there is a mismatch.
+				We go next one. According to theorem 1, we need to go the widest border of current border.
+				
+				The starting position for current border is j. The border is S=pattern[j, end].
+				We need to find the starting position of border for String S=pattern[j, end] which is f[j].
+				
+				*/
 				j = f[j];
 			}
 			i--;
@@ -70,11 +94,11 @@ public class BoryeMoore {
 		
 		
 		for (i = 0; i <= pattern.length; i++) {
-			if (s[i] == 0) {
+			if (s[i] == 0) {//no shift is set.
 				/*
 				 * s[i]==0 means when mismatch occurs at p[i-1], suffix[1:end] does not exists in the left.
 				 */
-				s[i] = j; //no shift is set.
+				s[i] = j; 
 			}
 				
 			if (i == j) {
