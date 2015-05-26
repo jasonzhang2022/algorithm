@@ -24,61 +24,63 @@ public class KnapSack01DP {
 	 * @return
 	 */
 	public static TempResult max(int allowedWeight, Set<Item> items) {
-		int[] profit=new int[items.size()];
-		int[] weight=new int[items.size()];
+		int[] values=new int[items.size()];
+		int[] weights=new int[items.size()];
 		
 		int count=0;
 		ArrayList<Item> items2=new ArrayList<Item>(items);
 		for (int i=0; i<items2.size(); i++) {
-			profit[i]=items2.get(i).value;
-			weight[i]=items2.get(i).weight;
+			values[i]=items2.get(i).value;
+			weights[i]=items2.get(i).weight;
 		}
 		
 		
-		 // opt[n][w] = max profit of packing items 1..n with weight limit w
+		 // opt[n][w] = max value of packing items 1..n with weight limit w
         // sol[n][w] = does opt solution to pack items 1..n with weight limit w include item n?
-        int[][] totalProfile = new int[profit.length+1][allowedWeight+1];
-        boolean[][] includedorNot = new boolean[profit.length+1][allowedWeight+1];
+        int[][] totalValue = new int[values.length+1][allowedWeight+1];
+        boolean[][] includedorNot = new boolean[values.length+1][allowedWeight+1];
         
         //We introduce item one by one to the system.
         //For each introduced item, we consider the maximal profit
         //for weight=[0:allowedWeight]
-        for (int i=0; i<profit.length; i++) {
+        for (int i=0; i<values.length; i++) {
         	//introduce item i into the system.
-        	int prof=profit[i];
-        	int weigh=weight[i];
+        	int val=values[i];
+        	int weight=weights[i];
+        	
         	int itemIndex=i+1;
         	
         	for (int w=1; w<=allowedWeight; w++) {
         		
         		//does not include i; i-1 is calculated already
-        		int profit1=totalProfile[itemIndex-1][w];
+        		int profit1=totalValue[itemIndex-1][w];
         		
         		//take profile.
         		int profit2=Integer.MIN_VALUE;
-        		if (w-weigh>=0) {
-        			profit2=totalProfile[itemIndex-1][w-weigh]+prof;
+        		if (w-weight>=0) {
+        			//for a particular targeted weight, add item i does not overflow the targeted weight.
+        			profit2=totalValue[itemIndex-1][w-weight]+val;
         		}
         		
         		if (profit1>profit2) {
         			includedorNot[itemIndex][w]=false;
-        			totalProfile[itemIndex][w]=profit1;
+        			totalValue[itemIndex][w]=profit1;
         		} else {
         			includedorNot[itemIndex][w]=true;
-        			totalProfile[itemIndex][w]=profit2;
+        			totalValue[itemIndex][w]=profit2;
         		}
         	}
         }
 		
       
         TempResult result=new TempResult(0, 0);
-        result.value=totalProfile[profit.length][allowedWeight];
+        result.value=totalValue[values.length][allowedWeight];
         result.items=new LinkedList<>();
         int w=allowedWeight;
-        for (int itemIndex=profit.length; itemIndex>0; itemIndex--) {
+        for (int itemIndex=values.length; itemIndex>0; itemIndex--) {
         	if (includedorNot[itemIndex][w]) {
         		result.items.add(items2.get(itemIndex-1));
-        		w=w-weight[itemIndex-1];
+        		w=w-weights[itemIndex-1];
         	} 
         }
         

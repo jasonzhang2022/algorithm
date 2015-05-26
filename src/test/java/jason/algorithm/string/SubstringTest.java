@@ -123,7 +123,7 @@ public class SubstringTest {
 	        b[i]=j;
 	    }
 	}
-	/*
+
 	@Test 
 	public void testBoryeMoore() {
 		for (String text: testData.keySet()) {
@@ -137,20 +137,7 @@ public class SubstringTest {
 			
 		}
 	}
-	*/
-	@Test 
-	public void testBoryeMooreWiki() {
-		for (String text: testData.keySet()) {
-			Result result=testData.get(text);
-			System.out.println(result.needle);
-			int k=BoryeMooreWiki.indexOf(text.toCharArray(), result.needle.toCharArray());
-			assertEquals(k, result.foundIndex);
-			if (k!=-1) {
-				assertEquals(result.needle, text.substring(k, k+result.needle.length()));
-			}
-			
-		}
-	}
+	
 	
 	@Test 
 	public void testHoorspool() {

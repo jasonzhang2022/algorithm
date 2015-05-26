@@ -1,5 +1,7 @@
 package jason.datastructure;
 
+import jason.algorithm.string.SubstringTest;
+import jason.algorithm.string.SubstringTest.Result;
 import jason.datastructure.SuffixTree1.SuffixTreeNode;
 
 import java.util.ArrayList;
@@ -62,4 +64,43 @@ public class TestSuffixTree1 {
 			}
 		}
 	}
+	
+	
+	@Test 
+	public void testPatternFind(){
+		
+		SubstringTest test=new SubstringTest();
+		test.setup();
+		
+		for (String text: test.testData.keySet()) {
+			Result result=test.testData.get(text);
+			SuffixTree1 suffixTree=new SuffixTree1(text+"$");
+			
+			System.out.println(result.needle);
+			int k=suffixTree.applicationHasPattern(result.needle.toCharArray());
+			assertEquals(k, result.foundIndex);
+			if (k!=-1) {
+				assertEquals(result.needle, text.substring(k, k+result.needle.length()));
+			}
+		}
+		
+		
+		SuffixTree1 suffixTree=new SuffixTree1("ababc");
+		int k=suffixTree.applicationHasPattern("ab".toCharArray());
+		assertEquals(k, 0); //we found 0 instead of 2
+		
+	}
+	
+	
+	@Test
+	public void testLongestRepeatString(){
+		
+		assertNull(new SuffixTree1("$").applicationLongestRepeatedString());
+		assertNull(new SuffixTree1("a$").applicationLongestRepeatedString());
+		assertNull(new SuffixTree1("ab$").applicationLongestRepeatedString());
+		assertNull(new SuffixTree1("abc$").applicationLongestRepeatedString());
+		assertEquals(new SuffixTree1("aaaaa$").applicationLongestRepeatedString(), "aaaa");
+		assertEquals(new SuffixTree1("abcdeabcdex$").applicationLongestRepeatedString(), "abcde");
+	}
+
 }

@@ -19,18 +19,15 @@ public class BoryeMoore {
 	}
 
 	/*
-	 * http://www.iti.fh-flensburg.de/lang/algorithmen/pattern/kmpen.htm#section2
+	 * To understand the logic here, we have to understand  two theorem about border and what is border.
+	 * The information is here: http://www.iti.fh-flensburg.de/lang/algorithmen/pattern/kmpen.htm#section2
 	 * 
-	 * A border is a identical string at both end of the target string
+	 * A border of Text is a subsequence(S) at both end of string, S=prefix=suffix.
 	 * 
-	 * Theorem 1: For a String P with widest border S, the NEXT widest border for P if the widest border of S.
+	 *  Theorem 1: For a String P(pattern) with widest border S, the NEXT widest border for P if the widest border of S.
 	 * 
-	 * if f[i] contains width of the widest border for P[0, i-1] (length i),
-	 * we want to find out the widest border for P[0, i] (length i+1), the new character  is P[i]. 
-	 * if P[i]=P[f[i]] (new character matches the character following widest border), the border for P[i] can be extended by one from that for P[i-1].
-	 * If not, we need to find the next possible border to extend. According to theorem 1, It is the widest border for previous border: f[f[i]]
-	 *
 	 */
+	
 	/**
 	 * 
 	 * @param pattern
@@ -45,18 +42,48 @@ public class BoryeMoore {
 		f[i] = j;
 
 		/*
-		 * f[i] containing the starting position of widest border for suffix
-		 * starting from i. The border is pattern[f[i], end];
-		 * 
-		 * j=f[i], In each loop, we try to caluclate the widest border for i-1;
-		 * If the border can be extended: pattern[i-1]==pattern[j-1], then
-		 * f[i-1]=j-1, if not, we trying the border from f[j];
+		 * The algorithm move from the end of pattern to beginning.
+		 *  P: pattern
+		 *  f[i]:
+		 *   	the starting position of the widest border for suffix P[i, end].
+		 *   	String we are talking suffix from i: P[i, end]
+		 *  	It is the starting position for the border at the end.
+		 *  	The starting position for the border at the beginning is i;
+		 *  
+		 *  Suppose we know f[i], 
+		 *  we want to move one step to left and calculate f[i-1]
+		 *  
+		 *  How can we extend the border,
+		 * -----------Match case: we can extend the border 
+		 *  if P[j-1]==f[i-1], the border can be extended by one character: 
+		 *  f[i-1]=j-1 ( i--; j--; f[i]=j;) 
+		 *  
+		 * ---------- Mismatch case
+		 *  If P[j-1]!=f[i-1], Theorem 1 tells us the next widest border we should try is 
+		 *  the border for current border: that is f[j];
+		 *  
+		 *  At the same time, The mismatch case is the case 1 of good suffix rule.
+		 *  we want to record that when there is a mismatch at this position
+		 *   we shift j-i position.
+		 *  
 		 */
 
 		while (i > 0) {
 			while (j <= pattern.length && pattern[i - 1] != pattern[j - 1]) {
 				if (s[j] == 0) {
 					/*
+					 * 
+					 *this is the case 1 of good suffix.
+					 * if P[j-1] does not match with character in Text, 
+					 * but the suffix starting with j exists some where before,
+					 * we shift the previous identical string to current position.
+					 * 
+					 * Notice there P[j-1] does not match which character in text
+					 * and P[j-1] does not match with P[i-1].
+					 * It is possible that P[i-1] after shift will match with the character at position.
+					 * 
+					 *	
+					 * 
 					 * However, the case when a border cannot be extended to the
 					 * left is also interesting, since it leads to a promising
 					 * shift of the pattern if a mismatch occurs. Therefore, the
@@ -93,6 +120,11 @@ public class BoryeMoore {
 		j = f[0]; //the starting position of widest border for whole pattern (suffix starting 0)
 		
 		
+		/*
+		 * This is the case 2:
+		 * for case 2: we only move when there is a border (prefix=suffix), not SUBSEQUENCE in middle of pattern=suffix
+		 * Notice the prefix starting with zero, so we shift j-0=j: shift position zero to position j.
+		 */
 		for (i = 0; i <= pattern.length; i++) {
 			if (s[i] == 0) {//no shift is set.
 				/*
@@ -116,12 +148,13 @@ public class BoryeMoore {
 	    while (i<=text.length-pattern.length)
 	    {
 	        j=pattern.length-1;
-	        while (j>=0 && pattern[j]==pattern[i+j]) {
+	        while (j>=0 && pattern[j]==text[i+j]) {
 	        	j--;
 	        }
 	        
 	        if (j<0)
 	        {
+	        	//we have a match.
 	            return i;
 	        }   else {
 	        	//a mismatch occurs at pattern[j] or text[i+j]

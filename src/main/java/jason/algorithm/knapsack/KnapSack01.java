@@ -1,10 +1,15 @@
 package jason.algorithm.knapsack;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
+/**
+ * Recursive approach. Do not use optimal substructure.
+ * @author jason
+ *
+ */
 public class KnapSack01 {
 
 	public static class TempResult {
@@ -18,37 +23,41 @@ public class KnapSack01 {
 		}
 	}
 	
-	public static TempResult max(int allowedWeight, Set<Item> items){
-		//no item to select
-		TempResult result=new TempResult(0, 0);
-		result.items=new LinkedList<>();
-		if (items.isEmpty()) {
+	public static TempResult max(int allowedWeight, Item[] items, int offset){
+		if (offset>=items.length){
+			//no more item
+			TempResult result=new TempResult(0, 0);
+			result.items=new ArrayList<>(items.length);
 			return result;
 		}
+		Item item=items[offset];
 		
 		
-		for (Item item: items) {
-			
-			Set<Item> setForChildItems=new HashSet<>(items);
-			setForChildItems.remove(item);
-			if (item.weight>allowedWeight) {
-				continue;
-			}
-			TempResult childResult=max(allowedWeight-item.weight, setForChildItems);
-			
-			if (childResult.value+item.value>result.value) {
-				result=childResult;
-				childResult.value=childResult.value+item.value;
-				childResult.weight=childResult.weight+item.weight;
-				childResult.items.add(item);
-			}
-			
-			
-			
+		if (item.weight>allowedWeight){
+			//item can not be in the final solution, so it is not included
+			return max(allowedWeight, items, offset+1);
 		}
-		return result;
+		
+		//solution:not include this item
+		TempResult result1=max(allowedWeight, items, offset+1);
+		
+		//solution contain this item: include
+		TempResult result2=max(allowedWeight-item.weight, items, offset+1);
+		
+		
+		//which has a bigger value?
+		if (result1.value>(result2.value+item.value)){
+			return result1;
+		} else {
+			result2.weight+=item.weight;
+			result2.value+=item.value;
+			result2.items.add(item);
+			return result2;
+		}
 		
 	}
+	
+	
 		
 	
 	

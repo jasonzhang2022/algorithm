@@ -1,5 +1,7 @@
 package jason.datastructure;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.function.Consumer;
 
 //http://www.geeksforgeeks.org/ukkonens-suffix-tree-construction-part-6/
@@ -265,6 +267,146 @@ public class SuffixTree1 {
 	
 	
 	
+	public void trimLeafNode(int index){
+		trimLeafNode(root, index);
+	}
 	
+	protected void trimLeafNode(SuffixTreeNode node, int index){
+		if (node==null){
+			return;
+		}
+		if (node.isLeaf()){
+			if (node.edgeStart<=index){
+				node.end=new EndIndex(index);
+			}
+			return;
+		}
+		
+		for (int i=0; i<node.children.length; i++){
+			trimLeafNode(node.children[i], index);
+		}
+	}
+	
+	//TODO longest common sequence.
+	
+	
+	
+	
+	
+	public int applicationHasPattern(char[] chars){
+		
+		SuffixTreeNode currentNode=root;
+		int charsOffset=0;
+		
+		SuffixTreeNode foundEdge=null;
+		
+		outter:
+		while (charsOffset<chars.length){
+			if (currentNode.children[chars[charsOffset]]==null){
+				//can not walk down
+				return -1;
+			}
+			SuffixTreeNode edge=currentNode.children[chars[charsOffset]];
+			int j=charsOffset;
+			for (int i=edge.edgeStart; i<=edge.end.end; i++){
+				j=i-edge.edgeStart+charsOffset;
+				if (j<chars.length){
+					if (chars[j]!=text[i]){
+						
+						//unequal character
+						return -1;
+					} else {
+						continue; //equal character
+					}
+				} else {
+					//j is bigger than chars length;
+					//we stop in the half way
+					foundEdge=edge;
+					break outter;
+				}
+			}
+			
+			//we finish this edge and all matched.
+			//we go to next edge.
+			charsOffset=j+1;
+			currentNode=edge;
+			if (charsOffset==chars.length){
+				foundEdge=edge;
+			}
+		}
+	
+		return collectMinPrefix(foundEdge, Integer.MAX_VALUE);
+	}
+	
+	
+	protected int collectMinPrefix(SuffixTreeNode node, int min){
+		if (node.isLeaf()){
+			if (node.suffixIndex<min){
+				return node.suffixIndex;
+			} else {
+				return min;
+			}
+		}
+		
+		
+		for (int i=0; i<node.children.length; i++){
+			if (node.children[i]!=null){
+				min=collectMinPrefix(node.children[i], min);
+			}
+		}
+		
+		return min;
+	}
+	
+	
+	public static class TempResult {
+		int pathLength;
+		SuffixTreeNode Edge;
+	}
+	
+	public String applicationLongestRepeatedString(){
+		
+		TempResult tempResult=new TempResult();
+		tempResult.pathLength=0;
+		tempResult.Edge=root;
+		
+		
+		collectLongestInternalNode(root, tempResult, 0);
+		
+		if (tempResult.pathLength==0){
+			return null;
+		}
+		
+		String t=String.valueOf(text);
+		return t.substring(tempResult.Edge.suffixIndex, tempResult.Edge.edgeStart);
+	}
+	
+	
+	/**
+	 * 
+	 * @param node 
+	 * @param result
+	 * @param pathLength the length of the suffix length when traverse to node.
+	 */
+	public void collectLongestInternalNode(SuffixTreeNode node, TempResult result, int pathLength){
+		
+		if (node==null){
+			return;
+		}
+		if (node.isLeaf()){
+			int pathLengthToParentNode=pathLength-(node.end.end-node.edgeStart+1);
+			if (pathLengthToParentNode>result.pathLength){
+				result.pathLength=pathLengthToParentNode;
+				result.Edge=node;
+			}
+			return;
+		}
+		
+		for (int i=0; i<node.children.length; i++){
+			if (node.children[i]!=null){
+				collectLongestInternalNode(node.children[i], result, pathLength+(node.children[i].end.end-node.children[i].edgeStart+1));
+			}
+		}
+	}
 
 }
