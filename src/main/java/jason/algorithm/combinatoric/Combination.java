@@ -1,7 +1,11 @@
 package jason.algorithm.combinatoric;
 
 import java.util.function.Consumer;
-
+/**
+ * The algorithm is very similar to 0/1 knapsack.
+ * @author jason
+ *
+ */
 public class Combination {
 	
 	/*

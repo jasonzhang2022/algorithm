@@ -1,11 +1,5 @@
 package jason.algorithm.knapsack;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Set;
 
 //http://www.mathcs.emory.edu/~cheung/Courses/323/Syllabus/DynProg/knapsack2.html
 

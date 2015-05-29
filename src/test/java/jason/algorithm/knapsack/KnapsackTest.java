@@ -164,6 +164,83 @@ public class KnapsackTest {
 		assertThat(result.value, equalTo(22));
 		
 	}
+	
+	@Test
+	public void testAllCombination() {
+
+
+		Set<Item> items = new HashSet<Item>();
+		Item item1 = new Item(3, 5);
+	
+		Item item2 = new Item(8, 13);
+		Item item3 = new Item(7, 12);
+		Item item4 = new Item(4, 7);
+		items.add(item1);
+		items.add(item2);
+		items.add(item3);
+		items.add(item4);
+		
+
+		KnapSack01.TempResult result=null;
+		
+		//no value.
+		result=KnapsackAllCombination.max(1, items);
+		assertThat(result.items, hasSize(0));
+		assertThat(result.value, equalTo(0));
+		
+		//exact one item
+		result=KnapsackAllCombination.max(5, items);
+		assertThat(result.items, hasSize(1));
+		assertThat(result.value, equalTo(3));
+		
+		//one item, some weight is not used.
+		result=KnapsackAllCombination.max(6, items);
+		assertThat(result.value, equalTo(3));
+
+				
+		//two items
+		result=KnapsackAllCombination.max(12, items);
+		assertThat(result.value, equalTo(7));
+		
+		result=KnapsackAllCombination.max(13, items);
+		assertThat(result.value, equalTo(8));
+
+		result=KnapsackAllCombination.max(14, items);
+		assertThat(result.value, equalTo(8));
+		
+		
+		result=KnapsackAllCombination.max(17, items);
+		assertThat(result.value, equalTo(10));
+		
+		result=KnapsackAllCombination.max(18, items);
+		assertThat(result.value, equalTo(11));
+		
+		result=KnapsackAllCombination.max(19, items);
+		assertThat(result.value, equalTo(11));
+		
+		result=KnapsackAllCombination.max(20, items);
+		assertThat(result.value, equalTo(12));
+		
+		result=KnapsackAllCombination.max(24, items);
+		assertThat(result.value, equalTo(14));
+		
+		result=KnapsackAllCombination.max(25, items);
+		assertThat(result.value, equalTo(15));
+		
+		result=KnapsackAllCombination.max(30, items);
+		assertThat(result.value, equalTo(18));
+		
+		result=KnapsackAllCombination.max(32, items);
+		assertThat(result.value, equalTo(19));
+		
+		result=KnapsackAllCombination.max(37, items);
+		assertThat(result.value, equalTo(22));
+		
+		result=KnapsackAllCombination.max(40, items);
+		assertThat(result.value, equalTo(22));
+		
+	}
+	
 	public int totalValue(List<Item> resultsItem) {
 		int totalValue = 0;
 		for (Item item : resultsItem) {
