@@ -26,7 +26,7 @@ public class IntervalTest {
 	public void intervalTestEmptyCollection(){
 		ArrayList<Interval> intervals=new ArrayList<>();
 		
-		Interval toBeInserted=new Interval(2, 3);
+		Interval toBeInserted=new Interval(2, 3); 
 		
 		InsertInterval.insertInterval(intervals, toBeInserted);
 		assertThat(intervals, contains(toBeInserted));
