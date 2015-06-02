@@ -5,6 +5,19 @@ import jason.algorithm.sort.QuickSort;
 import java.util.Date;
 import java.util.Random;
 
+
+/*
+ * http://www.programcreek.com/2014/02/leetcode-majority-element-java/
+ * 
+ * 
+ Given an array of size n, find the majority element. The majority element is the element that appears more than ⌊ n/2 ⌋ times.
+You may assume that the array is non-empty and the majority element always exist in the array.
+This is the quick select problem. 
+We are looking for the n/2 th element.
+
+
+ */
+
 public class QuickSelect {
 	
 	public static int select(int[] input, int k) {

@@ -19,14 +19,23 @@ import java.util.Arrays;
  *  But instead of moving to i+1, we can make some intelligent decision based on information existing for palLen[k] 
  *  where k<=i
  * 
- * 
- * 
- * 
- * 
- * 
- * 
  */
 
+/*
+ * Also check this question: http://www.programcreek.com/2014/05/leetcode-minimum-size-subarray-sum-java/
+ * Given an array of n positive integers and a positive integer s, find the minimal length of a subarray of which the sum ≥ s. If there isn't one, return 0 instead.
+
+For example, given the array [2,3,1,2,4,3] and s = 7, the subarray [4,3] has the minimal length of 2 under the problem constraint.
+
+Both solution has this characteristics.
+We walk the string/array for a solution: An intermediate solution (may not be the final solution) can be leveraged to
+ speed next solution.
+ 
+  
+In BoryeMoore pattern search: partial match (match successful so far) is used to speed up walking.   
+
+
+ */
 
 public class ManacherPalindrome implements LongestPalindromeFinder {
 

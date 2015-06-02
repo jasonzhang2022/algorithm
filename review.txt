@@ -1,0 +1,92 @@
+1. http://www.programcreek.com/2014/02/leetcode-majority-element-java.
+
+Given an array of size n, find the majority element. The majority element is the element 
+that appears more than ⌊ n/2 ⌋ times.
+You may assume that the array is non-empty and the majority element always exist in the array.
+
+This is a quick select problem in guise.
+
+-------------------------------------
+http://www.programcreek.com/2014/05/leetcode-first-missing-positive-java/
+
+Given an unsorted integer array, find the first missing positive integer. 
+For example, given [1,2,0] return 3 and [3,4,-1,1] return 2.
+Your algorithm should run in O(n) time and uses constant space.
+
+The provided solution swaps at least one element in targeted position each time. 
+Similar question: how to sort an array in linear time with n elements. This array has consecutive 
+numbers from 1 to n. 
+
+
+This can be viewed as a very specialized counting sorting
+
+
+------------------------------------------
+http://www.programcreek.com/2014/05/leetcode-largest-rectangle-in-histogram-java/
+Given n non-negative integers representing the histogram's bar height where the width of each bar is 1,
+ find the area of largest rectangle in the histogram.
+ 
+ 
+ Stack is used wisely. I know what stack is. intuition should tell quickly this is a stack operation.
+ 
+ A stack: remove/empty some stacked/accumulated elements previously.
+ 
+ 
+ --------------------------------------------
+ http://www.programcreek.com/2013/02/longest-substring-which-contains-2-unique-characters/
+ 
+ String slide/array slide questions.
+ We need to leverage already known solution which may not be the final solution. 
+ Some information recorded during slide can be reused in next slide window.
+ 
+ -----------------------------------------------------------
+ http://www.programcreek.com/2014/05/leetcode-minimum-path-sum-java/
+ 
+ Given a m x n grid filled with non-negative numbers, find a path from top left to bottom 
+ right which minimizes the sum of all numbers along its path.
+ 
+ 
+ http://www.programcreek.com/2012/12/leetcode-word-ladder/
+ 
+ Given two words (start and end), and a dictionary, find the length of shortest transformation 
+ sequence from start to end, such that only one letter can be changed at a time and each intermediate 
+ word must exist in the dictionary. For example, given:
+
+start = "hit"
+end = "cog"
+dict = ["hot","dot","dog","lot","log"]
+One shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog", the program should return its length 5.
+
+  
+ **Both problems are shortest path problem. The edge is implicit. Explicit edge is not needed since edge is implied in
+ the special case.
+ 
+ 
+ ------------------------------------------------------------
+ http://www.programcreek.com/2014/04/leetcode-number-of-islands-java/
+ http://www.programcreek.com/2014/04/leetcode-surrounded-regions-java/
+ 
+ 
+ In graph traversal: we need to use a data structure to mark a node is visited or not.
+ Since graph could have isolated node, and the visit procedure is recursive. The mark could have several meaning
+ 1. it is default value: 0;
+ 2. it is being processed. So if it is meet again, do not process it again,
+ 3. it is processed, but have a success status.
+ 4. it is processed, but have a failure status. Usually failure status can share the same value as "being processed".
+ 
+ The above two problems uses the matrix to mark it in place. The matrix represents a special graph with edge implicitly
+ implied
+ 
+ ------------------------------------------------------------------
+ http://www.programcreek.com/2012/12/leetcode-linked-list-cycle/
+ 
+ two pointers to walk: it is clever.
+ 
+ 
+ 
+ java: pass primitive as reference: using single element array
+ 
+ 
+ 
+ 
+ 
