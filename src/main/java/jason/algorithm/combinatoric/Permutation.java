@@ -1,5 +1,7 @@
 package jason.algorithm.combinatoric;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class Permutation {
@@ -59,6 +61,35 @@ public class Permutation {
 		
 		
 	}
+	
+	
+	public static void permuteAvoidDuplicate(int[] ints, Consumer<int[]> consumer){
+		SubArray subArray=new SubArray(ints, 0);
+		permuteAvoidDuplicate(subArray, consumer);
+	}
+	
+	
+	public static void permuteAvoidDuplicate(SubArray input, Consumer<int[]> consumer){
+		if (input.getLength()==0){
+			//nothing to permute
+			consumer.accept(input.array);
+		}
+		Set<Integer> processed=new HashSet<Integer>();
+		for (int i=0; i<input.getLength(); i++){
+			if (processed.contains(input.get(i))){
+				continue;
+			}
+			processed.add(input.get(i));
+			input.swap(i,  0);
+			
+			
+			SubArray child=new SubArray(input.array, input.offset+1 );
+			
+			permuteAvoidDuplicate(child, consumer);
+			input.swap(0,  i);
+		}
+	}
+		
 	
 
 }

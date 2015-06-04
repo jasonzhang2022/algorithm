@@ -31,6 +31,24 @@ public class PermutationTest {
 		assertEquals(c.count, expectedPermutation);
 	}
 	
+	
+	@Test
+	public void TestPermutationNDuplicate(){
+		String input="ABCDBC";
+		int expectedPermutation=6*5*4*3*2*1/2/2;
+		Count c=new Count();
+		
+		Consumer<int[]> consumer= a->{
+			for (int index: a){
+				System.out.print(input.charAt(index));
+			}
+			System.out.print("\n");
+			c.count++;
+		};
+		Permutation.permuteAvoidDuplicate(new int[]{0, 1,2,3, 1,2}, consumer);
+		
+		assertEquals(c.count, expectedPermutation);
+	}
 	@Test
 	public void TestPermutationNK(){
 		String input="ABCDEFGH";
