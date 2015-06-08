@@ -1,6 +1,7 @@
 package jason.algorithm.knapsack;
 
 import jason.algorithm.knapsack.KnapSack01.TempResult;
+import jason.solution.palindrome.DPPalindrome;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,7 +10,12 @@ import java.util.Set;
 public class KnapsackAllCombination {
 
 	
-	
+	/**
+	 * Compare this with {@link DPPalindrome}
+	 * @param allowedWeight
+	 * @param items
+	 * @return
+	 */
 	public static TempResult max(int allowedWeight, Set<Item> items) {
 		
 		List<TempResult> results=new LinkedList<TempResult>();

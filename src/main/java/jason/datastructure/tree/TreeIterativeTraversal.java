@@ -125,4 +125,55 @@ public class TreeIterativeTraversal<T> {
 		}
 
 	}
+	
+	public void postorderTraversal1(TreeNode<T> root, Consumer<T> consumer) {
+
+		if (root == null)
+			return;
+
+		Stack<TreeNode<T>> stack = new Stack<TreeNode<T>>();
+		stack.push(root);
+
+		TreeNode<T> prev = null;
+		while (!stack.empty()) {
+			TreeNode<T> curr = stack.peek();
+
+			// go down the tree.
+			// check if current node is leaf, if so, process it and pop stack,
+			// otherwise, keep going down
+			if (prev == null || prev.left == curr || prev.right == curr) {
+				// prev == null is the situation for the root node
+				if (curr.left != null) {
+					stack.push(curr.left);
+				} else if (curr.right != null) {
+					stack.push(curr.right);
+				} else {
+					stack.pop();
+					consumer.accept(curr.val);
+				}
+
+				// go up the tree from left node
+				// need to check if there is a right child
+				// if yes, push it to stack
+				// otherwise, process parent and pop stack
+			} else if (curr.left == prev) {
+				if (curr.right != null) {
+					stack.push(curr.right);
+				} else {
+					stack.pop();
+					consumer.accept(curr.val);
+				}
+
+				// go up the tree from right node
+				// after coming back from right node, process parent node and
+				// pop stack.
+			} else if (curr.right == prev) {
+				stack.pop();
+				consumer.accept(curr.val);
+			}
+
+			prev = curr;
+		}
+
+	}
 }

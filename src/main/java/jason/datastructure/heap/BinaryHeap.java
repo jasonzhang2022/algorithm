@@ -1,6 +1,5 @@
 package jason.datastructure.heap;
 
-import java.util.ArrayList;
 
 
 /**
@@ -8,6 +7,10 @@ import java.util.ArrayList;
  * For each node at index i, the left child node is at 2i+1, the right child node is at 2i+2
  * The parent node is at floor( (i-1)/2);
  * @author jason.zhang
+ * 
+ * 
+ * Different from BST, we don't use tree rotation. Heap is always conceptually complete binary tree. 
+ * Rotate could leave hole in the binary tree. 
  *
  * @param <T>
  */

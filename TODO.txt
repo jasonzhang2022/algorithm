@@ -1,1 +1,9 @@
 Compare o1 knapsack problem with all-pair shotest path problem
+
+TODO: range minimum query
+
+
+review: 
+	iterative post order tree traversal
+	build binary heap
+	

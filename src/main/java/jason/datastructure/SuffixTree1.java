@@ -1,7 +1,9 @@
 package jason.datastructure;
 
 import static org.junit.Assert.assertEquals;
+import jason.datastructure.Trie.Entry;
 
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 //http://www.geeksforgeeks.org/ukkonens-suffix-tree-construction-part-6/
@@ -407,6 +409,20 @@ public class SuffixTree1 {
 				collectLongestInternalNode(node.children[i], result, pathLength+(node.children[i].end.end-node.children[i].edgeStart+1));
 			}
 		}
+	}
+	
+	public int[] toSuffixArray() {
+		int[] results=new int[text.length];
+		int[] count=new int[1];
+		count[0]=0;
+		walkNode(root, (node)->{
+			if (node.isLeaf()){
+				results[count[0]]=node.suffixIndex;
+				count[0]++;
+			}
+		});
+		
+		return results;
 	}
 
 }

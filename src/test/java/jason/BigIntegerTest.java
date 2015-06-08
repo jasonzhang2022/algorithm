@@ -2,6 +2,7 @@ package jason;
 
 import static org.junit.Assert.assertEquals;
 import jason.solution.integermultiple.ClassisMultiplier;
+import jason.solution.integermultiple.GridMultipler;
 import jason.solution.integermultiple.Helper;
 import jason.solution.integermultiple.KaratsubaMultiplier1;
 import jason.solution.integermultiple.Multiplier;
@@ -57,6 +58,11 @@ public class BigIntegerTest {
 	@Test
 	public void testClassic() {
 		test(new ClassisMultiplier());
+	}
+	
+	@Test
+	public void testGrid() {
+		test(new GridMultipler());
 	}
 	
 	@Test

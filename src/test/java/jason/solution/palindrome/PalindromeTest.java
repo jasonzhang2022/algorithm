@@ -76,6 +76,12 @@ public class PalindromeTest {
 		test(new SuffixPalindrome(SqrtPartitionRMQ.class, '#'));
 	}
 	
+
+	@Test
+	public void testSimpleExpand() {
+		test(new SimpleExpand());
+	}
+	
 	
 
 }

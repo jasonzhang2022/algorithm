@@ -33,6 +33,16 @@ public class CountSort {
 		}
 		int[] results=new int[input.length];
 		
+		
+		
+		/**
+		 * If the input is an object with a integer key
+		 * we could swap the object to correct position.
+		 * Each time, we leave an object in a correct position.
+		 * 
+		 * The swap approach is not stable. Can not be used as radix sort sub algorithm.
+		 * 
+		 */
 		for (int value: input) {
 			results[counts[value-min]]=value;
 			counts[value-min]=counts[value-min]+1;

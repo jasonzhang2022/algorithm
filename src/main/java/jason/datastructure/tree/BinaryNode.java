@@ -1,7 +1,5 @@
 package jason.datastructure.tree;
 
-import jason.datastructure.tree.RedBlackTree.Node;
-
 import java.util.function.Consumer;
 
 public class BinaryNode<T> {
