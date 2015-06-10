@@ -7,3 +7,4 @@ review:
 	iterative post order tree traversal
 	build binary heap
 	
+How apply BFS to this problem: http://community.topcoder.com/tc?module=Static&d1=match_editorials&d2=srm219

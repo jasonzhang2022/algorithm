@@ -1,9 +1,12 @@
 package jason.algorithm.topcoder;
 
+import static org.junit.Assert.*;
 import jason.algorithm.Swaper;
 
 import java.util.BitSet;
 import java.util.HashSet;
+
+import org.junit.Test;
 
 
 /**
@@ -72,10 +75,9 @@ public class TurntableService {
 	}
 	
 	/*
-	 * What are the possible combinations?
-	 * The start position is entree 0 at 0.
+	 * We go over all possible permutation 1-n-1. The first item is zero which can not be changed.
 	 */
-	public static int calculateTime(String[] favorites){
+	public static int calculateTime(String... favorites){
 		int n=favorites.length;
 		
 		//favs[i] records ith person favorites 
@@ -198,5 +200,17 @@ public class TurntableService {
 		return minTime;
 		
 	}
+	@Test
+	public void test(){
+		assertEquals(32, calculateTime("0 2", "1", "0 1"));
+		
+		assertEquals(49, calculateTime("0", "0", "0"));
+		
+		assertEquals(50, calculateTime("4", "1", "2", "3", "0"));
+		
+		assertEquals(35, calculateTime("0 004", "2 3", "0 01", "1 2 3 4", "1 1"));
+		
+	}
+	
 
 }
