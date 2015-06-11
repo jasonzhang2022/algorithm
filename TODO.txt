@@ -6,5 +6,7 @@ TODO: range minimum query
 review: 
 	iterative post order tree traversal
 	build binary heap
+	array containing duplicates: http://www.programcreek.com/2014/06/leetcode-contains-duplicate-iii-java/
+	
 	
 How apply BFS to this problem: http://community.topcoder.com/tc?module=Static&d1=match_editorials&d2=srm219

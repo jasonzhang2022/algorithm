@@ -1,13 +1,86 @@
 package jason.algorithm.practice;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.PriorityQueue;
+
+import org.junit.Test;
 
 //http://www.programcreek.com/2013/02/longest-substring-which-contains-2-unique-characters/
 public class LongestSubstringWithKUniqueCharacter {
 
 		
+	public static String find1(String input, int k){
+		
+		if (input==null || input.length()==0){
+			return "";
+		}
+		int[] charTable=new int[256];
+		Arrays.fill(charTable, -1);
+		
+		
+		int maxCount=Integer.MIN_VALUE;
+		int maxStartIndex=-1;
+		
+		charTable[input.charAt(0)]=0;
+		int startIndex=0;
+		int uniqueCount=1;
+		
+		
+		for (int i=1; i<input.length(); i++){
+			//this character is not seen before.
+			if (charTable[input.charAt(i)]==-1){ 
+				
+				if (uniqueCount==k){
+				
+					//we need to start a new sequence.
+					
+					//keep the sequence index
+					int newMaxCount=i-startIndex;
+					if (newMaxCount>maxCount){
+						maxCount=newMaxCount;
+						maxStartIndex=startIndex;
+					}
+					
+					//remove one character;
+					while (charTable[input.charAt(startIndex)]!=startIndex){
+						startIndex++;
+					}
+					//remove one character from begin and increase startIndex by one.
+					charTable[startIndex++]=-1;
+					
+					//add this newly found character.
+					charTable[input.charAt(i)]=i;
+					//no need to adjust uniqueK since we remove one. and add one at the same time.
+					
+				} else {
+					//this character is not seen before
+					charTable[input.charAt(i)]=i;
+					uniqueCount++;
+				}
+				
+			} else {
+				//this character exists before.
+				charTable[input.charAt(i)]=i; //only keep the left most index
+			}
+		}
+		
+		
+		//handle the end condition.
+		if(input.length()-startIndex>maxCount && uniqueCount==k){
+			maxCount=input.length()-startIndex;
+			maxStartIndex=startIndex;
+		}
+		
+		if (maxStartIndex==-1){
+			return null;
+		}
+		return input.substring(maxStartIndex, maxStartIndex+maxCount);
+	}
 	
 	
 	public static String find(String input, int k){
@@ -126,6 +199,60 @@ public class LongestSubstringWithKUniqueCharacter {
 	 
 		return maxSubstring;
 	}
+	
+	@Test
+	public void test() {
+		assertNull(find("abc", 4));
+		assertEquals("a", find("abc", 1));
+		assertEquals("ab", find("abc", 2));
+		assertEquals("abc", find("abc", 3));
+		
+		
+		
+		assertEquals("abac", find("abac", 3));
+		assertEquals("ababacc", find("ababacc", 3));
+		assertEquals("abac", find("abacd", 3));
+		
+		//this case can not pass.
+		assertEquals("cadcacacaca", find("abcadcacacaca", 3));
+	}
+	
+	@Test
+	public void test1() {
+		assertNull(find1("abc", 4));
+		assertEquals("a", find1("abc", 1));
+		assertEquals("ab", find1("abc", 2));
+		assertEquals("abc", find1("abc", 3));
+		
+		
+		
+		assertEquals("abac", find1("abac", 3));
+		assertEquals("ababacc", find1("ababacc", 3));
+		assertEquals("abac", find1("abacd", 3));
+		
+		//this case can not pass.
+		assertEquals("cadcacacaca", find1("abcadcacacaca", 3));
+	}
+	
+	@Test
+	public void testProvided() {
+		assertNull(maxSubStringKUniqueChars("abc", 4));
+		assertEquals("a", maxSubStringKUniqueChars("abc", 1));
+		assertEquals("ab", maxSubStringKUniqueChars("abc", 2));
+		assertEquals("abc", maxSubStringKUniqueChars("abc", 3));
+		
+		
+		
+		assertEquals("abac", maxSubStringKUniqueChars("abac", 3));
+		assertEquals("ababacc", maxSubStringKUniqueChars("ababacc", 3));
+		assertEquals("abac", maxSubStringKUniqueChars("abacd", 3));
+		
+		
+		
+		//this case can not pass.
+		assertEquals("cadcacacaca", maxSubStringKUniqueChars("abcadcacacaca", 3));
+	}
+	
 
 	
 }
