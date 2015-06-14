@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 
 import org.junit.Test;
 
@@ -14,6 +15,8 @@ public class MinimumWindowSubstring {
 		if (s==null || t==null || t.length()==0){
 			return null;
 		}
+		
+		LinkedList list;
 		
 		int[] charTable = new int[256];
 		// -2 means such character does not exist in t,

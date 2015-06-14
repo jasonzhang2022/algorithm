@@ -1,10 +1,15 @@
 package jason.algorithm.practice;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Stack;
+
+import org.junit.Test;
 
 //http://www.programcreek.com/2014/05/leetcode-largest-rectangle-in-histogram-java/
 public class LongestRactanguleAreaInHistogram {
@@ -97,5 +102,147 @@ public class LongestRactanguleAreaInHistogram {
 	 
 		return max;
 	}
+	
+	
+	//practice what is in solution above by myself
+	public static int largestRectangleArea1(int[] height) {
+		if (height==null || height.length==0){
+			return 0;
+		}
+		
+		/*
+		 * stack contains the index of the height.
+		 * for height[stack[i]]=j, it contains the right edge of a continuous area with height j ends at i.
+		 * This continuous area starts from stack[i-1];
+		 */
+		Stack<Integer> stack=new Stack<Integer>();
+		
+		
+		stack.push(0); //push index zero.
+		int max=Integer.MIN_VALUE;
+		for (int i=1; i<height.length; i++){
+			//historgram is increased. previous bar can be continued.
+			if (height[i]>height[stack.peek()]){
+				stack.push(i);
+				continue;
+			}
+			
+			//we have a lower bar. All continuous area consisting of high bar is finalized
+			while (!stack.isEmpty() && height[i]<height[stack.peek()]){
+				int sindex=stack.pop();
+				int len=sindex-0+1;
+				if (!stack.isEmpty()){
+					len=sindex-stack.peek();
+				}
+				
+				int newMax=len*height[sindex];
+				max=Math.max(max, newMax);
+			}
+			if (stack.isEmpty()){
+				stack.push(i);
+			} else{
+				//push it only if previous one is smaller than current one.
+				if (height[i]>height[stack.peek()]){
+					stack.push(i);
+				}else {
+					stack.pop(); //pop the old right edge,
+					stack.push(i); //push the new edge.
+				}
+			}
+			
+		}
+		
+		//every right edge is shifted to end.
+		while (!stack.isEmpty()){
+			int sindex=stack.pop();
+			int len=height.length-1-0+1;
+			if (!stack.isEmpty()){
+				len=height.length-1-stack.peek();
+			}
+			int newMax=len*height[sindex];
+			max=Math.max(max, newMax);
+		}
+		return max;
+	}
 
+	
+	@Test
+	public void testFind(){
+		
+		int[] input={1,2,3,4,5,6};
+		//bar 4 with 3 four area
+		assertEquals(12, find(input));
+		
+		int[] input1={2,3,2,4};
+		//2*4=8
+		assertEquals(8, find(input1));
+		
+		int[] input2={1,3,2,4};
+		//2*3=6
+		assertEquals(6, find(input2));
+		
+		int[] input3={2,3,4, 1,1,4,1};
+		//1*7=7
+		assertEquals(7, find(input3));
+		
+		int[] input4={2,2,1,1,1};
+		//1*7=7
+		assertEquals(5, find(input4));
+		
+		//2*4=8
+		assertEquals(8, find(new int[]{1,1,3,3,2,2}));
+	}
+	@Test
+	public void testWebsite(){
+		
+		int[] input={1,2,3,4,5,6};
+		//bar 4 with 3 four area
+		assertEquals(12, largestRectangleArea(input));
+		
+		int[] input1={2,3,2,4};
+		//2*4=8
+		assertEquals(8, largestRectangleArea(input1));
+		
+		int[] input2={1,3,2,4};
+		//2*3=6
+		assertEquals(6, largestRectangleArea(input2));
+		
+		int[] input3={2,3,4, 1,1,4,1};
+		//1*7=7
+		assertEquals(7, largestRectangleArea(input3));
+		int[] input4={2,2,1,1,1};
+		//1*7=7
+		assertEquals(5, largestRectangleArea(input4));
+		
+		//2*4=8
+		assertEquals(8, largestRectangleArea(new int[]{1,1,3,3,2,2}));
+	}
+	
+	@Test
+	public void testSelfCopy(){
+		
+		int[] input={1,2,3,4,5,6};
+		//bar 4 with 3 four area
+		assertEquals(12, largestRectangleArea1(input));
+		
+		int[] input1={2,3,2,4};
+		//2*4=8
+		assertEquals(8, largestRectangleArea1(input1));
+		
+		int[] input2={1,3,2,4};
+		//2*3=6
+		assertEquals(6, largestRectangleArea1(input2));
+		
+		int[] input3={2,3,4, 1,1,4,1};
+		//1*7=7
+		assertEquals(7, largestRectangleArea1(input3));
+		int[] input4={2,2,1,1,1};
+		//1*7=7
+		assertEquals(5, largestRectangleArea1(input4));
+		
+		//2*4=8
+		assertEquals(8, largestRectangleArea1(new int[]{1,1,3,3,2,2}));
+	}
+	
+	
 }
