@@ -2,8 +2,14 @@ Compare o1 knapsack problem with all-pair shotest path problem
 
 TODO: range minimum query
 
+use stack for DFS in graph
+	https://www.topcoder.com/community/data-science/data-science-tutorials/introduction-to-graphs-and-their-data-structures-section-2/
+
 
 review: 
+	http://www.programcreek.com/2014/06/leetcode-trapping-rain-water-java/
+	http://www.programcreek.com/2014/05/leetcode-add-and-search-word-data-structure-design-java/
+	contains duplicate III: http://www.programcreek.com/2014/06/leetcode-contains-duplicate-iii-java/
 	iterative post order tree traversal
 	build binary heap
 	array containing duplicates: http://www.programcreek.com/2014/06/leetcode-contains-duplicate-iii-java/
@@ -11,6 +17,7 @@ review:
 	zero matrix: http://www.programcreek.com/2012/12/leetcode-set-matrix-zeroes-java/
 	  http://www.programcreek.com/2014/03/leetcode-maximum-gap-java/
     http://www.programcreek.com/2014/06/leetcode-sort-colors-java/
+    	http://www.programcreek.com/2014/04/leetcode-palindrome-partitioning-ii-java/
 
 issue:
 	http://www.programcreek.com/2014/06/leetcode-trapping-rain-water-java/

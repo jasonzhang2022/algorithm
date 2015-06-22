@@ -7,6 +7,9 @@ import org.junit.Test;
 //http://www.programcreek.com/2014/02/leetcode-best-time-to-buy-and-sell-stock-iii-java/
 /*
  * Solution in internet is good, too.
+ * 
+ * 
+ * This solution may be wrong
  */
 public class BuyAndSellStock2 {
 	
@@ -110,7 +113,7 @@ public class BuyAndSellStock2 {
 		//how much profit reduced bty merge first and second.
 		int delta1=profits[0].getProfit()+profits[1].getProfit()-left.getProfit();
 		
-		int delta2=profits[1].getProfit()+profits[2].getProfit()-left.getProfit();
+		int delta2=profits[1].getProfit()+profits[2].getProfit()-right.getProfit();
 		if (delta1<delta2){
 			//we have less benefit reduced, we should merge left;
 			profits[1]=profits[2];
