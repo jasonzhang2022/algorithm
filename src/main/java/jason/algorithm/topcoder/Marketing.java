@@ -12,7 +12,7 @@ import org.junit.Test;
  * 
  * Then think: 
  * 1)how is the edge defined. This decides how we can traverse from one vertex to another vertex.
- * 	Is this a direct graph or undirected graph? This grapp is undirected. So for each edge specification
+ * 	Is this a direct graph or undirected graph? This graph is undirected. So for each edge specification
  * we specifies two edges.
  * 
  * on the other hand, course schedule(see below) is directed graph
@@ -21,6 +21,7 @@ import org.junit.Test;
  * b) 1: in group one.
  * c) 2) in another group
  * 
+ * The mark has to be global so it can be referenced in any state at multiple points
  * 
  * 
  * 

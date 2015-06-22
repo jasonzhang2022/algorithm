@@ -7,9 +7,16 @@ import java.util.Stack;
 
 import org.junit.Test;
 
+//http://community.topcoder.com/stat?c=problem_statement&pm=1593&rd=4494
+/*
+ * This graph structure is very similar to family tree structure
+ * 1. acyclic graph
+ * 2. One node could have multiple parents. (in family tree, one node can only have two parents:
+ * father and mother)
+ * 
+ */
 public class Circuits {
 
-	
 	public static int longest(String[] connectsStr, String[] costsStr){
 		int N=connectsStr.length;
 		int[][] costs=new int[N][N];
@@ -24,8 +31,7 @@ public class Circuits {
 				int cost=Integer.parseInt(weights[j]);
 				costs[r][toVertex]=cost;
 			}
-		}
-		
+		}		
 		//maxResult[i] is the max result from i to all possible nodes.
 		int[] maxResult=new int[N];
 		Arrays.fill(maxResult, -1);
