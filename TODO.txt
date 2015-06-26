@@ -4,6 +4,27 @@ TODO: range minimum query
 
 use stack for DFS in graph
 	https://www.topcoder.com/community/data-science/data-science-tutorials/introduction-to-graphs-and-their-data-structures-section-2/
+	
+	
+http://www.programcreek.com/2014/04/leetcode-palindrome-partitioning-ii-java/
+	
+	Most of one-dimensional DP, we are keep the a local value for a subproblem. When subproblem grows, we have the 
+	local value or global value for next big problem. Here we actively see the optimal value for f(i) from sub problem
+	most likely f(i-1).
+	
+	But the minimum cut for palindrome partition is different in that
+		When we detect a palindrome String[j...i], we update the the minimum cut for f(i). So we are update solution for 
+		big problem when sub problem is tackled. 
+		We don't know whether we have optimal solution until all cases are tackled.
+		
+		
+	Edit distance:
+		The last case(i, j) has several possible sub case instead of one. 
+		
+		
+	 
+		
+	
 
 
 review: 
