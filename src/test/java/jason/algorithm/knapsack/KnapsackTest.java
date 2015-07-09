@@ -332,6 +332,7 @@ public class KnapsackTest {
 
 	
 		int maxValue=0;
+		
 		// no value.
 		maxValue = UnboudedKnapsack.max(values, weights,4);
 		assertThat(maxValue, equalTo(0));
@@ -373,6 +374,59 @@ public class KnapsackTest {
 
 		// three choice
 		maxValue = UnboudedKnapsack.max(values, weights,23);
+		assertThat(maxValue, equalTo(14));
+	}
+
+	
+	@Test
+	public void testUndoundedForward() {
+
+		int[] values={3, 8,7};
+		int[] weights={5, 13, 12};
+
+	
+		int maxValue=0;
+		// no value.
+		maxValue = UnboundedKnapsackForward.max(values, weights,4);
+		assertThat(maxValue, equalTo(0));
+
+		// just one value
+		maxValue = UnboundedKnapsackForward.max(values, weights,5);
+		assertThat(maxValue, equalTo(3));
+
+		// no exact value
+		maxValue = UnboundedKnapsackForward.max(values, weights,6);
+		assertThat(maxValue, equalTo(3));
+
+		// two value, item1, item1,
+		maxValue = UnboundedKnapsackForward.max(values, weights,10);
+		assertThat(maxValue, equalTo(6));
+		// multiple items, weight is in the middle.
+		maxValue = UnboundedKnapsackForward.max(values, weights,11);
+		assertThat(maxValue, equalTo(6));
+
+		// two choice
+		maxValue = UnboundedKnapsackForward.max(values, weights,12);
+		assertThat(maxValue, equalTo(7));
+
+		// three choice
+		maxValue = UnboundedKnapsackForward.max(values, weights,13);
+		assertThat(maxValue, equalTo(8));
+
+		// three choices, in the middle
+		maxValue = UnboundedKnapsackForward.max(values, weights,14);
+		assertThat(maxValue, equalTo(8));
+
+		// three choice
+		maxValue = UnboundedKnapsackForward.max(values, weights,15);
+		assertThat(maxValue,equalTo(9));
+
+		// three choice
+		maxValue = UnboundedKnapsackForward.max(values, weights,22);
+		assertThat(maxValue, equalTo(13));
+
+		// three choice
+		maxValue = UnboundedKnapsackForward.max(values, weights,23);
 		assertThat(maxValue, equalTo(14));
 	}
 

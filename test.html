@@ -28,6 +28,17 @@
 		<div id="mydiv1">First</div>
 		<div id="mydiv2">Second</div>
 	</div>
+	<script type="text/javascript">
+		function testScope(){
+			
+			for (var i=0; i<5; i++){
+				console.log(i);
+			}
+			console.log(i);
+			
+		}
+		testScope();
 	
+	</script>
 </body>
 </html>
