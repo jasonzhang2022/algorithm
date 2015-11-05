@@ -1,6 +1,11 @@
 package jason.algorithm.combinatoric;
 
+import static org.junit.Assert.assertEquals;
+
+
 import java.util.function.Consumer;
+
+import org.junit.Test;
 /**
  * The algorithm is very similar to 0/1 knapsack.
  * @author jason
@@ -43,11 +48,35 @@ public class Combination {
 		subCombination(n, k-1, result, resultOffset+1, nOffset+1, consumer);
 		//result[resultOffset]=-1;
 		
-		//all element withouyt nOffset
+		//all element without nOffset
 		subCombination(n, k, result, resultOffset, nOffset+1, consumer);
 		
 		
 	}
 	
+	public static class Count {
+		int count;
+	}
+	
+	@Test
+	public void TestCombination(){
+		String input="ABCDEFGH";
+		int n=input.length();
+		int k=3;
+		
+		int expectedCombination=n*(n-1)*(n-2)/3/2;
+		Count c=new Count();
+		
+		Consumer<int[]> consumer= a->{
+			for (int index: a){
+				System.out.print(input.charAt(index));
+			}
+			System.out.print("\n");
+			c.count++;
+		};
+		
+		Combination.combination(n, k, consumer);
+		assertEquals(expectedCombination, c.count);
+	}
 
 }
