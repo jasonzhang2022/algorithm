@@ -182,6 +182,8 @@ public class SuffixTree1 {
 				//the edge exists, we need to walk down.
 				SuffixTreeNode edge=activeNode.children[text[activeEdge]];
 				if (walkDown(edge)){
+					//we didn't change the remainingSUffixCount,
+					//in next loop, we will have the new activeEdge
 					continue;
 				}
 				
