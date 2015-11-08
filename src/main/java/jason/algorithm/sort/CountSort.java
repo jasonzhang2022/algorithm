@@ -1,80 +1,143 @@
 package jason.algorithm.sort;
 
+import static org.junit.Assert.assertTrue;
+import jason.algorithm.Swaper;
+
 import java.util.Arrays;
-import java.util.function.Function;
-import java.util.function.IntFunction;
-import java.util.function.Supplier;
+import java.util.Random;
+
+import org.junit.Test;
 
 
 /**
- * Both sorting method work. But the first methid is more versatile.
- * First method takes an range. This may lead to reduced count[] array size.
- * But second method can be modified to use the same min/max.
- * 
- * The important feature about the first method is that.
- * 1. it is stable. 
- * 2. it can accept an object as array element and a function to extract an integer key from object. 
- * This is powerful concept. In reality, we sort may different things. But all sortings could be reduce a 
- * primitive key such as integre or string. 
- * 
+ * Assumption: range is small. 
  * @author jason
  *
  */
-public class CountSort {
+public class CountSort extends TestSetup{
 
 	
-	public static int[] countSort(int[] input, int min, int max) {
-		int[] counts=new int[max-min+2];
-		for (int value: input) {
-			counts[value-min+1]++;
-		}
-		for (int i=1; i<(max-min+2);i++) {
-			counts[i]=counts[i]+counts[i-1];
-		}
-		int[] results=new int[input.length];
-		
-		
-		
-		/**
-		 * If the input is an object with a integer key
-		 * we could swap the object to correct position.
-		 * Each time, we leave an object in a correct position.
-		 * 
-		 * The swap approach is not stable. Can not be used as radix sort sub algorithm.
-		 * 
-		 */
-		for (int value: input) {
-			results[counts[value-min]]=value;
+	
+	public static int[] stable(int[] input, int min, int max){
+		int[] counts=new int[max-min+1];
+		Arrays.fill(counts, 0);
+		//step 1 counts.
+		for(int value: input){
 			counts[value-min]=counts[value-min]+1;
 		}
-		return results;
 		
+		//step2 calculate the starting index for each value
+		int nextStartingIndex=0;
+		int prevCount=0;
+		for (int i=0; i<max-min+1; i++){
+			prevCount=counts[i];
+			counts[i]=nextStartingIndex;
+			nextStartingIndex=nextStartingIndex+prevCount;
+		}
+		
+		
+		int[] results=new int[input.length];
+		for (int i=0; i<input.length; i++){
+			int value=input[i];
+			int index=counts[value-min];
+			results[index]=value;
+			counts[value-min]=counts[value-min]+1; //increase index by one, since we add the value
+		}
+		return results;
 	}
 	
-	
-	
-	
-	
-	
-	
-	/**
-	 * Assum the value in input is less than 100(0-99)
-	 * @param input
-	 * @return
-	 */
-	public static final int[] sort(int[] input){
-		int[] count=new int[100];
-		//linear
-		for (int i=0; i<input.length; i++) {
-			count[input[i]]=count[input[i]]+1;
+	public static int[] notStableInPlace(int[] input, int min, int max){
+		int[] counts=new int[max-min+1];
+		Arrays.fill(counts, 0);
+		//step 1 counts.
+		for(int value: input){
+			counts[value-min]=counts[value-min]+1;
 		}
-		int outputIndex=0;
-		for (int i=0; i<100; i++){
-			for (int j=0; j<count[i]; j++){
-				input[outputIndex++]=i;
+		
+		//step2 calculate the starting index for each value
+		int nextStartingIndex=0;
+		int prevCount=0;
+		for (int i=0; i<max-min+1; i++){
+			prevCount=counts[i];
+			counts[i]=nextStartingIndex;
+			nextStartingIndex=nextStartingIndex+prevCount;
+		}
+		
+		int[] endIndices=Arrays.copyOf(counts, counts.length);
+		
+		//--------------the difference is here.
+		int i=0;
+		while (i<input.length){
+			int value=input[i];
+			int startIndex=counts[value-min];
+			int endIndex=endIndices[value-min];
+			if (i>=startIndex && i<=endIndex){
+				i++; //value is in correct position
+				continue;
 			}
+			//we put value in correct position, 
+			//we swap value at endIndex to current position.
+			//This is not stable since value at endIndex may not be the first value of its kind.
+			//once we pass i, we never touch it again,
+			//So endIndex >i;
+			Swaper.swap(input, i, endIndex);
+			endIndices[value-min]=endIndices[value-min]+1;
+			
+			
 		}
 		return input;
+	}
+	
+	
+	
+	@Test
+	public void test() {
+		
+		Random rand=new Random();
+		inputLen=200;
+		input=new int[inputLen];
+		for (int i=0; i<inputLen; i++) {
+			//value >=50, <150
+			input[i]=rand.nextInt(100)+50;
+		}
+		
+		int[] results=stable(input, 50, 149);
+		for(int i=1; i<results.length; i++){
+			assertTrue(results[i]>=results[i-1]);
+		}
+		
+		results=notStableInPlace(input, 50, 149);
+		for(int i=1; i<results.length; i++){
+			assertTrue(results[i]>=results[i-1]);
+		}
+	
 		
 	}
+	
+	
+
+	@Test
+	public void testBig() {
+		
+		Random rand=new Random();
+		inputLen=1000;
+		input=new int[inputLen];
+		for (int i=0; i<inputLen; i++) {
+			//value >=50, <150
+			input[i]=rand.nextInt(100)+50;
+		}
+		
+		int[] results=stable(input, 50, 149);
+		for(int i=1; i<results.length; i++){
+			assertTrue(results[i]>=results[i-1]);
+		}
+		
+		results=notStableInPlace(input, 50, 149);
+		for(int i=1; i<results.length; i++){
+			assertTrue(results[i]>=results[i-1]);
+		}
+	
+		
+	}
+	
 }

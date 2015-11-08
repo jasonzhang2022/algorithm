@@ -1,5 +1,8 @@
 package jason.algorithm.sort;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -7,7 +10,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 
-public class ParallelMergeSort {
+import org.junit.Test;
+
+public class ParallelMergeSort extends TestSetup {
 	public static int[] sort(int[] input) {
 		ForkJoinPool mainPool = new ForkJoinPool();
 		int[] output=new int[input.length];
@@ -92,6 +97,21 @@ public class ParallelMergeSort {
 				return;
 			}
 			MergeSort.mergeSegment(input, startIndex, middle, endIndex, output);
+		}
+		
+	}
+	
+	
+
+	
+	@Test
+	public void testParallelMergeSort() {
+		long start=System.currentTimeMillis();
+		int[] output=ParallelMergeSort.sort(input);
+		long end=System.currentTimeMillis();
+		System.out.println("\nParallel Merge Sort time :"+(end-start));
+		for (int i=0; i<inputLen; i++) {
+			assertThat(output[i], equalTo(i));
 		}
 		
 	}

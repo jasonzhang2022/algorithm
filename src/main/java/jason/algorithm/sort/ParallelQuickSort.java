@@ -1,9 +1,14 @@
 package jason.algorithm.sort;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 
-public class ParallelQuickSort {
+import org.junit.Test;
+
+public class ParallelQuickSort extends TestSetup {
 	public static int[] sort(int[] input) {
 		ForkJoinPool mainPool = new ForkJoinPool();
 		mainPool.invoke(new QuickSortAction(input, 0, input.length-1));
@@ -97,4 +102,19 @@ public class ParallelQuickSort {
 			
 		}
 	}
+	
+	
+
+	@Test
+	public void testParallelQuickSort() {
+		long start=System.currentTimeMillis();
+		int[] output=ParallelQuickSort.sort(input);
+		long end=System.currentTimeMillis();
+		System.out.println("\nParallel Quick Sort time :"+(end-start));
+		for (int i=0; i<inputLen; i++) {
+			assertThat(output[i], equalTo(i));
+		}
+		
+	}
+	
 }

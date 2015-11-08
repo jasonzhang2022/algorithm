@@ -1,8 +1,13 @@
 package jason.algorithm.sort;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
+import org.junit.Test;
+
 import jason.algorithm.Swaper;
 
-public class RadixSort_MSD_partition {
+public class RadixSort_MSD_partition extends TestSetup {
 
 	
 	public static int[] sort(int[] input){
@@ -46,5 +51,18 @@ public class RadixSort_MSD_partition {
 	public static boolean isBitSet(int i, int digit){
 		int x=1<<digit;
 		return (i&x)==0?false:true;
+	}
+	
+
+	
+	@Test
+	public void testMSD() {
+		long start=System.currentTimeMillis();
+		int[] output=RadixSort_MSD_partition.sort(input);
+		long end=System.currentTimeMillis();
+		System.out.println("\nMSD Sort time :"+(end-start));
+		for (int i=0; i<inputLen; i++) {
+			assertThat(output[i], equalTo(i));
+		}
 	}
 }

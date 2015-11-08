@@ -1,8 +1,14 @@
 package jason.algorithm.sort;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
+import org.junit.Test;
+
+import jason.algorithm.Shuffler;
 import jason.algorithm.Swaper;
 
-public class SelectionSort {
+public class SelectionSort extends TestSetup{
 
 	public static int[] sort(int[] input) {
 		
@@ -31,5 +37,23 @@ public class SelectionSort {
 			}
 		}
 		return minIndex;
+	}
+	
+	
+	
+
+	@Test
+	public void testSelectionSort() {
+		inputLen=100;
+		input=new int[inputLen];
+		for (int i=0; i<inputLen; i++) {
+			input[i]=i;
+		}
+		Shuffler.shuffle(input);
+		int[] output=SelectionSort.sort(input);
+		for (int i=0; i<inputLen; i++) {
+			assertThat(output[i], equalTo(i));
+		}
+		
 	}
 }

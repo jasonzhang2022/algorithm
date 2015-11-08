@@ -1,10 +1,14 @@
 package jason.algorithm.select;
 
 import static jason.algorithm.Swaper.swap;
+import static org.junit.Assert.assertTrue;
+import jason.algorithm.Shuffler;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
+
+import org.junit.Test;
 public class MedianOfMedians {
 
 	public static int median(int[] input) {
@@ -46,5 +50,20 @@ public class MedianOfMedians {
 		return median(input, start, endIndex, random);
 	}
 	
+	@Test
+	public void testMedianOfMedian() {
+		int[] input=new int[100];
+		for (int i=0; i<input.length; i++) {
+			input[i]=i;
+		}
+		
+		for (int i=0; i<100; i++) {
+			Shuffler.shuffle(input);
+			int median=MedianOfMedians.median(input);
+			//System.out.println(median);
+			assertTrue(median>=30 && median<=70);
+		}
+		
+	}
 
 }

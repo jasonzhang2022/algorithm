@@ -1,7 +1,12 @@
 package jason.algorithm.sort;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
-public class MergeSort {
+import org.junit.Test;
+
+
+public class MergeSort extends TestSetup{
 	
 	public static int[] sort(int[] input) {
 		
@@ -68,6 +73,19 @@ public class MergeSort {
 		}
 		while (second<=end) {
 			output[outputIndex++]=input[second++];
+		}
+		
+	}
+	
+
+	@Test
+	public void testMergeSort() {
+		long start=System.currentTimeMillis();
+		int[] output=MergeSort.sort(input);
+		long end=System.currentTimeMillis();
+		System.out.println("\nMerge Sort time :"+(end-start));
+		for (int i=0; i<inputLen; i++) {
+			assertThat(output[i], equalTo(i));
 		}
 		
 	}

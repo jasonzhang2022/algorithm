@@ -1,9 +1,14 @@
 package jason.algorithm.sort;
 
 import static jason.algorithm.Swaper.swap;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+import jason.algorithm.Shuffler;
 
 import java.util.Date;
 import java.util.Random;
+
+import org.junit.Test;
 /**
  * The idea is this:
  * When do partition, 
@@ -22,7 +27,7 @@ import java.util.Random;
  * @author jason
  *
  */
-public class QuickSort {
+public class QuickSort extends TestSetup{
 	public static int[] sort(int[] input) {
 		Random random = new Random(new Date().getTime());
 		sort(input, 0, input.length - 1, random);
@@ -91,5 +96,23 @@ public class QuickSort {
 
 		sort(input, startIndex, pivotalPosition - 1, random);
 		sort(input, pivotalPosition + 1, endIndex, random);
+	}
+	
+	
+
+	@Test
+	public void testQuickSort() {
+		
+		for (int j=0; j<20; j++) {
+			Shuffler.shuffle(input);
+			long start=System.currentTimeMillis();
+			int[] output=QuickSort.sort(input);
+			long end=System.currentTimeMillis();
+			System.out.println("\nQuick Sort time :"+(end-start));
+			for (int i=0; i<inputLen; i++) {
+				assertThat(output[i], equalTo(i));
+			}
+		}
+		
 	}
 }
