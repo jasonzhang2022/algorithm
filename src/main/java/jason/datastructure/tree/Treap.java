@@ -45,10 +45,10 @@ public class Treap<T> {
 			return;
 		}
 		if (key.compareTo(parent.key)<0){
-			parent.leftChild=node;
+			parent.left=node;
 			node.parent=parent;
 		}	else {
-			parent.rightChild=node;
+			parent.right=node;
 			node.parent=parent;
 		}
 	
@@ -79,7 +79,7 @@ public class Treap<T> {
 		//we use max heap
 		while (node.parent!=null && node.priority>((Node<T>)node.parent).priority){
 			//Node should be parent;
-			if (node==node.parent.leftChild){
+			if (node==node.parent.left){
 				node.parent.rotateRight();
 			} else {
 				node.parent.rotateLeft();
@@ -104,25 +104,25 @@ public class Treap<T> {
 		 * Can not use the predecessor or successor approach since
 		 * we could not balance the tree in that approach.
 		 */
-		while (targetNode.leftChild!=null || targetNode.rightChild!=null){
-			if (targetNode.leftChild!=null && targetNode.rightChild!=null){
-				if (((Node<T>)targetNode.leftChild).priority>((Node<T>)targetNode.rightChild).priority){
+		while (targetNode.left!=null || targetNode.right!=null){
+			if (targetNode.left!=null && targetNode.right!=null){
+				if (((Node<T>)targetNode.left).priority>((Node<T>)targetNode.right).priority){
 					targetNode.rotateRight();
 				} else{
 					targetNode.rotateLeft();
 				}
-			} else if (targetNode.leftChild!=null){
+			} else if (targetNode.left!=null){
 				targetNode.rotateRight();
 			} else{
 				targetNode.rotateLeft();
 			}
 		}
 		
-		if (targetNode.parent.leftChild==targetNode){
-			targetNode.parent.leftChild=null;
+		if (targetNode.parent.left==targetNode){
+			targetNode.parent.left=null;
 			targetNode.parent=null;
 		} else {
-			targetNode.parent.rightChild=null;
+			targetNode.parent.right=null;
 			targetNode.parent=null;
 		}
 		return;

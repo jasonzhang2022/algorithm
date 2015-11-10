@@ -62,13 +62,13 @@ public class TreapTest {
 	}
 	
 	public <T> void assertPriority(Node<T> root){
-		if (root.leftChild!=null){
-			assertTrue(((Node<T>)root.leftChild).priority<=root.priority);
-			assertPriority((Node<T>) root.leftChild);
+		if (root.left!=null){
+			assertTrue(((Node<T>)root.left).priority<=root.priority);
+			assertPriority((Node<T>) root.left);
 		}
-		if (root.rightChild!=null){
-			assertTrue(((Node<T>)root.rightChild).priority<=root.priority);
-			assertPriority((Node<T>) root.rightChild);
+		if (root.right!=null){
+			assertTrue(((Node<T>)root.right).priority<=root.priority);
+			assertPriority((Node<T>) root.right);
 		}
 	}
 	

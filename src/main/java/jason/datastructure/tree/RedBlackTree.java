@@ -51,10 +51,10 @@ public class RedBlackTree<T> {
 			}
 			if (cmp<0){
 				newNode.parent=node;
-				node.leftChild=newNode;
+				node.left=newNode;
 			} else {
 				newNode.parent=node;
-				node.rightChild=newNode;
+				node.right=newNode;
 			}
 		}
 		return newNode;
@@ -85,10 +85,10 @@ public class RedBlackTree<T> {
 		}
 		
 		
-		if (P == G.leftChild && N == P.rightChild) {
+		if (P == G.left && N == P.right) {
 			P.rotateLeft();
 			N = P;
-		} else if (P == G.rightChild && N == P.leftChild) {
+		} else if (P == G.right && N == P.left) {
 			P.rotateRight();
 			N = P;
 		}
@@ -99,7 +99,7 @@ public class RedBlackTree<T> {
 		/**
 		 * N is on the same side with P.
 		 */
-		if (N==P.leftChild){
+		if (N==P.left){
 			G.rotateRight();
 		} else {
 			G.rotateLeft();
@@ -131,7 +131,7 @@ public class RedBlackTree<T> {
 		}
 		
 		//internal node. switch it to predecessor
-		if (N.leftChild!=null && N.rightChild!=null){
+		if (N.left!=null && N.right!=null){
 			Node<T> predecessor=_searchPredecessor(N);
 		
 			N.key=predecessor.key;
@@ -147,10 +147,10 @@ public class RedBlackTree<T> {
 		//-------------N is leaf node with maximal one leaf.
 		if (N.isRed()){
 			//it can not has children.
-			if (N.parent.leftChild==N){
-				N.parent.leftChild=null;
+			if (N.parent.left==N){
+				N.parent.left=null;
 			} else {
-				N.parent.rightChild=null;
+				N.parent.right=null;
 			}
 			N.parent=null;
 			return;
@@ -160,20 +160,20 @@ public class RedBlackTree<T> {
 		
 		//-----------------N is black right now.
 		//N can have red child
-		if (N.leftChild!=null){
+		if (N.left!=null){
 			//replace left child with key
-			N.key=N.leftChild.key;
-			N.value=N.leftChild.value;
+			N.key=N.left.key;
+			N.value=N.left.value;
 			
-			N.leftChild.parent=null;
-			N.leftChild=null;
+			N.left.parent=null;
+			N.left=null;
 			return ;
-		} else if (N.rightChild!=null){
-			N.key=N.rightChild.key;
-			N.value=N.rightChild.value;
+		} else if (N.right!=null){
+			N.key=N.right.key;
+			N.value=N.right.value;
 			
-			N.rightChild.parent=null;
-			N.rightChild=null;
+			N.right.parent=null;
+			N.right=null;
 			return;
 		}
 		
@@ -181,10 +181,10 @@ public class RedBlackTree<T> {
 		_addOneBlackToSubtree(N);
 		//remove N
 		if (N.parent!=null){
-			if (N.parent.leftChild==N){
-				N.parent.leftChild=null;
+			if (N.parent.left==N){
+				N.parent.left=null;
 			} else {
-				N.parent.rightChild=null;
+				N.parent.right=null;
 			}
 			N.parent=null;
 		} else {
@@ -220,7 +220,7 @@ public class RedBlackTree<T> {
 			sibling.setBlack();
 			((Node<T>)root.parent).setRed();
 			//the parent has to be black. its children have to be black
-			if (sibling==root.parent.rightChild){
+			if (sibling==root.parent.right){
 				root.parent.rotateRight();
 			} else {
 				root.parent.rotateLeft();
@@ -236,7 +236,7 @@ public class RedBlackTree<T> {
 		// The above code turns red sibling into black sibling. 
 		//N still miss one black node in  path.
 		sibling=(Node<T>) root.getSibling(); //sibling is changed.
-		if (isBlack((Node<T>) sibling.leftChild) && isBlack((Node<T>) sibling.rightChild)){
+		if (isBlack((Node<T>) sibling.left) && isBlack((Node<T>) sibling.right)){
 			if (isBlack((Node<T>) root.parent)){	
 				sibling.setRed();
 				//both branches under root.parent missing a black node since we convert one
@@ -250,16 +250,16 @@ public class RedBlackTree<T> {
 		}
 		
 		//-----------s is black, and has red children
-		if (root==root.parent.leftChild){
-			if (isRed(sibling.leftChild) && isBlack(sibling.rightChild)){
+		if (root==root.parent.left){
+			if (isRed(sibling.left) && isBlack(sibling.right)){
 				sibling.setRed();
-				((Node<T>)sibling.leftChild).setBlack();
+				((Node<T>)sibling.left).setBlack();
 				sibling.rotateRight();
 			}
 		} else {
-			if (isRed(sibling.rightChild) && isBlack(sibling.leftChild)){
+			if (isRed(sibling.right) && isBlack(sibling.left)){
 				sibling.setRed();
-				((Node<T>)sibling.rightChild).setBlack();
+				((Node<T>)sibling.right).setBlack();
 				sibling.rotateLeft();
 			}
 		}
@@ -274,12 +274,12 @@ public class RedBlackTree<T> {
 		} else {
 			sibling.setBlack();
 		}
-		if (root==root.parent.leftChild){
-			((Node<T>)sibling.rightChild).setBlack();
+		if (root==root.parent.left){
+			((Node<T>)sibling.right).setBlack();
 			root.parent.rotateLeft();
 			
 		} else {
-			((Node<T>)sibling.leftChild).setBlack();
+			((Node<T>)sibling.left).setBlack();
 			root.parent.rotateRight();
 		}
 		/*
