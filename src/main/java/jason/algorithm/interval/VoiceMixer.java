@@ -2,7 +2,6 @@ package jason.algorithm.interval;
 
 import static org.junit.Assert.*;
 import jason.algorithm.interval.VoiceMixer1.Speaker;
-import jason.algorithm.interval.VoiceMixer1.VolumeInterval;
 
 import java.util.*;
 
@@ -26,11 +25,42 @@ public class VoiceMixer {
 		int start;
 		int end;
 		int volume;
+		public Volume(int start,  int volume) {
+			super();
+			this.start = start;
+			this.volume = volume;
+		}
 		public Volume(int start, int end, int volume) {
 			super();
 			this.start = start;
 			this.end = end;
 			this.volume = volume;
+		}
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + end;
+			result = prime * result + start;
+			result = prime * result + volume;
+			return result;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Volume other = (Volume) obj;
+			if (end != other.end)
+				return false;
+			if (start != other.start)
+				return false;
+			if (volume != other.volume)
+				return false;
+			return true;
 		}
 		
 	}
@@ -39,7 +69,33 @@ public class VoiceMixer {
 		Volume volume;
 		Boolean start=true;
 		
-		Iterator<Volume> myIter;
+		int index;
+		ArrayList<Volume> speaker;
+		
+		public int getPoint(){
+			return start?volume.start:volume.end;
+		}
+		
+		public boolean hasNext(){
+			return index+1<speaker.size();
+		}
+		
+		public VolumePoint getNextStart(){
+			VolumePoint vp=new VolumePoint();
+			vp.start=true;
+			vp.index=index+1;
+			vp.volume=speaker.get(index+1);
+			vp.speaker=speaker;
+			return vp;
+		}
+		public VolumePoint getNextEnd(){
+			VolumePoint vp=new VolumePoint();
+			vp.start=false;
+			vp.index=index+1;
+			vp.volume=speaker.get(index+1);
+			vp.speaker=speaker;
+			return vp;
+		}
 		
 	}
 
@@ -81,7 +137,9 @@ public class VoiceMixer {
 	public static ArrayList<ResultPoint> calculateMaxVolume(ArrayList<ArrayList<Volume>> speakers){
 		
 	
-		
+		/*
+		 * This priority queue holds the next time point to be considered from one list
+		 */
 		PriorityQueue<VolumePoint> frontVolumes=new PriorityQueue<>((v1, v2)->{
 			int value1=v1.start?v1.volume.start:v1.volume.end;
 			int value2=v2.start?v2.volume.start:v2.volume.end;
@@ -89,33 +147,34 @@ public class VoiceMixer {
 		});
 		
 		//descending order
+		/*
+		 * The max volume in current live volumes. 
+		 * live volume the volumes which are effective.
+		 */
 		PriorityQueue<Volume> maxVolumes=new PriorityQueue<>((v1, v2)->{
 			return -(v1.volume-v2.volume);
 		});
 		
-		int[] nextIndex=new int[speakers.size()];
-		Arrays.fill(nextIndex, 1);
-		
-		
-		
+		//initialize frontVolumes.
 		for (int i=0; i<speakers.size(); i++){
 			ArrayList<Volume> oneSpeaker=speakers.get(i);
 			if (oneSpeaker.isEmpty()){
 				continue;
 			}
 			
-			Iterator<Volume> myIter=oneSpeaker.iterator();
-			Volume v=myIter.next();
+			Volume v=oneSpeaker.get(0);
 			VolumePoint startPoint=new VolumePoint();
-			startPoint.myIter=myIter;
+			startPoint.index=0;
 			startPoint.volume=v;
 			startPoint.start=true;
+			startPoint.speaker=oneSpeaker;
 			
 			
 			VolumePoint endPoint=new VolumePoint();
-			endPoint.myIter=myIter;
+			endPoint.index=0;
 			endPoint.volume=v;
 			endPoint.start=false;
+			endPoint.speaker=oneSpeaker;
 		
 			
 			frontVolumes.offer(startPoint);
@@ -123,156 +182,165 @@ public class VoiceMixer {
 			
 		}
 		
-		Volume maxVolume=null;
+		
 		ArrayList<ResultPoint> results=new ArrayList<>();
 		results.add(new ResultPoint(0, 0)); //start at 0 with volume 0.
-		
-		//TODO need to process multiple equal points
+		ResultPoint prevPoint=results.get(0);
 		while (!frontVolumes.isEmpty()){
-			VolumePoint vp=frontVolumes.poll();
-			Volume preMaxVolume=maxVolume;
-			if (vp.start){
-				maxVolumes.offer(vp.volume);
-				maxVolume=maxVolumes.peek();
-				
-				//at this point, switch to volume.
-				if (preMaxVolume==null || preMaxVolume.volume!=maxVolume.volume){
-					 addResultPoint(results,new ResultPoint(vp.volume.start, vp.volume.volume));
+			
+			//vp is th smallest point we need to process
+			//it is the scan point for live volume.
+			VolumePoint vp=frontVolumes.peek();
+			
+			//process all volume point that has a position at vp.getPoint()
+			while (!frontVolumes.isEmpty()){
+				VolumePoint next=frontVolumes.peek();
+				if (next.getPoint()!=vp.getPoint()){
+					break;
 				}
-				
-				
-			}  else {
-				maxVolumes.remove(vp.volume);
-				//add the next volume in the sequence
-				if (vp.myIter.hasNext()){
-					Iterator<Volume> myIter=vp.myIter;
-					Volume v=myIter.next();
-					VolumePoint startPoint=new VolumePoint();
-					startPoint.myIter=myIter;
-					startPoint.volume=v;
-					startPoint.start=true;
-					
-					VolumePoint endPoint=new VolumePoint();
-					endPoint.myIter=myIter;
-					endPoint.volume=v;
-					endPoint.start=false;
-					
-					
-					frontVolumes.offer(startPoint);
-					frontVolumes.offer(endPoint);
-				}
-				maxVolume=maxVolumes.peek();
-				if (maxVolume==null){
-					//no effective volume 
-					//at this point, switch to volume.
-					 addResultPoint(results,new ResultPoint(vp.volume.end, 0));
+				frontVolumes.poll(); //remove;
+				if (next.start){
+					maxVolumes.offer(next.volume);
 				} else{
-					//at this point, switch to volume.
-					if (preMaxVolume==null || preMaxVolume.volume!=maxVolume.volume){
-						//at this point, switch to volume.
-						 addResultPoint(results, new ResultPoint(vp.volume.end, maxVolume.volume));
+					maxVolumes.remove(next.volume);
+					//add this since the next point could start with current end.
+					if (next.hasNext()){
+						frontVolumes.add(next.getNextStart());
+						frontVolumes.add(next.getNextEnd());
 					}
-					
 				}
+			}
+			
+			
+			Volume nextMax=maxVolumes.peek();
+			if (nextMax==null){
+				ResultPoint rp=new ResultPoint(vp.getPoint(), 0); //voice is decreased to zero.
+				results.add(rp);
+				prevPoint=rp;
+				continue;
+			}
+			
+			if (nextMax.volume!=prevPoint.volume){
+				ResultPoint rp=new ResultPoint(vp.getPoint(), nextMax.volume); //voice is decreased to zero.
+				results.add(rp);
+				prevPoint=rp;
 			}
 		}
 		return results;
 		
 	}
 	
-	public static void addResultPoint(ArrayList<ResultPoint> results, ResultPoint rp){
+	public static ArrayList<Volume> resultPointsToVolumes(ArrayList<ResultPoint> rps){
 		
-		if (results.isEmpty()){
-			results.add(rp);
-			return;
+		ArrayList<Volume> results=new ArrayList<>(rps.size());
+		
+		ResultPoint pre=rps.get(0);
+		for(int i=1; i<rps.size(); i++){
+			ResultPoint current=rps.get(i);
+			if (pre.volume==0){
+				//a period of quiet
+			} else {
+				results.add(new Volume(pre.time, current.time, pre.volume));
+			}
+			pre=current;
 		}
-		ResultPoint lastResult=results.get(results.size()-1);
-		if (lastResult.time!=rp.time){
-			results.add(rp);
-			return;
-		}
-		if (rp.volume>lastResult.volume){
-			//multi source produce volume at the same time point. Use the larger one.
-			lastResult.volume=rp.volume;
-		}
-		return;
-		
-	}
-	
-	
-	
-	@Test
-	public void testEqualStart() {
-		ArrayList<Volume> speaker1=new ArrayList<Volume>();
-		speaker1.add(new Volume(3,7,5));
-		
-		ArrayList<Volume> speaker2=new ArrayList<Volume>();
-		speaker2.add(new Volume(3,5,10));
-		
-		ArrayList<ArrayList<Volume>> speakers=new ArrayList<>();
-		speakers.add(speaker1);
-		speakers.add(speaker2);
-		
-		ArrayList<ResultPoint> results=calculateMaxVolume(speakers);
-		
-		assertEquals(4, results.size());
-		assertEquals(results.get(0), new ResultPoint(0, 0));
-		assertEquals(results.get(1), new ResultPoint(3, 10));
-		assertEquals(results.get(2), new ResultPoint(5, 5));
-		assertEquals(results.get(3), new ResultPoint(7, 0));
+		return results;
 	}
 	
 	@Test
-	public void testBoundTransition() {
-		ArrayList<Volume> speaker1=new ArrayList<Volume>();
-		speaker1.add(new Volume(4,5,10));
-		speaker1.add(new Volume(8,10,3));
+	public void testZeroStart() {
+		ArrayList<Volume> s1=VoiceMixer1.initVolumes(new int[]{0,4,5});
 		
-		ArrayList<Volume> speaker2=new ArrayList<Volume>();
-		speaker2.add(new Volume(3,8,7));
+		ArrayList<ArrayList<Volume>> speakers=new ArrayList<ArrayList<Volume>>();
+		speakers.add(s1);
 		
-		ArrayList<ArrayList<Volume>> speakers=new ArrayList<>();
-		speakers.add(speaker1);
-		speakers.add(speaker2);
-		
-		ArrayList<ResultPoint> results=calculateMaxVolume(speakers);
-		
-		assertEquals(6, results.size());
-		assertEquals(results.get(0), new ResultPoint(0, 0));
-		assertEquals(results.get(1), new ResultPoint(3, 7));
-		assertEquals(results.get(2), new ResultPoint(4, 10));
-		assertEquals(results.get(3), new ResultPoint(5, 7));
-		assertEquals(results.get(4), new ResultPoint(8, 3));
-		assertEquals(results.get(5), new ResultPoint(10, 0));
+		List<Volume> results=resultPointsToVolumes(calculateMaxVolume(speakers));
+		ArrayList<Volume> expected=VoiceMixer1.initVolumes(new int[]{0,4,5});
+		for (int i=0; i<expected.size(); i++){
+			assertEquals(expected.get(i), results.get(i));
+		}
 	}
 	
-
+	
+	@Test
+	public void testOneEndPointIsNextStartPoint() {
+		ArrayList<Volume> s1=VoiceMixer1.initVolumes(new int[]{2,4,5, 4, 7, 8});
+		
+		ArrayList<ArrayList<Volume>> speakers=new ArrayList<ArrayList<Volume>>();
+		speakers.add(s1);
+		
+		List<Volume> results=resultPointsToVolumes(calculateMaxVolume(speakers));
+		ArrayList<Volume> expected=VoiceMixer1.initVolumes(new int[]{2,4,5, 4, 7, 8});
+		for (int i=0; i<expected.size(); i++){
+			assertEquals(expected.get(i), results.get(i));
+		}
+	}
+	
+	@Test
+	public void testQuitePeriod() {
+		ArrayList<Volume> s1=VoiceMixer1.initVolumes(new int[]{2,4,5, 5, 7, 8});
+		
+		ArrayList<ArrayList<Volume>> speakers=new ArrayList<ArrayList<Volume>>();
+		speakers.add(s1);
+		
+		List<Volume> results=resultPointsToVolumes(calculateMaxVolume(speakers));
+		ArrayList<Volume> expected=VoiceMixer1.initVolumes(new int[]{2,4,5, 5, 7, 8});
+		for (int i=0; i<expected.size(); i++){
+			assertEquals(expected.get(i), results.get(i));
+		}
+	}
+	
+	
+	@Test
+	public void testLargeVolumeWin() {
+		ArrayList<Volume> s1=VoiceMixer1.initVolumes(new int[]{2,4,5, 4,8,7});
+		ArrayList<Volume> s2=VoiceMixer1.initVolumes(new int[]{3,5,6});
+		
+		ArrayList<ArrayList<Volume>> speakers=new ArrayList<ArrayList<Volume>>();
+		speakers.add(s1);
+		speakers.add(s2);
+		
+		List<Volume> results=resultPointsToVolumes(calculateMaxVolume(speakers));
+		ArrayList<Volume> expected=VoiceMixer1.initVolumes(new int[]{2,3,5, 3,4,6,4,8,7});
+		for (int i=0; i<expected.size(); i++){
+			assertEquals(expected.get(i), results.get(i));
+		}
+	}
+	
 	@Test
 	public void testSimpleOverlap() {
-		ArrayList<Volume> speaker1=new ArrayList<Volume>();
-		speaker1.add(new Volume(2,8,5));
-	
-		ArrayList<Volume> speaker2=new ArrayList<Volume>();
-		speaker2.add(new Volume(3,4,6));
-		speaker2.add(new Volume(5,6,4));
-		speaker2.add(new Volume(7,8,7));
-		speaker2.add(new Volume(9,10,6));
+
+		ArrayList<Volume> s1=VoiceMixer1.initVolumes(new int[]{2, 8, 5});
+		ArrayList<Volume> s2=VoiceMixer1.initVolumes(new int[]{3,4,6, 5,6,4, 7,8,7, 9,10,6});
 		
-		ArrayList<ArrayList<Volume>> speakers=new ArrayList<>();
-		speakers.add(speaker1);
-		speakers.add(speaker2);
+		ArrayList<ArrayList<Volume>> speakers=new ArrayList<ArrayList<Volume>>();
+		speakers.add(s1);
+		speakers.add(s2);
+		List<Volume> results=resultPointsToVolumes(calculateMaxVolume(speakers));
+		List<Volume> expected=VoiceMixer1.initVolumes(new int[]{2,3,5, 3,4,6, 4,7,5, 7,8,7, 9,10,6});
 		
-		ArrayList<ResultPoint> results=calculateMaxVolume(speakers);
+		for (int i=0; i<expected.size(); i++){
+			System.out.printf("[%d, %d, %d]\n", results.get(i).start, results.get(i).end, results.get(i).volume);
+			assertEquals(expected.get(i), results.get(i));
+		}
+	}
+
+	@Test
+	public void testSimpleOverlapQuestion() {
+		ArrayList<Volume> s1=VoiceMixer1.initVolumes(new int[]{2, 5, 10, 6,10,2});
+		ArrayList<Volume> s2=VoiceMixer1.initVolumes(new int[]{1,6,1, 8,12,8});
 		
-		assertEquals(8, results.size());
-		assertEquals(results.get(0), new ResultPoint(0, 0));
-		assertEquals(results.get(1), new ResultPoint(2, 5));
-		assertEquals(results.get(2), new ResultPoint(3, 6));
-		assertEquals(results.get(3), new ResultPoint(4, 5));
-		assertEquals(results.get(4), new ResultPoint(7, 7));
-		assertEquals(results.get(5), new ResultPoint(8, 0));
-		assertEquals(results.get(6), new ResultPoint(9, 6));
-		assertEquals(results.get(7), new ResultPoint(10, 0));
+		ArrayList<ArrayList<Volume>> speakers=new ArrayList<ArrayList<Volume>>();
+		speakers.add(s1);
+		speakers.add(s2);
+		
+		List<Volume> results=resultPointsToVolumes(calculateMaxVolume(speakers));
+		List<Volume> expected=VoiceMixer1.initVolumes(new int[]{1,2,1,   2,5,10,   5,6,1,  6,8,2,  8,12,8});
+
+		for (int i=0; i<expected.size(); i++){
+			System.out.printf("[%d, %d, %d]\n", results.get(i).start, results.get(i).end, results.get(i).volume);
+			assertEquals(expected.get(i), results.get(i));
+		}
 	}
 	
 	

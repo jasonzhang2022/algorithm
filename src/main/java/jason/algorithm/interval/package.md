@@ -11,3 +11,12 @@ To search an overlapping interval from a given set
 
 
 Application of interval tree
+
+How do you handle interval data.
+	One way is handle interval as a single data structure. 
+		InsertInterval sorts interval using start as key
+		InternalTree constructs tree using start as key
+	Another way to separate an internal into two points so that we can effectively scan them. 
+		VoiceMixer is such an example. VoiceMixer is very similar to VSDL database(rectange overlap) questions.
+		Both scans the input from left to right. Both decides a **set of live intervals**. The set of live interval is searched to decide the output
+		
