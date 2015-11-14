@@ -7,6 +7,9 @@ import jason.algorithm.interval.VoiceMixer1.Speaker;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NavigableSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.junit.Test;
 
@@ -87,10 +90,10 @@ public class ChordIntersect {
 				double radian2=Math.atan2(y2-y0, x2-x0);
 				if (radian1<0){
 					//turn it from Math.PI to Math.
-					radian1=Math.PI+radian1;
+					radian1=Math.PI*2+radian1;
 				}
 				if (radian2<0){
-					radian2=Math.PI+radian2;
+					radian2=Math.PI*2+radian2;
 				}
 				start=Math.min(radian1, radian2);
 				end=Math.max(radian1, radian2);
@@ -107,7 +110,6 @@ public class ChordIntersect {
 	 */
 	public static int numberOfIntersect(double[][] coord, int x0, int y0){
 		int row=coord.length;
-		int col=coord[0].length; //should be 4.
 		
 		ChordRadian[] intervals=new ChordRadian[row];
 		for (int i=0; i<row; i++){
@@ -130,7 +132,10 @@ public class ChordIntersect {
 		for (int i=0; i<row-1; i++){
 			ChordRadian currentChord=intervals[i];
 			for (int j=i+1; j<row; j++){
-				if (intervals[0].start<=currentChord.end){
+				if (intervals[j].start==currentChord.start){
+					continue;
+				}
+				if (intervals[j].start<currentChord.end && intervals[j].end>currentChord.end){
 					count++;
 				} else {
 					break;
@@ -141,16 +146,248 @@ public class ChordIntersect {
 	}
 	
 	@Test
-	public void testSimpleWithEmpty() {
+	public void algorithm1SingleLine() {
 		double[][] coord={
-				{Math.cos(Math.PI*2/6), Math.sin(Math.PI*2/6),Math.cos(-Math.PI*5/6), Math.sin(-Math.PI*5/6) },
-				{Math.cos(Math.PI*4/6), Math.sin(Math.PI*4/6),Math.cos(-Math.PI*4/6), Math.sin(-Math.PI*4/6) },
-				{Math.cos(Math.PI*5/6), Math.sin(Math.PI*5/6),Math.cos(-Math.PI*2/6), Math.sin(-Math.PI*2/6) },
-				{Math.cos(Math.PI*1/6), Math.sin(Math.PI*1/6),Math.cos(-Math.PI*1/6), Math.sin(-Math.PI*1/6) }
-				
+				{0, 2, 0, -2},
 				};
-		int expected=3;
-		int count=numberOfIntersect(coord, 0, 0)/2;
+		int expected=0;
+		int count=numberOfIntersect(coord, 0, 0);
+		assertEquals(expected, count);
+	}
+	
+	@Test
+	public void algorithm1TwoLineCross() {
+		double[][] coord={
+				{0, 2, 0, -2},
+				{-2,0, 2,0 }
+				};
+		int expected=1;
+		int count=numberOfIntersect(coord, 0, 0);
+		assertEquals(expected, count);
+	}
+	
+	@Test
+	public void algorithm1TwoLineNotCross() {
+		double[][] coord={
+				{0, 2, -2,0},
+				{0, -2, 2, 0}
+				};
+		int expected=0;
+		int count=numberOfIntersect(coord, 0, 0);
+		assertEquals(expected, count);
+	}
+	@Test
+	public void algorithm1TwoLineContactByPoint() {
+		double[][] coord={
+				{0, 2, -2,0},
+				{-2,0,0,-2}
+				};
+		int expected=0;
+		int count=numberOfIntersect(coord, 0, 0);
+		assertEquals(expected, count);
+	}
+	
+	@Test
+	public void algorithm1FourLineMutualCross() {
+		double[][] coord={
+				{0, 2, 0, -2},
+				{1,1,-1,-1},
+				{1, -1, -1, 1 },
+				{-2,0, 2,0 },
+
+				{1,1, 1, -1}
+				};
+		int expected=4*3/2+1;
+		int count=numberOfIntersect(coord, 0, 0);
+		assertEquals(expected, count);
+	}
+	
+	//----------------------------solution 2.
+	/*
+	 * Implement using order statistics as illustrated in class comment.
+	 * 
+	 * Since we use TreeSet, it can't handle equal key easily
+	 * 
+	 * we need a system to order point in the circle. we order the circle like this
+	 * 1. clock  wise.
+	 * 2. (0, Radius) is the first point
+	 * 
+	 */
+	
+	public static class Point implements Comparable<Point>{
+		double [][] coord;
+		int index;
+		boolean start;
+		
+		int x0; //origin's x
+		int y0; //oriign's y
+		
+		
+		
+		public Point(double[][] coord, int index, boolean start, int x0, int y0) {
+			super();
+			this.coord = coord;
+			this.index = index;
+			this.start = start;
+			this.x0 = x0;
+			this.y0 = y0;
+		}
+		
+		public boolean smallStart(){
+			if (start){
+				Point end=new Point(coord, index, false, x0, y0);
+				return this.compareTo(end)<0?true:false;
+			} else {
+				Point start=new Point(coord, index, true, x0, y0);
+				return start.compareTo(this)<0?true:false;
+			}
+		}
+		public double getX(){
+			return start?coord[index][0]: coord[index][2];
+		}
+		public double getY(){
+			return start?coord[index][1]:coord[index][3];
+		}
+		
+		public int getArea(){
+			if (getX()>=x0 && getY()>=y0){
+				return 1;
+			} 
+			if (getX()>=x0 && getY()<=y0){
+				return 2;
+			}
+			if (getX()<x0 && getY()<y0){
+				return 3;
+			}
+			return 4;
+		}
+		@Override
+		public int compareTo(Point o) {
+			if (getArea()!=o.getArea()){
+				return getArea()-o.getArea();
+			}
+			if (getX()==o.getX() && getY()==o.getY()){
+				return 0;
+			}
+			//assume there is no equal point
+			if (getArea()==1){
+				return getX()-o.getX()<0?-1:1;
+			}
+			if (getArea()==2){
+				return getX()-o.getX()<0?1:-1;
+			}
+			if (getArea()==3){
+				return getX()-o.getX()<0?1:-1;
+			}
+			return getX()-o.getX()<0?-1:1;
+		}
+		
+		
+		
+	}
+	public static int numberOfIntersect2(double[][] coord, int x0, int y0){
+		
+		TreeSet<Point> treeSet=new TreeSet<Point>(Point::compareTo);
+		int row=coord.length;
+		Point[] points=new Point[row*2];
+		for (int i=0; i<row; i++){
+			points[i*2]=new Point(coord, i, true, x0, y0);;
+			points[i*2+1]=new Point(coord, i, false, x0, y0);
+		}
+		//sort by points.
+		Arrays.sort(points);
+		
+		int count=0;
+		for (Point p: points){
+			if ( (p.start && p.smallStart())||(!p.start && !p.smallStart())){
+				treeSet.add(p);
+				continue;
+			}
+			
+			Point small=new Point(p.coord, p.index, !p.start, x0, y0);
+			Point large=p;
+			
+		
+			NavigableSet<Point> subset=treeSet.subSet(small, true, large, true);
+			count+=subset.size()-1;
+			Point first=subset.first();
+			Point last=subset.last();
+			
+			treeSet.remove(first);
+		}
+		return count;
+	}
+	
+	
+	@Test
+	public void algorithm2SingleLine() {
+		double[][] coord={
+				{0, 2, 0, -2},
+				};
+		int expected=0;
+		int count=numberOfIntersect2(coord, 0, 0);
+		assertEquals(expected, count);
+	}
+	
+	@Test
+	public void algorithm2TwoLineCross() {
+		double[][] coord={
+				{0, 2, 0, -2},
+				{-2,0, 2,0 }
+				};
+		int expected=1;
+		int count=numberOfIntersect2(coord, 0, 0);
+		assertEquals(expected, count);
+	}
+	
+	@Test
+	public void algorithm2TwoLineNotCross() {
+		double[][] coord={
+				{0, 2, -2,0},
+				{0, -2, 2, 0}
+				};
+		int expected=0;
+		int count=numberOfIntersect2(coord, 0, 0);
+		assertEquals(expected, count);
+	}
+	/*
+	 * Failed. The algorithm can't handle contact at the same circle.
+	 */
+	@Test
+	public void algorithm2TwoLineContactByPoint() {
+		double[][] coord={
+				{0, 2, -2,0},
+				{-2,0,0,-2}
+				};
+		int expected=0;
+		int count=numberOfIntersect2(coord, 0, 0);
+		assertEquals(expected, count);
+	}
+	
+	@Test
+	public void algorithm2FourLineMutualCross() {
+		double[][] coord={
+				{0, 2, 0, -2},
+				{1,1,-1,-1},
+				{1, -1, -1, 1 },
+				{-2,0, 2,0 },
+				};
+		int expected=4*3/2;
+		int count=numberOfIntersect2(coord, 0, 0);
+		assertEquals(expected, count);
+	}
+	@Test
+	public void algorithm2FourLineMutualCross1() {
+		double[][] coord={
+				{0, 2, 0, -2},
+				{1,1,-1,-1},
+				{1, -1, -1, 1 },
+				{-2,0, 2,0 },
+
+				{1,1, 1, -1}
+				};
+		int expected=4*3/2+1;
+		int count=numberOfIntersect2(coord, 0, 0);
 		assertEquals(expected, count);
 	}
 	
