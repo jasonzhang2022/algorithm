@@ -8,3 +8,9 @@ Start from final case. f(n). **don't start from beginning f(1)**
 	
 ##TODO
 print all increasing subsequence of equal to longest length 
+
+##review
+Optimal Binary Search tree. How to construct various tree shape from sorted array
+bitonic tour
+
+hmm(hidden markov model): http://www.comp.leeds.ac.uk/roger/HiddenMarkovModels/html_dev/main.html
