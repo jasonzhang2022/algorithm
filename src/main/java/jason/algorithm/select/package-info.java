@@ -33,7 +33,7 @@
  *  		Algorithm 1: may be effecient.
  *  
  * 	
- * 		
+ *If a linear algorithm is needed, it is most likely quick selection
  * 
  * 
  */
