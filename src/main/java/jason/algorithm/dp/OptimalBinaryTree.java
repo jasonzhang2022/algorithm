@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 
 import org.junit.Test;
-
+//http://www.geeksforgeeks.org/dynamic-programming-set-24-optimal-binary-search-tree/
 public class OptimalBinaryTree {
 	/**
 	 * We separate dummyFreq from freq because we want dummyFreq to be leave nodes all the time.

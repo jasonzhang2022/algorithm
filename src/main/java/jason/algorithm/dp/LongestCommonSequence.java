@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 
 import org.junit.Test;
-
+//http://www.geeksforgeeks.org/dynamic-programming-set-4-longest-common-subsequence/
 public class LongestCommonSequence {
 	public static int longestCommonSequence(char[] left, char[] right ){
 		int[][] lcs=new int[left.length+1][right.length+1];

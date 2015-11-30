@@ -11,7 +11,7 @@ import org.junit.Test;
 public class OfflineCache {
 
 	
-	
+	//run time NlogK
 	public int miss(char[] input, int cacheLen){
 		
 		int n=input.length;
