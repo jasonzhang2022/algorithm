@@ -1,5 +1,8 @@
 [problem reference](http://ripcrixalis.blog.com/2011/02/08/clrs-chapter-14/)
 Problems 14-1: Point of Maximum Overlap
+
+compare with this approach
+
 Suppose that we wish to keep track of a point of maximum overlap in a set of intervals—a point that has the largest number of intervals in the database overlapping it.
 
 1. Show that there will always be a point of maximum overlap which is an endpoint of one of the segments.
@@ -19,10 +22,36 @@ We can compute these attributes in a bottom-up fashion so as to satisfy the requ
 <div style="background-color:grey>
 >v[x] = v[left[x]] + p[x] + v[right[x]] ,
 >m[x] = max{
->m[left[x]] (max is in x’s left subtree),
->v[left[x]] + p[x] (max is at x),
+>m[left[x]] (max is in x’s left subtree, ending at some node  o(x)=o(left[x]) at left subtree. ),
+>v[left[x]] + p[x] (max is at x: o(x)=x ),
 >v[left[x]] + p[x] + m[right[x]] (max is in x’s right subtree). }
 </div>
+
+detailed explanation: https://cise.ufl.edu/class/cot5405sp13/HW3_solution_sp13.pdf
+	
+
+The computation of v[x] is straightforward. The computation of m[x] bears further explanation.
+Recall that it is the maximum value of the sum of the p values for the nodes in x's subtree,
+starting at l[x], which is the leftmost endpoint in x.s subtree and ending at any node i in x.s
+subtree. The value of i that maximizes this sum is either a node in x's left subtree, x itself, or a
+node in x's right subtree. If i is a node in x's left subtree, then m[left[x]] represents a sum
+starting at l[x], and hence m[x] = m[left[x]]. If i is x itself, then m[x] represents the sum of all p
+values in x's left subtree plus p[x], so that m[x] = v[left[x]] + p[x]. Finally, if i is in x's right subtree, 
+then m[x] represents the sum of all p values in x's left subtree, plus p[x], plus the sum of some
+set of p values in x's right subtree. Moreover, the values taken from x's right subtree must start
+from the leftmost endpoint in the right subtree. To maximize this sum, we need to maximize the
+sum from the right subtree, and that value is precisely m[right[x]]. Hence, in this case,
+m[x]=v[left[x]]+p[x] + m[right[x]].
+Once we understand how to compute m[x], it is straightforward to compute o[x] from the
+information in x and its two children. Thus, we can implement the operations as follows:
+ INTERVAL-INSERT: insert two nodes, one for each endpoint of the interval.
+ INTERVAL-DELETE: delete the two nodes representing the interval endpoints.
+ FIND-POM: return the interval whose endpoint is represented by o[root[T]].
+Because of how we have defined the new attributes, Theorem 14.1 says that each operation
+runs in O(lgn) time. In fact, FIND-POM takes only O(1) time.
+
+
+  
 Once we understand how to compute m[x], it is straightforward to compute o[x] from the information in x and its two children.
 FIND-POM: return the interval whose endpoint is represented by o[root[T]].
 Because of how we have deÞned the new attributes, Theorem 14.1 says that each operation runs in O(lg n) time. In fact, FIND-POM takes only O(1) time.

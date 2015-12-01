@@ -1,0 +1,1 @@
+see also jason.algorithm.greedy.TaskScheduleDisjointSet
