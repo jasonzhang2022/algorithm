@@ -19,6 +19,8 @@ import org.junit.Test;
  For another example, given 2 and [[1,0],[0,1]], there are a total of 2 courses to take. 
  To take course 1 you should have finished course 0, and to take course 0 you should also have
  finished course 1. So it is impossible.
+ 
+ {@see CourseSchedule2.java}: Typical DFS to find loop
  */
 public class CourseSchedule {
 

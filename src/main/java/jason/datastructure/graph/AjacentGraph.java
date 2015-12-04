@@ -23,7 +23,6 @@ public class AjacentGraph  extends Graph{
 		Edge edge=new Edge(fromVertex.index, toVertex.index, distance);
 		ajacentList.get(fromVertex.index).add(edge);
 	}
-	
 	@Override
 	public List<Edge> getEdges(int index) {
 		return ajacentList.get(index);
