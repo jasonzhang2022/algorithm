@@ -9,6 +9,9 @@ public abstract class Graph {
 	Vertices vertices=new Vertices();
 	
 
+	public int size(){
+		return vertices.verticesArray.size();
+	}
 	public void addVertex(String name) {
 		vertices.addVertex(name);
 	}

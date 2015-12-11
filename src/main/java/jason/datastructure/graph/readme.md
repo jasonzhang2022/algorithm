@@ -12,13 +12,18 @@ In reality, most graph are sparse graph.  Adjacent graph can be augmented to pro
 
 
 #DFS
-dfs is a very useful tool exploring graph topology.
+dfs is a very useful tool **exploring graph topology**. For example, connectivity (connected component, biconnected, bridge, articulation point) and reachability  are explored using DFS.
 
-During DFS, edge can be classified as
+During DFS, edge can be classified as for **directed graph**
 + tree edge: edge followed by DFS
 + backward edge: this edge will form a loop together with tree edge.
 + forward edge: an alternative path for tree edge
 + cross edge: all other edges
+
+For **undirected graph**
+there are only two types of edges:
++ tree edges
++ backward edge
 
 The official DFS in introduction of algorithm color the node into 3 colors: 
 + white: not touched yet.
@@ -39,5 +44,25 @@ In DFS, the start time is marked when node is first visited. Its finish time is 
 We can add the node to stack during back track. By this way, the nodes are sorted by finish time. The root is always the top node in the stack.
 During second DFS, we actually start with the same set of nodes as the first DFS. But the edge cross SCC is reversed. We are not be able to reach other SCC anymore
 Moreover during second DFS, we visit from the reverse order SCC in G(T: transpose). So the SCC in the beginning of SCC topological sorting are removed first.
+
+
+#SCC using low and disc (Tarjan's algorithm)
+
+articulation point is allowed for SCC. Articualtion point is a concept for undirected graph while SCC is a concept for directed graph
+
+
+#review
++ Reachability: Transpose first, then DFS
++ Euler Tour
++ connectivity: articulationPoint, bridges, biconnected component
+  + Articulation point: if there is no articulation point, it means we have an alternative way from one vertex to another one.
+  + relationship between bridge and Articulation Point. The two vertices of a bridge are articulation point. The converse is not true.
+  + biconnected component, every two vertices have at least two disjoint path (there is no common edge or common vertex). There is no common vertex (no articulation point). Any two points should be in a simple cycle.  Biconnected component is a concept only for undirected graph. There could be more edges than necessary edges required for simple cycle.
+  
+  
+  
+   
+
+
 
 

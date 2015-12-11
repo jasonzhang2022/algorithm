@@ -23,9 +23,24 @@ public class AjacentGraph  extends Graph{
 		Edge edge=new Edge(fromVertex.index, toVertex.index, distance);
 		ajacentList.get(fromVertex.index).add(edge);
 	}
+	
+	public void addEdge(int from, int to) {
+		Edge edge=new Edge(from, to, 1);
+		ajacentList.get(from).add(edge);
+	}
+	 
 	@Override
 	public List<Edge> getEdges(int index) {
 		return ajacentList.get(index);
+	}
+	
+	public  AjacentGraph transpose(){
+		
+		 AjacentGraph t=new  AjacentGraph();
+		 t.vertices=this.vertices;
+		 t.initGraph();
+		 this.ajacentList.stream().flatMap(edges->edges.stream()).forEach(edge->t.addEdge(edge.to, edge.from));
+		 return t;
 	}
 	
 	
