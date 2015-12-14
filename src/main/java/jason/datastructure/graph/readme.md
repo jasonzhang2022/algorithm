@@ -6,7 +6,7 @@ In reality, most graph are sparse graph.  Adjacent graph can be augmented to pro
   + Maintain a indgree list beside out degree list
   + Maintain a map X_Y -> edge.
   
-+ universal Sink
++ **universal Sink**
 + BSF for shortest path of unweighted graph
 + bipartite graph coloring BSF
 
@@ -60,7 +60,20 @@ articulation point is allowed for SCC. Articualtion point is a concept for undir
   + biconnected component, every two vertices have at least two disjoint path (there is no common edge or common vertex). There is no common vertex (no articulation point). Any two points should be in a simple cycle.  Biconnected component is a concept only for undirected graph. There could be more edges than necessary edges required for simple cycle.
   
   
-  
+#cycle
++ Hamiltonian cycle: a cycle including **all vertices**
++ cycle detection: DFS or Union find (undirected graph)
++ Euler Tour, a path including **all edges**
++ Traveling salesman problem. Assume complete graph, find the shortest cycle
++ Bitonic euclidean traveling salesman problem
+
+Euler Circuit Exercise: 
+Given an array of strings, find if the given strings can be chained to form a circle. A string X can be put before another string Y in circle if the last character of X is same as first character of Y.
+http://www.geeksforgeeks.org/given-array-strings-find-strings-can-chained-form-circle/
+
+
+
+
    
 
 

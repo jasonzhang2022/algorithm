@@ -15,6 +15,21 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/*
+ * basic activity schedule: http://www.geeksforgeeks.org/greedy-algorithms-set-1-activity-selection-problem/
+ * You are given n activities with their start and finish times. Select the maximum number of activities 
+ * that can be performed by a single person, assuming that a person can only work on a single activity at a time.
+ * 
+ * Weighted job schedule: http://www.geeksforgeeks.org/weighted-job-scheduling/
+ * Given N jobs where every job is represented by following three elements of it.
+1) Start Time
+2) Finish Time.
+3) Profit or Value Associated.
+Find the maximum profit subset of jobs such that no two jobs in the subset overlap.
+
+  The following algorithm solves the basic cases.
+  Weighted job schedule needs DP.
+ */
 public class ActivitySelection {
 	
 	public static class Activity {

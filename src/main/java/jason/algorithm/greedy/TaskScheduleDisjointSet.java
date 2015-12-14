@@ -17,7 +17,7 @@ public class TaskScheduleDisjointSet {
 	public int schedule(Task[] tasks) {
 		//sort by penalty, descending order
 		Arrays.sort(tasks, (a, b)->{
-			return b.penalty-a.penalty;
+			return Integer.compare(b.penalty, a.penalty);
 		});
 		
 		results=new Task[tasks.length];

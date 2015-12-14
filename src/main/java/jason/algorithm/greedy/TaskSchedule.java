@@ -3,14 +3,28 @@ package jason.algorithm.greedy;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Stack;
 
 import org.junit.Test;
-
+/**
+ * The idea is this
+ * At each task slot (time point),
+ * 
+ * We pick out the one with biggest penalty from the set of eligible tasks to schedule to minimize penalty
+ * 
+ * If we have more than one to schedule after the first one is scheduled (remaining set)  
+ * We will swap the task Y in remaining set with the task T where T is already scheduled and has a small penalty than Y.
+ * 
+ * We maintain a set of overflow tasks which is scheduled after deadline and already penalized. We will not penalize these tasks second time.
+ * 
+ * 
+ * @author jason
+ *
+ */
 public class TaskSchedule {
 
 	public static class Task {
@@ -35,16 +49,23 @@ public class TaskSchedule {
 		// sort task by deadline.
 		Arrays.sort(tasks, (a, b) -> a.deadline - b.deadline);
 
+		/**
+		 * Scheduled tasks: task in a time slot.
+		 * We use minHeadp so that we can always find the one with minimal penalty.
+		 */
 		PriorityQueue<Task> scheduledTasks = new PriorityQueue<>(
 				(a, b) -> a.penalty - b.penalty);
 
+		//tasks is already penalized, but not scheduled yet (there is no time slot so it is not scheduled).
 		Queue<Task> overflowedTasks = new LinkedList<>();
+		
+		Stack<Integer> freeSlots=new Stack<Integer>();
 
 		int penalty = 0;
 		int index = 0;
 		for (int time = 1; time <= tasks[tasks.length - 1].deadline; time++) {
 
-			// collect all elements that should be scheudled. Descending by
+			// collect all elements that should be scheduled in this round. Descending by
 			// penalty
 			PriorityQueue<Task> tasksThisRound = new PriorityQueue<>(
 					(a, b) -> b.penalty - a.penalty);
@@ -53,14 +74,18 @@ public class TaskSchedule {
 			}
 			if (tasksThisRound.isEmpty()) {
 				if (!overflowedTasks.isEmpty()) {
+					//schedule a penalized, but in queue task.
 					Task task = overflowedTasks.poll();
 					task.schedulePosition = time;
 					scheduledTasks.offer(task);
+				} else {
+					//we have a slot there is no task to schedule.
+					freeSlots.push(time);
 				}
 				continue;
 			}
 
-			//schedule the first one, there is no cost
+			//schedule the first one, there is no penalty.
 			Task t = tasksThisRound.poll();
 			t.schedulePosition = time;
 			scheduledTasks.offer(t);
@@ -72,10 +97,21 @@ public class TaskSchedule {
 			// with this one.
 			while (!tasksThisRound.isEmpty()) {
 				t = tasksThisRound.poll();
+				
+				if (!freeSlots.isEmpty()){
+					int freeSlot=freeSlots.pop();
+					t.schedulePosition = freeSlot;
+					scheduledTasks.offer(t);
+					continue;
+				}
+				
+				
 				if (!scheduledTasks.isEmpty()
 						&& t.penalty > scheduledTasks.peek().penalty) {
+					//find one with small penalty that t
+					
 					// swap
-					Task small = scheduledTasks.peek();
+					Task small = scheduledTasks.poll();
 					scheduledTasks.offer(t);
 					t.schedulePosition = small.schedulePosition;
 
@@ -84,9 +120,14 @@ public class TaskSchedule {
 					small.remaingPenalty=0;
 					overflowedTasks.offer(small);
 				} else {
+					
+					//penalize it
 					penalty += t.remaingPenalty;
-					overflowedTasks.offer(t);
 					t.remaingPenalty=0;
+					
+					//queue up for slot available later. 
+					overflowedTasks.offer(t);
+					
 				}
 			}
 		}
@@ -175,7 +216,7 @@ public class TaskSchedule {
 		for (Task t: results){
 			sb.append(String.format("(%d,%d),", t.deadline, t.penalty));
 		}
-		String expected="(2,2),(2,3)";
+		String expected="(2,2),(2,3),";
 		String result=sb.toString();
 		assertThat(expected, equalTo(result));
 	}

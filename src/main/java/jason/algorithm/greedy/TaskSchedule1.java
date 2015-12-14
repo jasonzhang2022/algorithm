@@ -9,6 +9,11 @@ import java.util.LinkedList;
 
 import org.junit.Test;
 
+/**
+ * Schedule from deadline to beginning
+ * @author jason
+ *
+ */
 public class TaskSchedule1 {
 	Task[] results=null;
 	

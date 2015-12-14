@@ -1,16 +1,22 @@
 package jason;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.junit.Test;
 
 import jason.datastructure.graph.ArticulationPoint;
 import jason.datastructure.graph.Biconnected;
 import jason.datastructure.graph.Bridge;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
-
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import jason.datastructure.graph.EulerTourDirected;
+import jason.datastructure.graph.EulerTourUndirected;
+import jason.datastructure.graph.HamiltonianCycle;
 
 public class GraphConnectivityTest {
 	//http://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/
@@ -237,4 +243,298 @@ public class GraphConnectivityTest {
 
     }
     
+    @Test
+    public void testEulerTourSquare()
+    {
+        // Create ArticulationPoints given in above diagrams
+        EulerTourDirected g1 = new EulerTourDirected(4);
+        g1.addEdgeDirect(0,1);
+        g1.addEdgeDirect(1,2);
+        g1.addEdgeDirect(2,3);
+        g1.addEdgeDirect(3,0);
+        
+        String result=g1.tour();
+        String expected="0->1->2->3->0";
+        assertTrue(g1.isEulerianCycle());
+        assertThat(result, equalTo(expected));
+    }
+    
+    @Test
+    public void testEulerTourSquareUndirected()
+    {
+        // Create ArticulationPoints given in above diagrams
+    	EulerTourUndirected g1 = new EulerTourUndirected(4);
+        g1.addEdge(0,1);
+        g1.addEdge(1,2);
+        g1.addEdge(2,3);
+        g1.addEdge(3,0);
+        
+        String result=g1.tour();
+        String expected="0->1->2->3->0";
+        assertTrue(g1.isEulerianCycle());
+        assertThat(result, equalTo(expected));
+    }
+
+    @Test
+    public void testEulerTwoTriangles()
+    {
+        // Create ArticulationPoints given in above diagrams
+        EulerTourDirected g1 = new EulerTourDirected(5);
+        g1.addEdgeDirect(0,1);
+        g1.addEdgeDirect(1,2);
+        g1.addEdgeDirect(2,0);
+        g1.addEdgeDirect(1,3);
+        g1.addEdgeDirect(3,4);
+        g1.addEdgeDirect(4,1);
+        
+        String result=g1.tour();
+        String expected="0->1->3->4->1->2->0";
+        assertTrue(g1.isEulerianCycle());
+        assertThat(result, equalTo(expected));
+    }
+    @Test
+    public void testEulerTwoTrianglesUndirected()
+    {
+        // Create ArticulationPoints given in above diagrams
+        EulerTourUndirected g1 = new EulerTourUndirected(5);
+        g1.addEdge(0,1);
+        g1.addEdge(1,2);
+        g1.addEdge(2,0);
+        g1.addEdge(1,3);
+        g1.addEdge(3,4);
+        g1.addEdge(4,1);
+        
+        String result=g1.tour();
+        String expected="0->1->3->4->1->2->0";
+        assertTrue(g1.isEulerianCycle());
+        assertThat(result, equalTo(expected));
+    }
+    
+    @Test
+    public void testEulerThreeCircles()
+    {
+        // Create ArticulationPoints given in above diagrams
+        EulerTourDirected g1 = new EulerTourDirected(7);
+        g1.addEdgeDirect(0,1);
+        g1.addEdgeDirect(1,2);
+        g1.addEdgeDirect(2,0);
+        
+        
+        
+        g1.addEdgeDirect(4,5);
+        g1.addEdgeDirect(5,6);
+        g1.addEdgeDirect(6,4);
+        
+        
+        g1.addEdgeDirect(1,3);
+        g1.addEdgeDirect(3,4);
+        g1.addEdgeDirect(4,1);
+        String result=g1.tour();
+        String expected="0->1->3->4->5->6->4->1->2->0";
+        assertTrue(g1.isEulerianCycle());
+        assertThat(result, equalTo(expected));
+    }
+    @Test
+    public void testEulerThreeCirclesUndirected()
+    {
+        // Create ArticulationPoints given in above diagrams
+        EulerTourUndirected g1 = new EulerTourUndirected(7);
+        g1.addEdge(0,1);
+        g1.addEdge(1,2);
+        g1.addEdge(2,0);
+        
+        
+        
+        g1.addEdge(4,5);
+        g1.addEdge(5,6);
+        g1.addEdge(6,4);
+        
+        
+        g1.addEdge(1,3);
+        g1.addEdge(3,4);
+        g1.addEdge(4,1);
+        String result=g1.tour();
+        String expected="0->1->3->4->5->6->4->1->2->0";
+        assertTrue(g1.isEulerianCycle());
+        assertThat(result, equalTo(expected));
+    }
+    @Test
+    public void testEulerPathThreeCircles()
+    {
+        // Create ArticulationPoints given in above diagrams
+        EulerTourDirected g1 = new EulerTourDirected(7);
+        g1.addEdgeDirect(0,1);
+        g1.addEdgeDirect(1,2);
+       // g1.addEdgeDirect(2,0);
+        
+        
+        
+        g1.addEdgeDirect(4,5);
+        g1.addEdgeDirect(5,6);
+        g1.addEdgeDirect(6,4);
+        
+        
+        g1.addEdgeDirect(1,3);
+        g1.addEdgeDirect(3,4);
+        g1.addEdgeDirect(4,1);
+        String result=g1.tour();
+        String expected="0->1->3->4->5->6->4->1->2";
+        assertTrue(g1.isEulerianPath());
+        assertFalse(g1.isEulerianCycle());
+        assertThat(result, equalTo(expected));
+    }
+    
+    @Test
+    public void testEulerThreeCirclesShareOnePoint()
+    {
+        // Create ArticulationPoints given in above diagrams
+        EulerTourDirected g1 = new EulerTourDirected(7);
+        g1.addEdgeDirect(0,1);
+        g1.addEdgeDirect(1,2);
+       g1.addEdgeDirect(2,0);
+        
+        
+        
+        g1.addEdgeDirect(1,5);
+        g1.addEdgeDirect(5,6);
+        g1.addEdgeDirect(6,1);
+        
+        
+        g1.addEdgeDirect(1,3);
+        g1.addEdgeDirect(3,4);
+        g1.addEdgeDirect(4,1);
+        String result=g1.tour();
+        String expected="0->1->3->4->1->5->6->1->2->0";
+        assertTrue(g1.isEulerianCycle());
+        assertThat(result, equalTo(expected));
+    }
+    
+    @Test
+    public void testEulerThreeCirclesShareOnePointUndirected()
+    {
+        // Create ArticulationPoints given in above diagrams
+    	EulerTourUndirected g1 = new EulerTourUndirected(7);
+        g1.addEdge(0,1);
+        g1.addEdge(1,2);
+       g1.addEdge(2,0);
+        
+        
+        
+        g1.addEdge(1,5);
+        g1.addEdge(5,6);
+        g1.addEdge(6,1);
+        
+        
+        g1.addEdge(1,3);
+        g1.addEdge(3,4);
+        g1.addEdge(4,1);
+        String result=g1.tour();
+        String expected="0->1->3->4->1->5->6->1->2->0";
+        assertTrue(g1.isEulerianCycle());
+        assertThat(result, equalTo(expected));
+    }
+    @Test
+    public void testEulerPath()
+    {
+        // Create ArticulationPoints given in above diagrams
+        EulerTourDirected g1 = new EulerTourDirected(4);
+        g1.addEdgeDirect(0,1);
+        g1.addEdgeDirect(1,2);
+        g1.addEdgeDirect(2,3);
+        g1.addEdgeDirect(3,0);
+        
+
+        String result=g1.tour();
+        String expected="0->1->2->3->1";
+        assertTrue(g1.isEulerianPath());
+        assertFalse(g1.isEulerianCycle());
+        assertThat(result, equalTo(expected));
+    }
+    
+    
+    @Test
+    public void testHamiltonianCycle()
+    {
+        // Create ArticulationPoints given in above diagrams
+    	HamiltonianCycle g1 = new HamiltonianCycle(4);
+    	g1.setDirected(true);
+        g1.addEdgeDirect(0,1);
+        g1.addEdgeDirect(1,2);
+        g1.addEdgeDirect(2,3);
+        g1.addEdgeDirect(3,0);
+        
+
+        boolean hasCycle=g1.findCycle();
+        int[] path=g1.getPath();
+        assertTrue(hasCycle);
+        String expected="0->1->2->3";
+        String result=Arrays.stream(path).mapToObj(String::valueOf).collect(Collectors.joining("->"));
+        assertThat(result, equalTo(expected));
+    }
+    
+    
+    @Test
+    public void testHamiltonianCycleOne()
+    {
+        // Create ArticulationPoints given in above diagrams
+    	HamiltonianCycle g1 = new HamiltonianCycle(5);
+    	g1.setDirected(true);
+        g1.addEdgeDirect(0,1);
+        g1.addEdgeDirect(1,3);
+        g1.addEdgeDirect(1,2);
+        g1.addEdgeDirect(2,4);
+        g1.addEdgeDirect(4,1);
+        g1.addEdgeDirect(4,3);
+        g1.addEdgeDirect(3,0);
+       
+        
+
+        boolean hasCycle=g1.findCycle();
+        int[] path=g1.getPath();
+        assertTrue(hasCycle);
+        String expected="0->1->2->4->3";
+        String result=Arrays.stream(path).mapToObj(String::valueOf).collect(Collectors.joining("->"));
+        assertThat(result, equalTo(expected));
+    }
+    
+    @Test
+    public void testHamiltonianCycleOneUndirected()
+    {
+        // Create ArticulationPoints given in above diagrams
+    	HamiltonianCycle g1 = new HamiltonianCycle(5);
+    	g1.setDirected(false);
+        g1.addEdge(0,1);
+        g1.addEdge(1,3);
+        g1.addEdge(1,2);
+        g1.addEdge(2,4);
+        g1.addEdge(4,1);
+        g1.addEdge(4,3);
+        g1.addEdge(3,0);
+       
+        
+
+        boolean hasCycle=g1.findCycle();
+        int[] path=g1.getPath();
+        assertTrue(hasCycle);
+        String expected="0->1->2->4->3";
+        String result=Arrays.stream(path).mapToObj(String::valueOf).collect(Collectors.joining("->"));
+        assertThat(result, equalTo(expected));
+    }
+    
+    @Test
+    public void testHamiltonianCycleNegative()
+    {
+        // Create ArticulationPoints given in above diagrams
+    	HamiltonianCycle g1 = new HamiltonianCycle(4);
+    	g1.setDirected(true);
+        g1.addEdgeDirect(0,1);
+        g1.addEdgeDirect(1,2);
+        g1.addEdgeDirect(2,3);
+        g1.addEdgeDirect(3,1);
+        
+
+        boolean hasCycle=g1.findCycle();
+        int[] path=g1.getPath();
+        assertFalse(hasCycle);
+    }
 }

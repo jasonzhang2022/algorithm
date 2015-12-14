@@ -25,4 +25,10 @@ public class ConnectivityGraph {
         adj[v].add(w);  // Add w to v's list.
         adj[w].add(v);  //Add v to w's list
     }
+    
+    //Function to add an edge into the ArticulationPoint
+    public void addEdgeDirect(int v, int w)
+    {
+        adj[v].add(w);  // Add w to v's list.
+    }
 }

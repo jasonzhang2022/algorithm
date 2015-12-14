@@ -8,6 +8,12 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 /*
+ * Let G = (V, E) be a directed graph in which each vertex u∈V is labeled with a unique
+integer L(u) from the set {1, 2, …, |V|}. For each vertex u∈V, let R(u) = {v∈V| ∃ a path
+from u to v in G}. Define min(u) to be the vertex in R(u) whose label is minimum, i.e.,
+min(u) is the vertex v such that L(v) = min{L(w)|w∈R(u)}. Give an O(V+E)-time
+algorithm that computes min(u) for all vertices u∈v. 
+
  * http://www.fongboy.com/classes/cs180/hw7-sol.pdf
  * First question 22-4
  * 
