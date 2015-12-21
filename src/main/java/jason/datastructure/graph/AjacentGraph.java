@@ -10,7 +10,7 @@ import java.util.PriorityQueue;
 public class AjacentGraph  extends Graph{
 	
 
-	ArrayList<LinkedList<Edge>> ajacentList=new ArrayList<>();
+	public ArrayList<LinkedList<Edge>> ajacentList=new ArrayList<>();
 	
 	public void initGraph() {
 		for (int i=0; i<vertices.verticesArray.size(); i++) {
