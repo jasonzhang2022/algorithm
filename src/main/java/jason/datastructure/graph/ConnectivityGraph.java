@@ -31,4 +31,14 @@ public class ConnectivityGraph {
     {
         adj[v].add(w);  // Add w to v's list.
     }
+    
+    public LinkedList<Integer>[] cloneEdges(){
+    	LinkedList<Integer>[] ret=new LinkedList[adj.length];
+    	
+    	
+    	for (int i=0; i<adj.length; i++){
+    		ret[i]=new LinkedList<>(adj[i]);
+    	}
+    	return ret;
+    }
 }

@@ -74,7 +74,10 @@ http://www.geeksforgeeks.org/given-array-strings-find-strings-can-chained-form-c
 
 
 
-   
+#connectivity
++ Articulation point, Vertex cut  
++ Bridge, edge cut, k-edge connected(undirected graph), transitive closure, Strongly connected component.
++ give a graph: is there a path from u to v, from any u to any v? If u to v is connected, how many distinct path from u to v?
 
 
 
