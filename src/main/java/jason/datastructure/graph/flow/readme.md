@@ -26,3 +26,67 @@
 + push relabel implementation?
   
 
+#proof Koning theorem
+**Koning theorem**: 	For bipartite graph, the cardinality of maximum matching equals to the minimum of vertex cover
+Proof
+
+ First we know that maximum matching is equivalently maximum flow. Given a graph **G=(V, E)**. Divide V into **L (left)** and **R (right vertex)**.  Add two vertices s(source) and t(target), run a maximum flow algorithm,  obtain the residual graph.  After this we obtain a matching with cardinality |M|=|Lm|=|Rm|. 
+ 
+ + M: matching edges, 
+ + Lm: incident vertices at left side. 
+ + Rm: incident vertices are right side.  
+ 
+ All vertices incident on matching edges are **matching vertices**. Other vertices are **free vertices**.
+
+## There is no cover that is less than |M|.
+If there is one, some edges in M can't be covered. If we could find a cover with |M| vertices, it is minimal.
+ 
+ We define two subgraph:
+ 
+ + S:  All vertices and the edges in residual graph reachable from s
+ + T: the remaining vertices and their edges. 
+ 
+## subgraph S
+ 
+ Let **L1**(left vertices) and **R1**(right vertices) denote the vertices reachable from s in residual graph. It should be clear that any free vertex at left side are reachable from s and is included in L1.  Divide L1 in two sets: **L11**( free vertices) and **L12**( matching vertices).  For matched vertices L12, all its matched vertices at right side should be in R1 since L12 are reached from right from residual graph. There is no free vertex at right side in R1. If there is one free vertex at R1, we can have one additional augment path. This contradicts that matching is maximal.  **So R1 is the set of matched vertices for L12**. In another word: R1 is a subset of Rm.  **All edges in this subgraph S are covered by R1**.
+ 
+##subgraph T
+
+Let **L2**(L-L1) and **R2**(R-R1) denote the remaining vertices at left side and right side.  All vertices in L2 should be in matching set since All free vertices(L11) are included in L1.  All its matching vertices at right side are included in R2. Similarly we divide R2 into two sets : **R21**(free vertices), and **R22**(matching vertices). **All edges in this subgraph T are covered by L2**.
+ 
+##cross edges
+   Here we divide matching edges into two separates sets: L12<->R1, L2<->R22. There are no cross matching edges: L12<->R2, L2<->R1 
+ 
+All cross edges are non matching edges. 
+Possible cross edges:
++ L2->R1
++ L1->R2
+Since the graph is bipartite graph, there is no edge between L1 and L2 or R1 and R2.
+
+**Case L2 -> R1 **
+Possible.  These edges are covered by L2.
+
+**Case L1 -> R2 **
+Not possible since we could include those R vertices into L1 in first place.
+
+##Conclusion
+All edges are covered by R1 and L2.
++ |M|=|R1|+|R22|=|L12|+|L2|
++ |R1|=|L12|, |R22|=|L2|
++ **|M|=|R1|+|L2|**: The number of cover vertices equals cardinality of  maximum matching. The cover is mimimum.
+
+
+**Cross edges and cut property**
+It should be clear from the above analysis that the cut between S and T are the mini cut. The cut consists of the edges: S->L2, and R1->T. Edge L2->R1 are possible. They are by definitely are not part of the capacity of the  cut. This is clear that cut is defined as a property of directed graph. Edges in the reverse direction is not considered as part of the cut. Cut S->L2, and R1->T are indeed disconnect the graph. No vertex in S can reaches T after the cut  Vertices in T can still reaches the those in S through L2->R1.
+
+
+
+
+
+
+
+
+
+ 
+ 
+ 
