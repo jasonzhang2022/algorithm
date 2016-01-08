@@ -81,8 +81,21 @@ It should be clear from the above analysis that the cut between S and T are the 
 
 
 
+#Minimum Path cover for DAG
+This can be solved like this.
+For original graph G, create a new graph G' with 
++ vertex: Split each vertex u into two vertex u<sub>l</sub>(u at left) and u<sub>r</sub>(u at right). 
++ edge :If  there is one edge u->v, add one edge ul->vr. 
+
+Suppose there is one path u1->u2...->uk in the minimum path cover.
+This path will be mapped to u1<sub>l</sub>->u2<sub>r</sub>, u2<sub>l</sub>->u3<sub>r</sub>, ..., ->uk<sub>r</sub>. This is k-1 matching.
+Suppose we have p paths in the minimum path cover. Mapping all x paths to matching, give us |V|-p matching. 
+Similarly we can convert matching to path cover so that |M|=|V|-p. The more |M| is, the less p is. When |M| reaches maximum, p reaches minimum, we have minimum cover.    
 
 
+
+TODO
++ problem 26-3 algorithm consulting
 
 
 
