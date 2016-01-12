@@ -59,7 +59,7 @@ public class Biconnected extends ConnectivityGraph {
 				boolean isAP=false;
 				
 				if (parent[u]==-1 && children>1){
-					//root is AP
+					//U root is AP
 					isAP=true;
 					
 				} else{
@@ -92,7 +92,7 @@ public class Biconnected extends ConnectivityGraph {
 				}
 			} else{
 				//visited
-				if (parent[u]!=v){
+				if (parent[u]!=v){ //not parent, one edge isn't used twice.
 					low[u]=Math.min(low[u], disc[v]);
 					if (disc[u]>disc[v]){
 						//backward edge

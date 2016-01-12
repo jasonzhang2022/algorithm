@@ -95,7 +95,8 @@ Similarly we can convert matching to path cover so that |M|=|V|-p. The more |M| 
 
 
 TODO
-+ problem 26-3 algorithm consulting
++ problem 26-3 algorithm consulting page 761
+http://yinyanghu.github.io/files/clrs_prev.pdf
 
 
 

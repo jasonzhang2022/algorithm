@@ -8,12 +8,21 @@
   + We have different MSTs because some cut has multiple light edges with the same weights.
 
 #Review: use cycle properties
-+ 23.1-11: one edge not in MST is decreased
+
 + 23.1-5 : cycle property : edge of maximum weight of a cycle can't be MST
-+ 23.2-7: update MST by adding new vertex and incidence edges
-+ 23.1-10: decrease one edge in MST by K, the MST is still MST with the new weight function
+
 + 23.1-8: MST in sorted order is the same.
-+ 24.6 bitonic shortest path
+
+
+#Update MST after modifying edge value
+[update MST] (http://stackoverflow.com/questions/9933438/update-minimum-spanning-tree-with-modification-of-edge)
++ 23.1-11: one edge not in MST is decreased
++ 23.1-10: decrease one edge in MST by K, the MST is still MST with the new weight function
+
+#Update MST by adding new vertex
++ 23.2-7: [update MST by adding new vertex and incidence edges](https://algnotes.wordpress.com/2010/06/08/update-minimum-spanning-tree/)
+Reduced to find all cycles using DFS: v+MST
+
 
 
 

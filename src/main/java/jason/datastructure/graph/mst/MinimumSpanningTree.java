@@ -1,4 +1,4 @@
-package jason.datastructure.graph;
+package jason.datastructure.graph.mst;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;

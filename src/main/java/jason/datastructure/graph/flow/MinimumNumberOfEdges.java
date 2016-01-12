@@ -18,26 +18,26 @@ import org.junit.Test;
  *  First we have one and more cuts which are minimum, the costs are C0, 
  *  After that we have a set of cuts which are bigger than mimimum, the costs are C0+I , I>=1;
  *  
- *  Let scale each edge capacity to C*|V|
+ *  Let scale each edge capacity to C*|E|
  *  
  *  The new cost for all cuts becomes.
- *  C0*|V| ..., C0*|V|+I*|V|. The order does not change. Minimum  cuts are still be minimum
+ *  C0*|E| ..., C0*|E|+I*|E|. The order does not change. Minimum  cuts are still be minimum
  *  
- *  Let us use a new capacbity function: C(e)=C*|V|+1;
+ *  Let us use a new capacbity function: C(e)=C*|E|+1;
  *  
  *  The new cost for all cuts becomes.
  *  
- *  CO*|V|+x, C0*|V|+y, ... C0*|V|+I*|V|+z; //x, y, z are number of edges in the cuts
+ *  CO*|E|+x, C0*|E|+y, ... C0*|E|+I*|E|+z; //x, y, z are number of edges in the cuts
  *  
  *  First, among all minimum cuts using original capacity function, the cuts with small number of edges has a small cost
  *   using the new ca[acity function
  *  
- *  Second C0*|V|+y <C0*|V|+|V|<=C0*|V|+I*|V|<C0*|V|+I*|V|+z, so any non-minimum cuts using original capacity function will 
+ *  Second C0*|E|+y <C0*|E|+|E|<=C0*|E|+I*|E|<C0*|E|+I*|E|+z, so any non-minimum cuts using original capacity function will 
  *  be non-minimum cuts using the new capacity function. 
  *  
- *   C0*|V|+y <C0*|V|+|V| since y<|V|, all cuts have less than |V| number of edges.
- *  C0*|V|+|V|<=C0*|V|+I*|V|  since I >=1
- *  C0*|V|+I*|V|<C0*|V|+I*|V|+z since z>0;
+ *   C0*|E|+y <C0*|E|+|E| since y<|E|, all cuts have less than |E| number of edges.
+ *  C0*|E|+|E|<=C0*|E|+I*|E|  since I >=1
+ *  C0*|E|+I*|E|<C0*|E|+I*|E|+z since z>0;
  *  
  */
 public class MinimumNumberOfEdges {

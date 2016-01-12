@@ -34,3 +34,8 @@ Put a list of items into a sorted order. Then select one or more items with some
 #TODO
 
 1 java collection
+
+
+#solution reference for introduction to algorithm
+http://yinyanghu.github.io/files/clrs_prev.pdf
+
