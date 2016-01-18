@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
-//algorithm: 16-5
+//algorithm: 16-5 page 449
 public class OfflineCache {
 
 	

@@ -30,7 +30,7 @@ public class TaskSchedule1 {
 			return b.penalty-a.penalty;
 		});
 		
-		//need to find out the buggest deadline;
+		//need to find out the biggest deadline;
 		int maxdeadline=Arrays.stream(tasks).mapToInt(t->t.deadline).max().getAsInt();
 		
 		Task[] results1=new Task[maxdeadline];

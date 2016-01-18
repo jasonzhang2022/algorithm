@@ -12,7 +12,7 @@ import java.util.TreeSet;
 import org.junit.Test;
 
 /**
- * Give an O(n*n)-time algorithm to find the longest monotomically increasing
+ * Give an O(n*n)-time algorithm to find the longest monotonically increasing
  * subsequence of a sequence of n numbers
  *
  * The longest Increasing Subsequence (LIS) problem is to find the length of the
@@ -115,6 +115,9 @@ public class longestIncreasingSubsequence {
 	 * So we only need one data structure to keep them in order can search a particular entry in logN time.
 	 * Since there is no duplicated length, so there are n entries at maximum.
 	 * The search will take logN at maximum.
+	 * Let S be a set of LIS of length i  when the k number of elements are processed.
+	 * For all elements in S, we keep the one with smallest last element. If any element in S can be exteneds, this one can
+	 * definitely be extended. This is the best one.
 	 * 
 	 * 
 	 */
@@ -135,11 +138,11 @@ public class longestIncreasingSubsequence {
 				//there is no active list with end element<input[i], create a new entry
 				track[i]=new OneLIS(i, input[i], i, 1);
 				bst.put(input[i], track[i]);
-				continue;
+			} else {
+				//lower is definitely not null. 
+				track[i]=new OneLIS(i, input[i], lower.getValue().index, lower.getValue().length+1);
+				bst.put(input[i], track[i]);
 			}
-			//lower is definitely not null. 
-			track[i]=new OneLIS(i, input[i], lower.getValue().index, lower.getValue().length+1);
-			bst.put(input[i], track[i]);
 			if (higher!=null && higher.getValue().length==track[i].length){
 				bst.remove(higher.getKey());
 				//TODO do we need to remove this from track?

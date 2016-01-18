@@ -12,7 +12,9 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import jason.algorithm.recursive.TreeBuilder;
+import jason.algorithm.recursion.TreeBuilder;
+
+//21-3 page 584
 public class TarjanOfflineLCA {
 
 	public static class Node {
@@ -126,8 +128,7 @@ public class TarjanOfflineLCA {
 	@Test
 	public void testLCA(){
 		String input="x(x1(x11,x12),x2(x21(x211,x212),x22))";
-		int[] offset={0};
-		Node node=TreeBuilder.buildNode1(input.toCharArray(), offset);
+		Node node=new TreeBuilder().buildTree(input).ToTarjanNode();
 		nodes=new HashMap<>();
 		assertThat(node.c, equalTo("x"));
 		assertThat(node.children, hasSize(2));

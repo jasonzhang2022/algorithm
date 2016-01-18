@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 
 /*
- * Introudction to algorithm: Question 21-1
+ * Introudction to algorithm: Question 21-1 page 582
  */
 public class DisjoinSetMinimumOffline {
 

@@ -1,6 +1,6 @@
 ##review
 + multiway tree representation
-+ iterative tree traversal
++ iterative tree traversal: please see jason.algorithm.recursion for analysis
 + VLSL database| Voice Mixer
 + ChordIntersect to familiarize the geometry
 + Josephus permutation can be solved like this
