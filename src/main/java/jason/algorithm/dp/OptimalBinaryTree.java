@@ -6,12 +6,17 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 
 import org.junit.Test;
-//http://www.geeksforgeeks.org/dynamic-programming-set-24-optimal-binary-search-tree/
+/*
+ * Different from http://www.geeksforgeeks.org/dynamic-programming-set-24-optimal-binary-search-tree/
+ * 
+ * The solution tries to solve Optimal Binary search tree at page 397
+ * 
+ */
 public class OptimalBinaryTree {
 	/**
 	 * We separate dummyFreq from freq because we want dummyFreq to be leave nodes all the time.
 	 * @param freq
-	 * @param dummyFreq
+	 * @param dummyFreq frequent for query falling between existing nodes. These nodes have to be leaf nodes. Why? One can  tell key is not found only when leaf is reached.
 	 * @return
 	 */
 	public static  double optimalTree(double[] freq, double[] dummyFreq){
@@ -21,7 +26,6 @@ public class OptimalBinaryTree {
 		}
 		return optimalTreeSub(freq, dummyFreq, 0, freq.length-1, cost);
 	}
-	
 	public static double optimalTreeSub(double[] freq, double[] dummyFreq, int i, int j, double[][] cost){
 		if (j==i-1){
 			return dummyFreq[i];
@@ -50,8 +54,6 @@ public class OptimalBinaryTree {
 		cost[i][j]=min;
 		return min;
 	}
-	
-	
 	@Test
 	public void testRecursion(){
 		double[] freq={0.15, 0.10, 0.05, 0.10, 0.20};
@@ -60,6 +62,69 @@ public class OptimalBinaryTree {
 		double expected=2.75;
 		
 		assertTrue(expected==optimalTree(freq, dummyFreq));
+	}
+	
+	//assume that we have at least one key.
+	public static  double optimalTree1(double[] freq, double[] dummyFreq){
+		double[][] cost=new double[freq.length][freq.length];
+		for(int i=0; i<freq.length; i++){
+			Arrays.fill(cost[i], -1);
+		}
+		return optimalTreeSub1(freq, dummyFreq, 0, freq.length-1, cost);
+	}
+	public static double optimalTreeSub1(double[] freq, double[] dummyFreq, int i, int j, double[][] cost){
+		if (i==j){
+			//if we reach a single node, it has two dummyFreq as leaf nodes[i, i+1]
+			return dummyFreq[i]*2+freq[i]+dummyFreq[i+1]*2;
+		}
+		if (cost[i][j]!=-1){
+			return cost[i][j];
+		}
+		double min=Double.MAX_VALUE;
+		for (int k=i; k<=j; k++){
+			double oneMin=0;
+			
+			//left
+			if (k==i){
+				//First node is root, left can only be dummy node.
+				oneMin=dummyFreq[i];
+			} else{
+				//k>i
+				oneMin=optimalTreeSub1(freq, dummyFreq, i, k-1, cost);
+			}
+			
+			//right
+			if (k==j){
+				//last node is root. Right can only be dummy node.
+				oneMin+=dummyFreq[j+1];
+			} else{
+				//k <j
+				oneMin+=optimalTreeSub1(freq, dummyFreq, k+1, j, cost);
+			}
+			min=Math.min(min, oneMin);
+		}
+
+		for (int k=i; k<=j; k++){
+			min+=freq[k];
+			min+=dummyFreq[k];
+		}
+		min+=dummyFreq[j+1];
+		cost[i][j]=min;
+		return min;
+		
+	}
+
+	
+	
+	
+	@Test
+	public void testRecursion1(){
+		double[] freq={0.15, 0.10, 0.05, 0.10, 0.20};
+		double[] dummyFreq={0.05, 0.10, 0.05, 0.05, 0.05, 0.10};
+	
+		double expected=2.75;
+		
+		assertTrue(expected==optimalTree1(freq, dummyFreq));
 	}
 	
 	
