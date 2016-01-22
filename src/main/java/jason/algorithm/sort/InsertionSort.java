@@ -1,11 +1,12 @@
 package jason.algorithm.sort;
 
-import static jason.algorithm.Swaper.swap;
+import static jason.algorithm.util.Swaper.swap;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
-import jason.algorithm.Shuffler;
 
 import org.junit.Test;
+
+import jason.algorithm.util.Shuffler;
 
 public class InsertionSort extends TestSetup {
 

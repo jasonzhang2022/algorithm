@@ -2,13 +2,14 @@ package jason.datastructure.segmenttree;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
-import jason.algorithm.Shuffler;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 
 import org.junit.Test;
+
+import jason.algorithm.util.Shuffler;
 
 public class SumSegmentTreeTest {
 

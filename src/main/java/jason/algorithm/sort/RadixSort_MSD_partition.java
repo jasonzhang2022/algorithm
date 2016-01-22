@@ -5,7 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
-import jason.algorithm.Swaper;
+import jason.algorithm.util.Swaper;
 
 public class RadixSort_MSD_partition extends TestSetup {
 

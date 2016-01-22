@@ -1,4 +1,4 @@
-package jason.algorithm;
+package jason.algorithm.util;
 
 import java.util.Random;
 

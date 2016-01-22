@@ -27,16 +27,13 @@ public class KnapSack01DP {
 		int[] values=new int[items.size()];
 		int[] weights=new int[items.size()];
 		
-		int count=0;
+
 		ArrayList<Item> items2=new ArrayList<Item>(items);
 		for (int i=0; i<items2.size(); i++) {
 			values[i]=items2.get(i).value;
 			weights[i]=items2.get(i).weight;
 		}
 		
-		
-		 // opt[n][w] = max value of packing items 1..n with weight limit w
-        // sol[n][w] = does opt solution to pack items 1..n with weight limit w include item n?
         int[][] totalValue = new int[values.length+1][allowedWeight+1];
         boolean[][] includedorNot = new boolean[values.length+1][allowedWeight+1];
         
@@ -52,10 +49,10 @@ public class KnapSack01DP {
         	
         	for (int w=1; w<=allowedWeight; w++) {
         		
-        		//does not include i; i-1 is calculated already
+        		//Zero copy of ith item; i-1 is calculated already
         		int profit1=totalValue[itemIndex-1][w];
         		
-        		//take profile.
+        		//one copy of ith item.
         		int profit2=Integer.MIN_VALUE;
         		if (w-weight>=0) {
         			//for a particular targeted weight, add item i does not overflow the targeted weight.

@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-
+//https://en.wikipedia.org/wiki/Continuous_knapsack_problem
 public class FractionalKnapsackLinear {
 	
 	public static class Item {
@@ -48,7 +48,8 @@ public class FractionalKnapsackLinear {
 	public double  maximumProfitGreedy(Item[] items, int targetWeight){
 		double profitSofar=0;
 		int weightSofar=0;
-		
+		//performance can be improved if using a heap. We may end the routine long before all items are 
+		//tried.
 		Arrays.sort(items, (a, b)->{ return a.ratio==b.ratio?0:(a.ratio>b.ratio?-1:1); });
 		int index=0;
 		while (weightSofar<targetWeight && index<items.length){

@@ -1,5 +1,5 @@
 [problem reference](http://ripcrixalis.blog.com/2011/02/08/clrs-chapter-14/)
-Problems 14-1: Point of Maximum Overlap
+#Problems 14-1: Point of Maximum Overlap
 
 compare with this approach
 
@@ -19,13 +19,14 @@ Each node x stores three new attributes.
 3. We store o[x] as the value of i for which m[x] achieves its maximum. For the sentinel, we define v[nil[T]] = m[nil[T]] = 0.
 
 We can compute these attributes in a bottom-up fashion so as to satisfy the requirements of Theorem 14.1:
-<div style="background-color:grey>
->v[x] = v[left[x]] + p[x] + v[right[x]] ,
->m[x] = max{
->m[left[x]] (max is in x’s left subtree, ending at some node  o(x)=o(left[x]) at left subtree. ),
->v[left[x]] + p[x] (max is at x: o(x)=x ),
->v[left[x]] + p[x] + m[right[x]] (max is in x’s right subtree). }
-</div>
+
+	v[x] = v[left[x]] + p[x] + v[right[x]] ,
+	m[x] = max{
+		m[left[x]] (max is in x’s left subtree, ending at some node  o(x)=o(left[x]) at left subtree. ),
+		v[left[x]] + p[x] (max is at x: o(x)=x ),
+		v[left[x]] + p[x] + m[right[x]] (max is in x’s right subtree, o(x)=o(right[x]) ). 
+	}
+
 
 detailed explanation: https://cise.ufl.edu/class/cot5405sp13/HW3_solution_sp13.pdf
 	
@@ -44,17 +45,20 @@ sum from the right subtree, and that value is precisely m[right[x]]. Hence, in t
 m[x]=v[left[x]]+p[x] + m[right[x]].
 Once we understand how to compute m[x], it is straightforward to compute o[x] from the
 information in x and its two children. Thus, we can implement the operations as follows:
- INTERVAL-INSERT: insert two nodes, one for each endpoint of the interval.
- INTERVAL-DELETE: delete the two nodes representing the interval endpoints.
- FIND-POM: return the interval whose endpoint is represented by o[root[T]].
+
++ INTERVAL-INSERT: insert two nodes, one for each endpoint of the interval.
++ INTERVAL-DELETE: delete the two nodes representing the interval endpoints.
++ FIND-POM: return the interval whose endpoint is represented by o[root[T]].
+
 Because of how we have defined the new attributes, Theorem 14.1 says that each operation
 runs in O(lgn) time. In fact, FIND-POM takes only O(1) time.
 
+##Note for POM
+Sort all end points in an array. Suppose the array's length is N.
 
-  
-Once we understand how to compute m[x], it is straightforward to compute o[x] from the information in x and its two children.
-FIND-POM: return the interval whose endpoint is represented by o[root[T]].
-Because of how we have deÞned the new attributes, Theorem 14.1 says that each operation runs in O(lg n) time. In fact, FIND-POM takes only O(1) time.
+For end point k, the sum of end point from 1 to K is not stored at node corresponding to end point k. It may not stored in anywhere.
+**But for any subtree root at X, x stores the information form L(X) to R(X).** 
+
 
 #Analysis
 
@@ -67,4 +71,21 @@ For example, for the example above, a child right tree does not a solution for P
 
 The root node is a solution for minimal to maximal.(not just from minimal to root node itself).
 
+#Problems 14-2: Josephus Permutation
+[problem reference](http://ripcrixalis.blog.com/2011/02/08/clrs-chapter-14/)
+Computation flow
 
+1. Construct BST. Ordered person in an array can be converted to BST.
+2. Define a routine which will remove a node **kth** from offset **O** in a tree of size **n**.
+3. Each time we remove a node, we use next node as offset, adjust tree size to n-1, delete next kth.
+4. we stop until we has only one node. 
+
+Give a tree with size N, what is the function in step like?
+Input BST, size N, offset O, K.
+	rank=(O+K)%N: constant time.
+	remove node at rank: logN time.
+	adjust new size to N-1, offset O=rank, 
+
+
+Why BST? 
+**BST is a sorted array which supports random access, dynamic deletion/insertion in NlogN time**.

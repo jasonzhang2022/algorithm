@@ -6,17 +6,16 @@ import static org.junit.Assert.assertThat;
  * 
  * @author jason
  * Give a input array with N number, with the value range between 0 and k, preprocess the input array, answer
- * the question in O(1) time
- * The number of value falls between a and b
+ * the question in O(1) time whether there number of value falls between a and b nmultiple times.
  * 
- * 
+ * Question: how could be solve this problem is range is big: BST
  * 
  */
 public class CountSortApp {
 
 	int[] indices;
 	int total;
-	public void proprocess(int[] input, int k){
+	public void preprocess(int[] input, int k){
 		
 		//step 1 count
 		indices=new int[k+1];
@@ -66,7 +65,7 @@ public class CountSortApp {
 	public void test(){
 		CountSortApp app=new CountSortApp();
 		int[] input={0, 1, 2,3,4,5,6,7, 8, 9, 10, 4,5};
-		app.proprocess(input,  10);
+		app.preprocess(input,  10);
 		
 		assertThat(app.numberInRange(11, 15), equalTo(0));
 		assertThat(app.numberInRange(15, 11), equalTo(0));

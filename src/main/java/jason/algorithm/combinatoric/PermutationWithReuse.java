@@ -9,7 +9,9 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import org.junit.Test;
-
+/*
+ * The logic has flaw. Please check readme.md
+ */
 public class PermutationWithReuse {
 
 	/**
@@ -86,7 +88,7 @@ public class PermutationWithReuse {
 	}
 	
 	/**
-	 * All elements in input are unique
+	 * contain repeated element.
 	 */
 	@Test
 	public void TestPermutationDuploication(){

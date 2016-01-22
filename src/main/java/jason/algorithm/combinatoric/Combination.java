@@ -43,12 +43,12 @@ public class Combination {
 			//Arrays.fill(result,  resultOffset, resultOffset+k, -1);
 		}
 		
-		//all element with nOffset
+		//combination with element at nOffset
 		result[resultOffset]=nOffset;
 		subCombination(n, k-1, result, resultOffset+1, nOffset+1, consumer);
 		//result[resultOffset]=-1;
 		
-		//all element without nOffset
+		//combination without element at nOffset
 		subCombination(n, k, result, resultOffset, nOffset+1, consumer);
 		
 		

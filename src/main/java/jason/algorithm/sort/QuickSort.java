@@ -1,14 +1,15 @@
 package jason.algorithm.sort;
 
-import static jason.algorithm.Swaper.swap;
+import static jason.algorithm.util.Swaper.swap;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
-import jason.algorithm.Shuffler;
 
 import java.util.Date;
 import java.util.Random;
 
 import org.junit.Test;
+
+import jason.algorithm.util.Shuffler;
 /**
  * The idea is this:
  * When do partition, 

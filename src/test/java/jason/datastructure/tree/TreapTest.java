@@ -1,7 +1,8 @@
 package jason.datastructure.tree;
 
 import static org.junit.Assert.*;
-import jason.algorithm.Shuffler;
+
+import jason.algorithm.util.Shuffler;
 import jason.datastructure.tree.Treap;
 import jason.datastructure.tree.Treap.Node;
 

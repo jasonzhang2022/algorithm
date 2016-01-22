@@ -15,92 +15,53 @@ import org.junit.Test;
  */
 public class Parenthesesis {
 
-	/*
-	 * This sis like generata all ordered permutation given n { , and n } but
-	 * with one restriction that the } can not be placed with a { before it.
+	/**
+	 * 
+	 * @param totalNum the number of each {, and } need to be outputed
+	 * @param processResult
 	 */
-	private static void solution1(int input, Consumer<String> processResult) {
-		char[] scratch = new char[input * 2];
-		addNextChar(input, input, scratch, input, processResult);
-	}
+	private static void printOutput(int totalNum, Consumer<String> processResult) {
 
-	private static void addNextChar(int leftRemaining, int rightRemaining,
-			char[] scratch, int n, Consumer<String> processResult) {
-		if (leftRemaining == 0 && rightRemaining == 0) {
-			processResult.accept(String.valueOf(scratch));
-			return;
-		}
-
-		int index = n * 2 - leftRemaining - rightRemaining;
-
-		// at each position we have two choices : add { or }.
-
-		// add }
-		if (rightRemaining > 0 // we have } left
-				&& rightRemaining > leftRemaining // there are unbalanaced { in
-													// left
-		) {
-			scratch[index] = '}';
-			addNextChar(leftRemaining, rightRemaining-1, scratch, n,
-					processResult);
-		}
-
-		// add { if we can.
-		if (leftRemaining > 0) {
-			scratch[index] = '{';
-			addNextChar(leftRemaining - 1, rightRemaining, scratch, n,
-					processResult);
-		}
+		char[] result=new char[totalNum*2];
+		printParenth(result, 0, 0, totalNum, processResult);
 
 	}
+	/*
+	 * Compare this againt { and } permutation
+	 * 
+	 * This is like generating all ordered permutation given n { , and n } but
+	 * with one restriction that the } can not be placed with a { before it.
+	 * 
+	 * If we output equal number of { and }, the next char has to be {
+	 * if we have k space need filling, and we k unbalanced {, the remaining k elements has to be } 
+	 */
+	public static void printParenth(char[] result, int numOfLeftBrace,
+			int numOfrightBrace, int totalNum, Consumer<String> processResult) {
 
-	private static void printOutput(int input, Consumer<String> processResult) {
-
-		String str = "{";
-
-		// No of spaces filled till now
-
-		int spacesCovered = 1;
-
-		// No of open braces filled till now
-
-		int noOfOpenBraces = 1;
-
-		// noOfCloseBraces = spacesCovered - noOfOpenBraces
-
-		printParenth(str, spacesCovered, noOfOpenBraces, input, processResult);
-
-	}
-
-	public static void printParenth(String str, int spacesCovered,
-			int noOfOpenBraces, int input, Consumer<String> processResult) {
-
-		int noOfCloseBraces = spacesCovered - noOfOpenBraces;
-
-		if (noOfOpenBraces == input) {
-
-			for (int i = 1; i <= 2 * input - spacesCovered; i++) {
-
-				str = str + "}";
-
+			if (numOfLeftBrace==totalNum){
+				//if we have k space need filling, and we have k unbalanced {, the remaining k elements has to be }
+				for (int i=numOfrightBrace+1; i<=totalNum; i++){
+					result[numOfLeftBrace+i-1]='}';
+				}
+				processResult.accept(new String(result));
+				return;
 			}
-			processResult.accept(str);
-		} else {
-
-			if (noOfCloseBraces < noOfOpenBraces) {
-
-				int tempSpaceCovered = spacesCovered;
-
-				printParenth(str + "}", ++tempSpaceCovered, noOfOpenBraces,
-						input, processResult);
-
+			
+			if (numOfLeftBrace==numOfrightBrace){
+				//if we output equal number of { and }, the next char has to be {
+				result[numOfLeftBrace+numOfrightBrace]='{';
+				printParenth(result, numOfLeftBrace+1, numOfrightBrace, totalNum, processResult);
+				return;
 			}
-
-			printParenth(str + "{", ++spacesCovered, ++noOfOpenBraces, input,
-					processResult);
-
-		}
-
+			
+			//char at this position can be { or }
+			//case 1: use {
+			result[numOfLeftBrace+numOfrightBrace]='{';
+			printParenth(result, numOfLeftBrace+1, numOfrightBrace, totalNum, processResult);
+			
+			//case 2: use }
+			result[numOfLeftBrace+numOfrightBrace]='}';
+			printParenth(result, numOfLeftBrace, numOfrightBrace+1, totalNum, processResult);
 	}
 
 	@Test
@@ -111,12 +72,19 @@ public class Parenthesesis {
 			System.out.println(s);
 		};
 
+		System.out.printf("----------%d\n", 1);
+		printOutput(1, processResult);
+		assertEquals(count[0], 1);
+		
+		count[0]=0;
+		System.out.printf("----------%d\n", 2);
+		printOutput(2, processResult);
+		assertEquals(count[0], 2);
+		
+		
+		count[0]=0;
+		System.out.printf("----------%d\n", 3);
 		printOutput(3, processResult);
-		System.out.println("-----");
-		int firstCount = count[0];
-		count[0] = 0;
-		solution1(3, processResult);
-		int secondCount = count[0];
-		assertEquals(firstCount, secondCount);
+		assertEquals(count[0], 5);
 	}
 }

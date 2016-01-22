@@ -1,5 +1,6 @@
 package jason.algorithm.select;
 
+//https://en.wikipedia.org/wiki/Weighted_median
 import static org.junit.Assert.*;
 
 import java.util.Arrays;

@@ -1,12 +1,13 @@
 package jason.algorithm.sort;
 
 import static org.junit.Assert.assertTrue;
-import jason.algorithm.Swaper;
 
 import java.util.Arrays;
 import java.util.Random;
 
 import org.junit.Test;
+
+import jason.algorithm.util.Swaper;
 
 
 /**

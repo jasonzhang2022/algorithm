@@ -1,14 +1,15 @@
 package jason.algorithm.select;
 
-import static jason.algorithm.Swaper.swap;
+import static jason.algorithm.util.Swaper.swap;
 import static org.junit.Assert.assertTrue;
-import jason.algorithm.Shuffler;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 
 import org.junit.Test;
+
+import jason.algorithm.util.Shuffler;
 public class MedianOfMedians {
 
 	public static int median(int[] input) {

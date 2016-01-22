@@ -1,12 +1,13 @@
 package jason.algorithm.topcoder;
 
 import static org.junit.Assert.*;
-import jason.algorithm.Swaper;
 
 import java.util.BitSet;
 import java.util.HashSet;
 
 import org.junit.Test;
+
+import jason.algorithm.util.Swaper;
 
 
 /**

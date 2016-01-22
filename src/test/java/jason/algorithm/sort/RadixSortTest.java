@@ -2,8 +2,9 @@ package jason.algorithm.sort;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import jason.algorithm.Shuffler;
+
 import jason.algorithm.sort.RadixSort_LCD_bucket;
+import jason.algorithm.util.Shuffler;
 
 import java.util.Arrays;
 

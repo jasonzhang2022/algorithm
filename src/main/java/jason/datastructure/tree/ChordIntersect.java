@@ -1,15 +1,11 @@
 package jason.datastructure.tree;
 
 import static org.junit.Assert.assertEquals;
-import jason.algorithm.interval.VoiceMixer.Volume;
-import jason.algorithm.interval.VoiceMixer1.Speaker;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.NavigableSet;
-import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 
@@ -86,8 +82,9 @@ public class ChordIntersect {
 		 */
 		public ChordRadian(double x1, double y1, double x2, double y2, int x0, int y0){
 
-				double radian1=Math.atan2(y1-y0, x1-x0);
-				double radian2=Math.atan2(y2-y0, x2-x0);
+				double radian1=Math.atan2(y1-y0, x1-x0)+Math.PI;
+				double radian2=Math.atan2(y2-y0, x2-x0)+Math.PI;
+				/*
 				if (radian1<0){
 					//turn it from Math.PI to Math.
 					radian1=Math.PI*2+radian1;
@@ -95,8 +92,13 @@ public class ChordIntersect {
 				if (radian2<0){
 					radian2=Math.PI*2+radian2;
 				}
+				*/
 				start=Math.min(radian1, radian2);
 				end=Math.max(radian1, radian2);
+		}
+		
+		public String toString(){
+			return "("+start/Math.PI+","+end/Math.PI+")";
 		}
 	}
 	
@@ -117,15 +119,8 @@ public class ChordIntersect {
 		}
 		
 		//O(NLogN)
-		Arrays.sort(intervals, (a, b)->{
-			if (a.start-b.start>0){
-				return 1;
-			} else if (a.start==b.start){
-				return 0;
-			} else {
-				return -1;
-			}
-		});
+		Arrays.sort(intervals, (a, b)->Double.compare(a.start, b.start));
+		System.out.println(Arrays.stream(intervals).map(i->i.toString()).collect(Collectors.joining(";")));
 		
 		
 		int count=0;
@@ -135,8 +130,15 @@ public class ChordIntersect {
 				if (intervals[j].start==currentChord.start){
 					continue;
 				}
-				if (intervals[j].start<currentChord.end && intervals[j].end>currentChord.end){
-					count++;
+				
+				//intervals[j].start will be bigger than current start since we sort by start
+				if (intervals[j].start<currentChord.end){
+					if (intervals[j].end>currentChord.end){
+						count++;
+					} else{
+						continue;
+					}
+					
 				} else {
 					break;
 				}

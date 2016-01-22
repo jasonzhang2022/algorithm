@@ -1,8 +1,9 @@
 package jason.algorithm.select;
 
 import static org.junit.Assert.assertEquals;
-import jason.algorithm.Shuffler;
+
 import jason.algorithm.sort.QuickSort;
+import jason.algorithm.util.Shuffler;
 
 import java.util.Date;
 import java.util.Random;

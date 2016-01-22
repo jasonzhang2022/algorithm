@@ -1,4 +1,4 @@
-package jason.algorithm;
+package jason.algorithm.util;
 
 public class Swaper {
 	public static  void swap(int[] input, int i, int j) {

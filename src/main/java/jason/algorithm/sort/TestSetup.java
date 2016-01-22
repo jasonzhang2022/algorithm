@@ -1,8 +1,8 @@
 package jason.algorithm.sort;
 
-import jason.algorithm.Shuffler;
-
 import org.junit.Before;
+
+import jason.algorithm.util.Shuffler;
 
 public class TestSetup {
 

@@ -1,9 +1,10 @@
 package jason.algorithm.practice;
 
 import static org.junit.Assert.assertEquals;
-import jason.algorithm.Shuffler;
 
 import org.junit.Test;
+
+import jason.algorithm.util.Shuffler;
 
 public class BuyAndSellStockK2 {
 
