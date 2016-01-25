@@ -8,7 +8,8 @@ import java.util.Queue;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
-
+//http://www.geeksforgeeks.org/hopcroft-karp-algorithm-for-maximum-matching-set-1-introduction/
+//http://www.geeksforgeeks.org/hopcroft-karp-algorithm-for-maximum-matching-set-2-implementation/
 public class BipartiteMatchHopcroftKarp {
 
 	final int NIL=0;
@@ -67,7 +68,7 @@ public class BipartiteMatchHopcroftKarp {
 				/*
 				 * dist[NIL] becomes less than INF if it is touched by free vertex
 				 * 
-				 * if dist[u] go beyong the shortest augment path, skip it.
+				 * if dist[u] go beyond the shortest augment path, skip it.
 				 */
 				
 				int i=u-1;

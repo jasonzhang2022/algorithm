@@ -157,6 +157,9 @@ public class BoryeMoore {
 	        	//we have a match.
 	            return i;
 	        }   else {
+	        	//we shift by increasing i.
+	        	//in KMP we shift by decreasing j
+	        	
 	        	//a mismatch occurs at pattern[j] or text[i+j]
 	        	 i+=Math.max(s[j+1], j-occ[text[i+j]]);
 	        }

@@ -1,8 +1,8 @@
 + antiparallel pattern: add vertex
-+ vertext capacity: split vertex: see the Escape problem
++ vertex capacity: split vertex: see the Escape problem
 + parallel path: add vextex
 + super source for multiple sources
-+ edge connectivity: each edge has a capacity of 1. No edge can be reused, Every path is distinct.
++ **edge connectivity: each edge has a capacity of 1. No edge can be reused, Every path is distinct.**
 
 # review
 + 26.2-13: https://www.coursehero.com/file/p1k8ft3/2-each-edge-has-a-capacity-of-1-and-uv-E-implies-vu-6-E-it-follows-that-VE-has/
@@ -73,11 +73,11 @@ Not possible since we could include those R vertices into L1 in first place.
 All edges are covered by R1 and L2.
 + |M|=|R1|+|R22|=|L12|+|L2|
 + |R1|=|L12|, |R22|=|L2|
-+ **|M|=|R1|+|L2|**: The number of cover vertices equals cardinality of  maximum matching. The cover is mimimum.
++ **|M|=|R1|+|L2|**: The number of cover vertices equals cardinality of  maximum matching. The cover is minimum.
 
 
 **Cross edges and cut property**
-It should be clear from the above analysis that the cut between S and T are the mini cut. The cut consists of the edges: S->L2, and R1->T. Edge L2->R1 are possible. They are by definitely are not part of the capacity of the  cut. This is clear that cut is defined as a property of directed graph. Edges in the reverse direction is not considered as part of the cut. Cut S->L2, and R1->T are indeed disconnect the graph. No vertex in S can reaches T after the cut  Vertices in T can still reaches the those in S through L2->R1.
+It should be clear from the above analysis that the cut between S and T are the mini cut. The cut consists of the edges: S->L2, and R1->T. Edge L2->R1 are possible. They are by definition are not part of the capacity of the  cut. This is clear that cut is defined as a property of directed graph. Edges in the reverse direction is not considered as part of the cut. Cut S->L2, and R1->T are indeed disconnect the graph. No vertex in S can reaches T after the cut  Vertices in T can still reaches the those in S through L2->R1.
 
 
 

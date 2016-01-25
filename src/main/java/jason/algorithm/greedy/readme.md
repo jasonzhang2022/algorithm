@@ -1,5 +1,5 @@
 #review
-+ TaskScheduleDisjointSet: how to use disjoint set
++ TaskScheduleDisjointSet: how to use disjoint set. This is not how typical disjoint set used since here the parent is used to point position, not represent a set.
 + TaskScheudle1: greedy algorithm
 + see also MinimumSpanningTree
 

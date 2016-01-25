@@ -24,6 +24,11 @@ import jason.algorithm.greedy.ActivitySelection.Activity;
 3) Profit or Value Associated.
 Find the maximum profit subset of jobs such that no two jobs in the subset overlap.
 
+DP solution is similar to permutation.
+For job from [i, j], what is the possiblt first job that can be scheduled?
+
+This class doesn't use DP, but use DAG.
+
  */
 public class ActivitySelectionWeightedDAG {
 	

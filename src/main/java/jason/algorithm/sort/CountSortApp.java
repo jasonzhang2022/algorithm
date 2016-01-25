@@ -6,7 +6,7 @@ import static org.junit.Assert.assertThat;
  * 
  * @author jason
  * Give a input array with N number, with the value range between 0 and k, preprocess the input array, answer
- * the question in O(1) time whether there number of value falls between a and b nmultiple times.
+ * the question in O(1) time whether there number of value falls between a and b multiple times.
  * 
  * Question: how could be solve this problem is range is big: BST
  * 

@@ -46,11 +46,8 @@ public class Hoorspool {
 			if (j < 0) {
 				return i;
 			}
-			i += pattern.length - 1;
+			i+= pattern.length-1- table[text[i+pattern.length-1]];
 			
-			System.out.println("using character "+text[i]);
-			
-			i -= table[text[i]];
 		}
 		return -1;
 	}

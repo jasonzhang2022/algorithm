@@ -5,7 +5,8 @@ import java.util.Arrays;
 //http://tarokuriyama.com/projects/palindrome2.php
 /*
  * Idea: 
- * 1. it has filling character to handle the odd case and event uniformly. Think why?
+ * 1. it has filling character to handle the odd case and event uniformly.  Suppose original length of palindrome is n, we will have n+1 fillin chatacter. 
+ * The total number of characters is 2n+1. It is odd. We have uniformly odd palindrome
  * 
  * palLen[i]=longest palindrome length at each side for palindrome centered at i 
  * 
@@ -18,6 +19,10 @@ import java.util.Arrays;
  * 4.  Once we make final decision (palLen[i]) by extending palindrome centered at i, we can move to next character i+1. 
  *  But instead of moving to i+1, we can make some intelligent decision based on information existing for palLen[k] 
  *  where k<=i
+ *   See the setRightValue for detailed description
+ *   
+ *  
+ *   
  * 
  */
 
@@ -63,12 +68,13 @@ public class ManacherPalindrome implements LongestPalindromeFinder {
 
 	/**
 	 * The next position that should be checked for palindrome.
-	 * 
+	 *  Before this function is called, all palindrome length for i<=center are known
 	 * @param patLen
 	 * @param chars
 	 * @param center
 	 * @return
 	 */
+	
 	public int setRightValue(int[] patLen, char[] chars, int center) {
 		int palLen = patLen[center];
 		for (int i = 1; i <= palLen; i++) {
@@ -77,7 +83,10 @@ public class ManacherPalindrome implements LongestPalindromeFinder {
 			int edgeDistance = palLen - i;
 
 			//case 4 in class description.
+			
+			//leftPalLen is the palindrome length for center=leftPosition
 			int leftPalLen = patLen[leftPosition];
+			
 			if (leftPalLen < edgeDistance) {
 				//try to fold the string around center and visualize the situation.
 				/*

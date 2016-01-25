@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +49,7 @@ public class SubstringTest {
 		//negative case
 		testData.put("ab", new Result(-1, "ax"));
 		testData.put("aab", new Result(-1, "ax"));
-		
+	
 		testData.put("axb", new Result(0, "ax"));
 		testData.put("axab", new Result(0, "ax"));
 		
@@ -137,6 +138,63 @@ public class SubstringTest {
 			
 		}
 	}
+	@Test 
+	public void testKMP() {
+		for (String text: testData.keySet()) {
+			Result result=testData.get(text);
+			System.out.printf("%s, %s\n",text, result.needle);
+			int k=KMP.indexOf(text.toCharArray(), result.needle.toCharArray());
+			assertEquals(k, result.foundIndex);
+			if (k!=-1) {
+				assertEquals(result.needle, text.substring(k, k+result.needle.length()));
+			}
+			
+		}
+	}
+	
+	@Test 
+	public void tesRabinKarp() {
+		for (String text: testData.keySet()) {
+			Result result=testData.get(text);
+			System.out.printf("%s, %s\n",text, result.needle);
+			int k=RabinKarp.indexOf(text.toCharArray(), result.needle.toCharArray());
+			assertEquals(k, result.foundIndex);
+			if (k!=-1) {
+				assertEquals(result.needle, text.substring(k, k+result.needle.length()));
+			}
+			
+		}
+	}
+	
+	@Test 
+	public void testFA() {
+		for (String text: testData.keySet()) {
+			Result result=testData.get(text);
+			System.out.printf("%s, %s\n",text, result.needle);
+			int k=FiniteAutomata.indexOf(text.toCharArray(), result.needle.toCharArray());
+			assertEquals(k, result.foundIndex);
+			if (k!=-1) {
+				assertEquals(result.needle, text.substring(k, k+result.needle.length()));
+			}
+			
+		}
+	}
+	
+	@Test 
+	public void tesRabinKarp3() {
+		for (String text: testData.keySet()) {
+			Result result=testData.get(text);
+			System.out.printf("%s, %s\n",text, result.needle);
+			RabinKarp1 rk=new RabinKarp1(result.needle);
+			int k=rk.search(text);
+			assertEquals(k, result.foundIndex);
+			if (k!=-1) {
+				assertEquals(result.needle, text.substring(k, k+result.needle.length()));
+			}
+			
+		}
+	}
+	
 	
 	
 	@Test 

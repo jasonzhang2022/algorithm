@@ -148,15 +148,15 @@ Please see the TailRecursionFactorial.java as an example.
   + For TreeBuilder.java, the node's value is name.
   + For ProcessFunctionCallLog.java, the node's value is function name.
 2. For this node, do we need to build a subtree or is it a leaf node?
-  + For TreeBuilder,java, if the next character after name is (, it has a substree. otherwise, it is a leaf node.  If it is a leaf node, we reach the base case. If it has subtree, the node itself is complete only after subtree is built comppletely.
-  + For ProcessFunctionCallLog.java, It has subtree if the next line starts with "START". It is leaf node if next line starts with END. We just try to build a start tree if possible.
+  + For TreeBuilder,java, if the next character after name is (, it has a substree. otherwise, it is a leaf node.  If it is a leaf node, we reach the base case. If it has subtree, the node itself is complete only after subtree is built completely.
+  + For ProcessFunctionCallLog.java, It has subtree if the next line starts with "START". It is leaf node if next line starts with END. We just **try** to build a start tree if possible.
 3. We skip the node's separator and continue for next children node.
   + For TreeBuilder.java, the separator is ",".
-  + For ProcessFunctionCallLog.java, there is no separator. we are at a positon for next node automatically after this node is complete
+  + For ProcessFunctionCallLog.java, there is no separator. we are at a position for next node automatically after this node is complete
 
 #Build balanced BST tree from array or list
 **ConvertSortedLinkedListIntoBalancedBST**
-The trick is very clever.  Give a list, the issue is that we don't know where the root is located at. But we know the list's length, we know the root position. But we could not access the root by position index since random access is not available.  List value can be accessed by pointer(iterator). We could construct the root node if we could arrange that the pointer is already positioned at root when it is time to retrieve root value.
+The trick is very clever.  Give a list, the issue is that we don't know where the root is located at. But we know the list's length, we know the **root position**. But we could not access the root by position index since random access is not available.  List value can be accessed by pointer(iterator). We could construct the root node if we could arrange that the pointer is already positioned at root when it is time to retrieve root value.
 
 We divide the list into two parts by length. 
 1. We build the left tree first. 
