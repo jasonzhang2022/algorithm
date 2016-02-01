@@ -181,7 +181,7 @@ public class SubstringTest {
 	}
 	
 	@Test 
-	public void tesRabinKarp3() {
+	public void tesRabinKarp1() {
 		for (String text: testData.keySet()) {
 			Result result=testData.get(text);
 			System.out.printf("%s, %s\n",text, result.needle);

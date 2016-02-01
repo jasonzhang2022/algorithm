@@ -2,18 +2,18 @@ package jason.algorithm.string;
 
 public class RabinKarp {
 
-	public static int radix=256;
-	public static int prime=3355439;
+	public static int radix=Character.MAX_VALUE + 1;
+	public static int prime= 96293;
 
 	
 	public static int indexOf(char[] text, char[] pattern){
 	
 		int m=pattern.length;
 		int n=text.length;
-		int constant=Modulus.iterative(radix, m-1, prime);
+		int constant1=(int)Modulus.javaMod(radix, m, prime);
 		
-		int patternHash=0;
-		int textSubstringHash=0;
+		long patternHash=0;
+		long textSubstringHash=0;
 		for (int i=0; i<m; i++){
 			//(patternHash*Radix+char)%prime
 			patternHash=(patternHash*radix+pattern[i])%prime;
@@ -28,10 +28,9 @@ public class RabinKarp {
 			}
 			//rolling hash
 			if (substringStartIndex+m+1<=n){
-				//remove high order
-				int v1=(textSubstringHash + prime -text[substringStartIndex]*constant%prime) %prime;
-				
-				textSubstringHash=(v1*radix+text[substringStartIndex+m])%prime;
+				 textSubstringHash= (((textSubstringHash* (radix%prime))%prime +prime 
+						 - ((text[substringStartIndex]%prime) *constant1)%prime)%prime
+						 +text[substringStartIndex+m]%prime)%prime;
 			} else{
 				break;
 			}

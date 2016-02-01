@@ -13,17 +13,39 @@ public class KMP {
 	 * which is also the suffix of the partial string
 	 */
 	static int[] kmpPreprocess(char[] pattern) {
-		int i = 0, j = -1;
+		
 		int m = pattern.length;
 		int[] b = new int[m + 1];
-		b[i] = j;
+		b[0] = -1;
+		b[1] = 0;
+		int i = 1, j = 0;
+		
+		/*
+		 * i is substring length
+		 * j is the border length.
+		 * 
+		 */
 		while (i < m) {
+			/*
+			 * we try to calculate the value for i+1
+			 * 
+			 * The last character for substring of length of i+1 is pattern[i]
+			 * We compare with j only if the potential border has at least length of one.
+			 */
+			
 			while (j >= 0 && pattern[i] != pattern[j]) {
 				j = b[j];
 			}
+			/*
+			 * two cases.
+			 * 1. matched, b[i+1==j+1;
+			 * 2. no border so j==-1, we give b[i+1]=0;
+			 */
+			b[i+1] = j+1;
+			
 			i++;
 			j++;
-			b[i] = j;
+			
 		}
 		return b;
 	}

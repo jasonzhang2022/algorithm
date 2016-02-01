@@ -36,10 +36,14 @@ public class BoryeMoore {
 	 *         [i:end] can be aligned with [i:end]
 	 */
 	public static int[] bmPreprocess1(char[] pattern) {
-		int i = pattern.length, j = pattern.length + 1;
-		int[] f = new int[pattern.length + 1];
-		int[] s = new int[pattern.length + 1];
-		f[i] = j;
+		int m=pattern.length;
+		
+		
+		int[] f = new int[m + 1];
+		int[] s = new int[m+ 1];
+		f[m]=m+1;
+		f[m-1]=m;
+		int i = m-1, j =m;
 
 		/*
 		 * The algorithm move from the end of pattern to beginning.
@@ -69,7 +73,9 @@ public class BoryeMoore {
 		 */
 
 		while (i > 0) {
-			while (j <= pattern.length && pattern[i - 1] != pattern[j - 1]) {
+			//j<=m so that j-1 is a valid index
+			//and the potential border has at least one character.
+			while (j <= m && pattern[i - 1] != pattern[j - 1]) {
 				if (s[j] == 0) {
 					/*
 					 * 
@@ -109,9 +115,16 @@ public class BoryeMoore {
 				*/
 				j = f[j];
 			}
+			
+			/**
+			 * Two cases:
+			 * 1. matched. 
+			 * 2. no matched so j=m+1. we set f[i-1]=m;
+			 */
+			f[i-1] = j-1;
 			i--;
 			j--;
-			f[i] = j;
+			
 		}
 
 		// prefix pattern

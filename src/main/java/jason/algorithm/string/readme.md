@@ -26,6 +26,10 @@
     -(Text[i]%prime * (Radix^PatternLen)%Prime)%prime
     +text[i+m]%prime
     )%prime
+   ((**PreviousHash** * Radix%prime)%Prime + **Prime**
+    -(Text[i]%prime * (Radix^PatternLen)%Prime)%prime
+    +text[i+m]%prime
+    )%prime
   **Radix^PatternLen%Prime** Can be precomputed
   
 #KMP BoryeMoore, Sunday, Hoorspool
