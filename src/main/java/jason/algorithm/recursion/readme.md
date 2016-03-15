@@ -46,7 +46,7 @@ Here I use TelephoneWords.java in this directory as an example to illustrate the
 	}
 	
 ## data  keep.
-The context usually is the function parameters of recursive function call so that we have enought information to process current node.
+The context usually is the function parameters of recursive function call so that we have enough information to process current node.
 The recursive function recursiveSub has four parameters(phoneNumber, index, consumer, result).  The references for phoneNumber, consumer, and result don't change.  Iterative function doesn't need passing these parameters around. These parameters are available in context of iterative function.
 
 We need to at least to capture the **index** parameter
@@ -128,6 +128,11 @@ We have a version of enhancedIterative for TelephoneWords.java using this techni
 
 (C0-1)*(C1-1)...*(Cn) where Ci is the children size at level i. This is not a problem for binary tree. But it is a problem for multi-way tree.
 
+
+#Analysis of iterative IN ORDER traversal of binary tree.	
+need to understand the node expand logic
+
+
 #Analysis of iterative post-order traversal of binary tree.	
 We have to use the generic iterative approach. When we traverse from child to parent, we need to take action on parent node by calling consumer.
 
@@ -135,7 +140,7 @@ We have to use the generic iterative approach. When we traverse from child to pa
 
 1. There is no any action after we return from child to parent.
   # There is no any process on parent node so we can add one children to stack without keep the parent.
-  # there is no moving so sibling. For an input, the call flow is a single line tree.
+  # there is no moving so sibling. For an input, the call flow is a **single line tree**.
 2. The result from base is a the final result. 
 
 

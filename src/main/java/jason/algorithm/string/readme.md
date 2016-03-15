@@ -1,3 +1,7 @@
+Understand KMP
+Understand rolling hash
+Understand Finite Automate
+Understand Trie/suffix tree
 
 
 # Rabin-Karp: hash pattern and text substring
@@ -22,13 +26,17 @@
     -(Text[i]%prime * (Radix^PatternLen)%Prime)%prime
     +text[i+m]%prime
     )%prime
-   =((**PreviousHash** * Radix%prime)%Prime
+   =((**PreviousHash** * Radix%prime)%Prime                                          Radix <prime, text[i]<prime
     -(Text[i]%prime * (Radix^PatternLen)%Prime)%prime
     +text[i+m]%prime
     )%prime
-   ((**PreviousHash** * Radix%prime)%Prime + **Prime**
+  = ((**PreviousHash** * Radix)%Prime + **Prime**
     -(Text[i]%prime * (Radix^PatternLen)%Prime)%prime
     +text[i+m]%prime
+    )%prime
+  =((**PreviousHash** * Radix)%Prime + **Prime**
+    -(Text[i] * (Radix^PatternLen)%Prime)%prime
+    +text[i+m]
     )%prime
   **Radix^PatternLen%Prime** Can be precomputed
   

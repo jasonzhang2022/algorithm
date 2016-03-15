@@ -5,7 +5,7 @@ Vector A->B is a **directed line**. The **direction** is from A to B, The **magn
 **How to express a line**
 1. A line can be defined as two points. 
 2. A line can be expressed as y=Slope*x+b. Where slope will be (point1.y-point2.y)/(point1.x-point2.x). b=point1.y-Slope*point1.x
-3. A line can be expressed as Ax+By=C, the perpendicular line is -Bx+Ay=D. This expression is bettern since we don't need treating vertical line as a special case.  The slope will be -A/B.
+3. A line can be expressed as Ax+By=C, the perpendicular line is -Bx+Ay=D. This expression is better since we don't need treating vertical line as a special case.  The slope will be -A/B.
 
  We only have two points, but we have three variables here. So we have a infinite set of (A, B, C) combination. We can fix 
 + A = y2-y1
@@ -23,7 +23,7 @@ A->B*B->C < 0  <=>  radian is between 0 and -1
 
 **Have a Cos(Radian) curve in mind.
 
-
+See DotProductProperty Class
 Line perpendicular to Ax + By=C can be expressed as -Bx + Ay=D
 
 ##Cross product.

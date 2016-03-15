@@ -100,4 +100,9 @@ public class KMP {
 	public void test() {
 		assertEquals(2, indexOf("acacacaf".toCharArray(), "acacaf".toCharArray()));
 	}
+	
+	@Test
+	public void test2() {
+		assertEquals(3, indexOf("abdabdabdabc".toCharArray(), "abdabdabc".toCharArray()));
+	}
 }

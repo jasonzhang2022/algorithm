@@ -10,6 +10,8 @@ In reality, most graph are sparse graph.  Adjacent list can be augmented to prov
 + BSF for shortest path of unweighted graph
 + bipartite graph coloring BSF
 
+**Review the MinimumHeightTree ** question.
+This question is very similar to one of topological sorting algorithm. It uses **set** instead of List as vertices. Using set, it is faster to find whether a vertex is connected or not than list. It is also easier to remove an edge.
 
 #DFS
 dfs is a very useful tool **exploring graph topology**. For example, connectivity (connected component, biconnected, bridge, articulation point) and reachablility  are explored using DFS.
@@ -47,7 +49,7 @@ DFS is used to do this. The idea is adding descendant to list first, then add th
 This is another application of DFS. We separated graph into strongly connected component graph
 DFS traversal follows the topological sorting order of SCC.
 In DFS, the start time is marked when node is first visited. Its finish time is marked when node is touched during **back track**. So the parent always has a bigger finish time than descendants. Root has the biggest finish time in a forest.
-We can add the node to stack during back track. By this way, the nodes are sorted by finish time. The root is always the top node in the stack.
+We can add **the node to stack during back track**. By this way, the nodes are sorted by finish time. The root is always the top node in the stack.
 During second DFS, we actually start with the same set of nodes as the first DFS. But the edge cross SCC is reversed. We are not be able to reach other SCC anymore
 Moreover during second DFS, we visit from the reverse order SCC in G(T: transpose). So the SCC in the beginning of SCC topological sorting are removed first.
 
@@ -66,7 +68,9 @@ Articulation point is allowed for SCC. Articulation point is a concept for undir
   + relationship between bridge and Articulation Point. The two vertices of a bridge are articulation point. The converse is not true.
   + biconnected component for undirected graph.  Any two points should be in a simple cycle. There could be more edges than necessary edges required for simple cycle. One vertex can belong to more than one BCC(biconnected component).  Once we found an articulation point, we have a BCC. Bridge is BCC itself. We print all edges when we print BCC.
   
-  
+#How can we know an edge is used during traverse in Euler path
+If we use ajacentMatrix, each time one edge is used we decrease edge count.
+If we use adjcentList, we keep a map using u->v as key. The value is count. Each time, the edge is used, we decrease count. 
   
 #cycle
 + cycle detection: DFS or Union find (undirected graph)

@@ -3,6 +3,9 @@
 + parallel path: add vextex
 + super source for multiple sources
 + **edge connectivity: each edge has a capacity of 1. No edge can be reused, Every path is distinct.**
+  
+  **This is important. Assign a capacity of 1 to make sure no edge is reused **
+  
 
 # review
 + 26.2-13: https://www.coursehero.com/file/p1k8ft3/2-each-edge-has-a-capacity-of-1-and-uv-E-implies-vu-6-E-it-follows-that-VE-has/
