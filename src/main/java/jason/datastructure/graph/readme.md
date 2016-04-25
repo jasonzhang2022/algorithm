@@ -5,7 +5,11 @@
 In reality, most graph are sparse graph.  Adjacent list can be augmented to provide the benefit of adjacent matrix. 
   + Maintain a indgree list beside out degree list
   + Maintain a map X_Y -> edge.
-  
+   
+   Using an adjacency matrix representation of directed graph, 
+   find if a universal sink exist(a node with in-degree of n-1 and outdegree of 0). 
+   If it exists you must also be able to tell the node which is the sink
+   
 + **universal Sink**
 + BSF for shortest path of unweighted graph
 + bipartite graph coloring BSF
@@ -88,11 +92,16 @@ http://www.geeksforgeeks.org/given-array-strings-find-strings-can-chained-form-c
 
 #connectivity
 + Articulation point, Vertex cut  
-+ Bridge, edge cut, k-edge connected(undirected graph), transitive closure, Strongly connected component.
-+ give a graph: is there a path from u to v, from any u to any v? If u to v is connected, how many distinct path from u to v?
++ Bridge, edge cut, **k-edge connected(undirected graph)**, transitive closure, Strongly connected component.
++ give a graph: is there a path from u to v, from any u to any v? **If u to v is connected, how many distinct path from u to v?**
 + bipartite minimum vertex cover, path cover
 
+How can we find **edge-disjoint path or vertex-disjoint path**.
+	Disjoint means no edge or vertex are shared among different path
+	The trick is givinbg edge or vextex a capacity of 1, running maximum flow algorithm. Once the capacity is consumed, the edge or vertex can not be resued again. Since we give a capacity of 1, the edge or vertex can only be used one.
 
+**[Transitive closure](http://www.geeksforgeeks.org/transitive-closure-of-a-graph/)**
+Given a directed graph, find out if a vertex j is reachable from another vertex i for all vertex pairs (i, j) in the given graph. Here reachable mean that there is a path from vertex i to j. The reach-ability matrix is called transitive closure of a graph.
 
 #TODO
 + 22.3-13: directed graph is singly connected

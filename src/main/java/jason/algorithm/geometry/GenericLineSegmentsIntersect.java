@@ -1,97 +1,98 @@
 package jason.algorithm.geometry;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.TreeSet;
 
 import org.junit.Test;
 //http://www.geeksforgeeks.org/given-a-set-of-line-segments-find-if-any-two-segments-intersect/
+/*
+ * Key points: relative order at a sweep line can only change
+ * 1) a point is added or deleted
+ * or 
+ * 2) line is crossed.
+ */
+//http://jeffe.cs.illinois.edu/teaching/373/notes/x06-sweepline.pdf
 public class GenericLineSegmentsIntersect {
 	Intersect intersecter=new Intersect();
+	
+	public static class EventPoint {
+		int x;
+		int y;
+		EventPoint otherEnd;
+		int[] line;
+		public EventPoint(int x, int y) {
+			super();
+			this.x = x;
+			this.y = y;
+		}
+		
+		public boolean isStart(){
+			return x<otherEnd.x;
+		}
+		
+	}
 
-	public int intersects(int[][] lines) {
-		int count=0;
-
-		ArrayList<int[]> points = new ArrayList<>(lines.length * 2);
-		int index=0;
+	public boolean intersects(int[][] lines) {
+		ArrayList<EventPoint> points = new ArrayList<>(lines.length * 2);
 		for (int[] line : lines) {
-			int[] startpoint=new int[4];
-			int[] endpoint=new int[4];
-			startpoint[0]=line[0];
-			startpoint[1]=0;
-			startpoint[2]=line[1];
-			startpoint[3]=index;
-			
-			endpoint[0]=line[2];
-			endpoint[1]=1;
-			endpoint[2]=line[3];
-			endpoint[3]=index;
-			
-			points.add(startpoint);
-			points.add(endpoint);
-			index++;
+			EventPoint start=new EventPoint(line[0], line[1]);
+			EventPoint end=new EventPoint(line[2], line[3]);
+			start.line=line;
+			end.line=line;
+			start.otherEnd=end;
+			end.otherEnd=start;
+			points.add(start);
+			points.add(end);
 		}
 		
 		Collections.sort(points, (left, right)->{
-			if (left[0]!=right[0]){
-				return Integer.compare(left[0], right[0]);
+			if (left.x!=right.x){
+				return Integer.compare(left.x, right.x);
 			}
-			if (left[1]!=right[1]){
-				return Integer.compare(left[1], right[1]);
+			//end comes first
+			if (left.isStart() && !right.isStart()) {
+				return 1;
 			}
-			return Integer.compare(left[2], right[2]);
+			if (!left.isStart() && right.isStart()){
+				return -1;
+			}
+			
+			return Integer.compare(left.y, right.y);
 		});
 		
-		TreeSet<Integer> activeLines=new TreeSet<>((i, j)->{
-			return Integer.compare(lines[i][0], lines[j][0]);
+		TreeSet<int[]> activeLines=new TreeSet<>((i, j)->{
+			return Integer.compare(i[1], j[1]);
 		});
 		
-		Set<String> foundIntersetcs=new HashSet<>();
-		for (int[] point: points){
-			if (point[1]==0){
-				//start point
-				activeLines.add(point[3]);
+		
+		for (EventPoint point: points){
+			if (point.isStart()){
+				activeLines.add(point.line);
 				
-				Integer above=activeLines.higher(point[3]);
-				Integer below=activeLines.lower(point[3]);
-				if (above!=null && hasIntersect(lines[above], lines[point[3]])){
-					String key=String.format("%d_%d", Math.min(above, point[3]),  Math.max(above, point[3]));
-					if (!foundIntersetcs.contains(key)){
-						count++;
-						foundIntersetcs.add(key);
-					}
-					
-				}
-				if (below!=null && hasIntersect(lines[below], lines[point[3]])){
-					String key=String.format("%d_%d", Math.min(below, point[3]),  Math.max(below, point[3]));
-					if (!foundIntersetcs.contains(key)){
-						count++;
-						foundIntersetcs.add(key);
-					}
+				
+				int[] above=activeLines.higher(point.line);
+				if (above!=null && hasIntersect(above, point.line)){
+					return true;
 				}
 				
-				
-				
+				int[] below=activeLines.lower(point.line);
+				if (below!=null && hasIntersect(below, point.line)){
+					return true;
+				}
 				
 			} else{
-				//end point
-				Integer above=activeLines.higher(point[3]);
-				Integer below=activeLines.lower(point[3]);
-				if (above!=null && below!=null){
-					String key=String.format("%d_%d", Math.min(below, below),  Math.max(above, below));
-					if (!foundIntersetcs.contains(key)){
-						count++;
-						foundIntersetcs.add(key);
-					}
+				activeLines.remove(point.line);
+				int[] above=activeLines.higher(point.line);
+				int[] below=activeLines.lower(point.line);
+				if (above!=null && below!=null && hasIntersect(below, above)){
+					return true;
 				}
-				activeLines.remove(point[3]);
 			}
 		}
-		return count;
+		return false;
 	}
 
 	
@@ -117,9 +118,8 @@ public class GenericLineSegmentsIntersect {
 					{2,2,3,1},
 					{4,1,5,2}
 			};
-			int expected=1;
-			int result=v.intersects(lines);
-			assertEquals(expected, result);
+		
+			assertTrue(v.intersects(lines));
 		}
 		/*
 		 * Test case failed.
@@ -140,9 +140,8 @@ public class GenericLineSegmentsIntersect {
 					{1,4,5,0},
 					{2,2,6,10}
 			};
-			int expected=2;
-			int result=v.intersects(lines);
-			assertEquals(expected, result);
+
+			assertTrue(v.intersects(lines));
 		}
 	}
 }

@@ -7,7 +7,7 @@ import java.util.TreeSet;
 import org.junit.Test;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-
+//http://www.geeksforgeeks.org/closest-pair-of-points/
 public class ClosestPair {
 
 	public double closetPair(int[][] coords){

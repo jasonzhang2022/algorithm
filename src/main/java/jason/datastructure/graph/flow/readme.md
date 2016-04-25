@@ -51,7 +51,7 @@ If there is one, some edges in M can't be covered. If we could find a cover with
  
 ## subgraph S
  
- Let **L1**(left vertices) and **R1**(right vertices) denote the vertices reachable from s in residual graph. It should be clear that any free vertex at left side are reachable from s and is included in L1.  Divide L1 in two sets: **L11**( free vertices) and **L12**( matching vertices).  For matched vertices L12, all its matched vertices at right side should be in R1 since L12 are reached from right from residual graph. There is no free vertex at right side in R1. If there is one free vertex at R1, we can have one additional augment path. This contradicts that matching is maximal.  **So R1 is the set of matched vertices for L12**. In another word: R1 is a subset of Rm.  **All edges in this subgraph S are covered by R1**.
+ Let **L1**(left vertices) and **R1**(right vertices) denote the vertices reachable from s in residual graph. It should be clear that any free vertex at left side are reachable from s and is included in L1.  Divide L1 in two sets: **L11**( free vertices) and **L12**( matching vertices).  For matched vertices L12, all its matched vertices at right side should be in R1 since L12 are reached from right from residual graph(not from s since that edge is not in residual graph). There is no free vertex at right side in R1. If there is one free vertex at R1, we can have one additional augment path. This contradicts that matching is maximal.  **So R1 is the set of matched vertices for L12**. In another word: R1 is a subset of Rm.  **All edges in this subgraph S are covered by R1**.
  
 ##subgraph T
 

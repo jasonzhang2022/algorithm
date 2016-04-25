@@ -1,5 +1,5 @@
 #Recursive function to iterative function
-Every recursion could be converted to iteration with a stack. The recursion uses a function all stack itself to keep context.  The function call stack keeps previous execution context so previous call can be restored.  If we could simulate the function call stack ourselves, we can simulate recursion with iteration. We need a **stack** to simulate the call stack for recursion to iteration transformation. 
+Every recursion could be converted to iteration with a stack. The recursion uses a function call stack itself to keep context.  The function call stack keeps previous execution context so previous call can be restored.  If we could simulate the function call stack ourselves, we can simulate recursion with iteration. We need a **stack** to simulate the call stack for recursion to iteration transformation. 
 
 Recursion function call flow can also be viewed as multi-way function call tree.  We will use tree terminology  to describe the flow. We start from root node, and perform a DFS tree traversal. Multi-way tree is usually represented by left-children and right-sibling approach. 
 
@@ -94,7 +94,7 @@ In the recursiveSub, the for loop is the action of moving to sibling.
 + action to take: recurse to child.
 + condition 
 
-		if (prev.digitIndex >current.digitIndex ) //we are from sibling.
+		if (prev.digitIndex == current.digitIndex ) //we are from sibling.
 
 
 #Analysis of iterative pre-order traversal of binary tree.
