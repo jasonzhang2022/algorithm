@@ -6,23 +6,52 @@ import java.util.Map;
 
 //http://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/
 public class ArticulationPoint extends ConnectivityGraph {
-	
-	
-	
-	
  
     public ArticulationPoint(int v) {
 		super(v);
 	}
 
+   /*
+   'time' variable  is defined in parent class. time here means depth in graph traversal.
+   When the root is reached by DFS, the time is 0.
+   When root's children is reached, the time for root's children is 1.
+   ...
+   
+  
+   When a node is discovered at time=t, its disc[node]=t.
+   It can reach one node that has not been discovered yet. The disc[child]=t+1
+   It can also reach one node that has been discovered. This child node will have a time disc[child]= x <= t since it 
+   is discovered before this node
+   
+   The lowest time that can be reached by this node is low[node]=min(x, low[node]) where low[node]=t at the very 
+   begnning.
+ 
+   If low[node] <disc[node], some descendent nodes loop back to its parent.
+   if low[node] == disc[node], none of descendent nodes loop back to its parent. It is an articulation point.
+   
+   We can keep track of children[node]= number of nodes that can reached by this node.
+   children[node] =children[node]+children[child]+1
+   
+   Each time, we found a articulation point, we check against children[node] with cached maxchild(initialized to zero).
+   if (children[node]>machild){
+    we record node has candidate result.
+   }
+   
+   ...
+   
+   * Actually, low[node]=min(low(child), low(node), not min(disc[child], low(node))
+   */
+	
 	// A recursive function that find articulation points using DFS
     // u --> The vertex to be visited next
     // visited[] --> keeps tract of visited vertices
-    // disc[] --> Stores discovery times of visited vertices
+    // disc[] --> Stores discovery times of visited vertices. time means depth in graph traversal
     // parent[] --> Stores parent vertices in DFS tree
+    // low[]--> Stores the lowest depth u can reach. Since graph can have loop, so low[] <= disc[]
     // ap[] --> Store articulation points
     void APUtil(int u, boolean visited[], int disc[],
-                int low[], int parent[], boolean ap[])
+                int low[], int parent[], boolean ap[]
+	       )
     {
  
         // Count of children in DFS Tree
@@ -31,7 +60,10 @@ public class ArticulationPoint extends ConnectivityGraph {
         // Mark the current node as visited
         visited[u] = true;
  
-        // Initialize discovery time and low value
+        /*
+	U is discovered at depth t.
+	lowest of depth that can be reached by u is t.
+	*/
         disc[u] = low[u] = ++time;
  
         // Go through all vertices aadjacent to this
