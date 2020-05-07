@@ -37,7 +37,7 @@ public class Bridge extends ConnectivityGraph {
 				low[u]=Math.min(low[u], low[v]);
 				
 				if (low[v]>disc[u]){
-					//we find a bridge
+					//we findUsingArray a bridge
 					bridges.add(Math.min(u, v)+"-"+ Math.max(u, v));
 				}
 			} else{

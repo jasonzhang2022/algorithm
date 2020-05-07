@@ -51,7 +51,7 @@ public class TaskSchedule {
 
 		/**
 		 * Scheduled tasks: task in a time slot.
-		 * We use minHeadp so that we can always find the one with minimal penalty.
+		 * We use minHeadp so that we can always findUsingArray the one with minimal penalty.
 		 */
 		PriorityQueue<Task> scheduledTasks = new PriorityQueue<>(
 				(a, b) -> a.penalty - b.penalty);
@@ -108,7 +108,7 @@ public class TaskSchedule {
 				
 				if (!scheduledTasks.isEmpty()
 						&& t.penalty > scheduledTasks.peek().penalty) {
-					//find one with small penalty that t
+					//findUsingArray one with small penalty that t
 					
 					// swap
 					Task small = scheduledTasks.poll();

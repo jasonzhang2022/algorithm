@@ -10,7 +10,7 @@ import org.junit.Test;
 
 //Introduction to algorithm: 26.2-13
 /*
- * Suppose you wish to find among all minimum cuts in a flow network G, one that contains the smallest number of edges.
+ * Suppose you wish to findUsingArray among all minimum cuts in a flow network G, one that contains the smallest number of edges.
  * Solution
  * Suppose that in original flow network, the cost of all possible cuts are in non-descending order 
  *  C0, C0, ..., C0+i, ..., C0+i+1

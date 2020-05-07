@@ -2,20 +2,15 @@ package jason.algorithm.dp;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.NavigableMap;
-import java.util.NavigableSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
 import org.junit.Test;
 
 /**
- * Give an O(n*n)-time algorithm to find the longest monotonically increasing
+ * Give an O(n*n)-time algorithm to findUsingArray the longest monotonically increasing
  * subsequence of a sequence of n numbers
  *
- * The longest Increasing Subsequence (LIS) problem is to find the length of the
+ * The longest Increasing Subsequence (LIS) problem is to findUsingArray the length of the
  * longest subsequence of a given sequence such that all elements of the
  * subsequence are sorted in increasing order. For example, length of LIS for {
  * 10, 22, 9, 33, 21, 50, 41, 60, 80 } is 6 and LIS is {10, 22, 33, 50, 60, 80}.
@@ -25,86 +20,47 @@ import org.junit.Test;
  */
 public class longestIncreasingSubsequence {
 
-	public static int[] find(int[] input) {
-		/*
-		 * lastnumber[i] gives the last number for LIS for input[0...i];
-		 */
-		int[] lastnumber = new int[input.length];
+	public static int[] findUsingArray(int[] input) {
 
-		/*
-		 * length[i] gives the length of LIS for input[0...i]
-		 */
-		int[] length = new int[input.length];
-		
-		
-		int[] from=new int[input.length];
-		
+		int n = input.length;
 
-		// base case.
-		lastnumber[0] = input[0];
-		length[0] = 1;
-		from[0]=0;
-		for (int i = 1; i < input.length; i++) {
 
-			// base case
-			length[i] = 1;
-			lastnumber[i] = input[i];
-			from[i]=i;
-			
-			for (int j = 0; j < i; j++) {
-				// case we increase the LIS for input[0...j];
-				if (input[i] > lastnumber[j]) {
-					if (length[j] + 1 > length[i]) {
-						length[i] = length[j] + 1;
-						lastnumber[i] = input[i];
-						from[i]=j;
-					}
-				} else if (length[j] > length[i]){
-					length[i] = length[j];
-					lastnumber[i] = lastnumber[j];
-					from[i]=j;
+		ArrayList<List<Integer>> liss= new ArrayList<>(n);
+		List<Integer> list = new ArrayList<>();
+		list.add(input[0]);
+		liss.add(list);
+		int[] track = new int[n];
+		track[0]=input[0];
+		int trackEnd = 1;
+
+
+		for (int i=0; i<n; i++){
+			int num = input[i];
+
+			int insertionIndex = Arrays.binarySearch(track, 0, trackEnd, num);
+			if (insertionIndex<0){
+				int targetIndex = -insertionIndex-1;
+				List<Integer> list1 = new ArrayList<>();
+				if (targetIndex!=0){
+					list1 = new ArrayList<>(liss.get(targetIndex-1));
+				}
+				list1.add(num);
+				if (targetIndex<liss.size()) {
+					liss.set(targetIndex, list1);
+				} else {
+					liss.add(list1);
+				}
+				track[targetIndex]=num;
+				if (targetIndex==trackEnd){
+					trackEnd++;
 				}
 			}
 		}
-		int trackIndex=input.length-1;
-		int[] result=new int[length[trackIndex]];
-		do {
-			result[length[trackIndex]-1]=lastnumber[trackIndex];
-			if (length[trackIndex]==1){
-				break;
-			}
-			trackIndex=from[trackIndex];
-		} while (true);
-		return result;
+
+		return  liss.get(liss.size()-1).stream().mapToInt(Integer::intValue).toArray();
 		
 	}
-	
-	@Test
-	public void test(){
-		int[] input= { 10, 22, 9, 33, 21, 50, 41, 60, 80 };
-		int[] expected={10, 22, 33, 50, 60, 80};
-		int[] expected1={10, 22, 33, 41, 60, 80};
-		
-		
-		assertTrue(Arrays.equals(expected, find(input)) ||Arrays.equals(expected1, find(input)));
-	}
-	
-	
-	//-----------------------------OnlogN approach
-	public static class OneLIS {
-		int index;  //for input[0...index]
-		int lastNumber; //the last number for LIS
-		int from; //from the index
-		int length; // how long is the LIS
-		public OneLIS(int index, int lastNumber, int from, int length) {
-			super();
-			this.index = index;
-			this.lastNumber = lastNumber;
-			this.from = from;
-			this.length=length;
-		}
-		
-	}
+
 	
 	//http://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
 	/*
@@ -122,54 +78,64 @@ public class longestIncreasingSubsequence {
 	 * 
 	 */
 	
-	public static int[] findNlogN(int[] input){
+	public static int[] findUsingTree(int[] input){
 		
-		OneLIS[] track=new OneLIS[input.length];
-		track[0]=new OneLIS(0, input[0], 0, 1); 
-		NavigableMap<Integer, OneLIS> bst=new TreeMap<>();
-		bst.put(track[0].lastNumber, track[0]);
-		
-		for (int i=1; i<input.length; i++){
-			
-			
-			NavigableMap.Entry<Integer, OneLIS> lower=bst.lowerEntry(input[i]);
-			NavigableMap.Entry<Integer, OneLIS> higher=bst.higherEntry(input[i]);
-			if (lower==null){
-				//there is no active list with end element<input[i], create a new entry
-				track[i]=new OneLIS(i, input[i], i, 1);
-				bst.put(input[i], track[i]);
-			} else {
-				//lower is definitely not null. 
-				track[i]=new OneLIS(i, input[i], lower.getValue().index, lower.getValue().length+1);
-				bst.put(input[i], track[i]);
-			}
-			if (higher!=null && higher.getValue().length==track[i].length){
-				bst.remove(higher.getKey());
-				//TODO do we need to remove this from track?
-			}
-		}
-		
-		OneLIS currentLIS=track[input.length-1];
-		int[] result=new int[currentLIS.length];
-		do {
-			result[currentLIS.length-1]=currentLIS.lastNumber;
-			if (currentLIS.length==1){
-				break;
-			}
-			currentLIS=track[currentLIS.from];
-		} while (true);
-		return result;
-		
-		
-	}
-	@Test
-	public void testNlogN(){
-		int[] input= { 10, 22, 9, 33, 21, 50, 41, 60, 80 };
-		int[] expected={10, 22, 33, 50, 60, 80};
-		int[] expected1={10, 22, 33, 41, 60, 80};
-		
+		TreeSet<LinkedList<Integer>> lis = new TreeSet<>( (l, r)->Integer.compare(l.getLast(), r.getLast()));
+		LinkedList<Integer> tempList = new LinkedList<>();
+		tempList.add(input[0]);
+		lis.add(tempList);
 
-		assertTrue(Arrays.equals(expected, findNlogN(input)) || Arrays.equals(expected1, findNlogN(input)));
+		for (int i=1; i<input.length; i++){
+			int num = input[i];
+			LinkedList<Integer> temp =  new LinkedList<>();
+			temp.add(num);
+
+			LinkedList<Integer> smaller=lis.floor(temp);
+
+			//nothing smaller than num.
+			if (smaller ==null){
+				lis.remove(lis.first());
+				lis.add(temp);
+				continue;
+			}
+			if (smaller.getLast() == num){
+				continue;
+			}
+
+			temp = new LinkedList<>(smaller);
+			temp.add(num);
+
+			LinkedList<Integer> higher = lis.higher(smaller);
+			if (higher!=null){
+				lis.remove(higher);
+			}
+			lis.add(temp);
+		}
+
+		return lis.last().stream().mapToInt(Integer::intValue).toArray();
+	}
+
+
+	public static class TestCase {
+		@Test
+		public void test() {
+			int[] input = {10, 22, 9, 33, 21, 50, 41, 60, 80};
+			int[] expected = {10, 22, 33, 50, 60, 80};
+			int[] expected1 = {10, 22, 33, 41, 60, 80};
+
+
+			assertTrue(Arrays.equals(expected, findUsingArray(input)) || Arrays.equals(expected1, findUsingArray(input)));
+		}
+
+		@Test
+		public void testNlogN() {
+			int[] input = {10, 22, 9, 33, 21, 50, 41, 60, 80};
+			int[] expected = {10, 22, 33, 50, 60, 80};
+			int[] expected1 = {10, 22, 33, 41, 60, 80};
+
+
+			assertTrue(Arrays.equals(expected, findUsingTree(input)) || Arrays.equals(expected1, findUsingTree(input)));
+		}
 	}
 	
 	

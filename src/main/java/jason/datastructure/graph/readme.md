@@ -43,7 +43,6 @@ In real java implementation of DFS, we only use two colors: true(black)/false(wh
 + Color: white, grey, black
 + discover time, low, start, finish
 + parent
-+ 
 
 #Topological Sorting
 DFS is used to do this. The idea is adding descendant to list first, then add the parent to the beginning of the list.

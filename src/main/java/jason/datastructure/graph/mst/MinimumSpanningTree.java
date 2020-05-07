@@ -126,7 +126,7 @@ public class MinimumSpanningTree {
 		PriorityQueue<Vertex> heap=new PriorityQueue<>((a, b)-> {
 			return a.edgeWeight==b.edgeWeight?0:(a.edgeWeight<b.edgeWeight?-1:1); 
 		});
-		//the purpose of the map is that we could find the key in heap so that we can decrease the key.
+		//the purpose of the map is that we could findUsingArray the key in heap so that we can decrease the key.
 		Map<Integer, Vertex> vertices=new HashMap<>();
 		
 		//initlization

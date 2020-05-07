@@ -20,7 +20,7 @@ import org.junit.Test;
  To take course 1 you should have finished course 0, and to take course 0 you should also have
  finished course 1. So it is impossible.
  
- {@see CourseSchedule2.java}: Typical DFS to find loop
+ {@see CourseSchedule2.java}: Typical DFS to findUsingArray loop
  */
 public class CourseSchedule {
 

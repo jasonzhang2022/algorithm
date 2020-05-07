@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 //http://www.programcreek.com/2013/01/leetcode-distinct-subsequences-total-java/
 /*
  * Given a string S and a string T, count the number of distinct subsequences of T in S.
@@ -48,40 +50,30 @@ public class HowManySubsequence {
 	public static int subsequence(String S, String T){
 		int n=S.length();
 		int m=T.length();
-		int[][] DP=new int[m][n];
-		
-		int prev=0;
-		for (int s=0; s<n; s++){
-			if (S.charAt(s)==T.charAt(0)){
-				prev++;
-			}
-			DP[0][s]=prev;
-		}
-		
-		for (int t=1; t<m; t++){
-			for (int s=t; s<n; s++){
-				if (T.charAt(t)!=S.charAt(s)){
-					DP[t][s]=DP[t][s-1];
-				}else {
-					/*
-					 * All valid subsequences T[0...t] with last character matches S[s]
-					 * 
-					 * DP[t][s-1] all valid subsequence T[0...t] with last character before
-					 * S[s]
-					 * 
-					 */
-					DP[t][s]=DP[t-1][s-1]+DP[t][s-1];
-				
-					
-					
+		int[][] DP=new int[m+1][n+1];
+
+		// there is one way: delete all character.
+		Arrays.fill(DP[0], 1);
+
+		for (int t=1; t<=m; t++) {
+
+			char tc = T.charAt(t-1);
+			for (int s=1; s<=n; s++) {
+				char ts = S.charAt(s-1);
+
+				int num = 0;
+				// keep ts so that it  matches with tc
+				if (tc==ts){
+					num = DP[t-1][s-1];
 				}
+
+				// delete ts. tc matches with one character before/
+				num += DP[t][s-1];
+
+				DP[t][s]= num;
 			}
-			
 		}
-		
-		
-		return DP[m-1][n-1];
-		
+		return DP[m][n];
 	}
 	
 	

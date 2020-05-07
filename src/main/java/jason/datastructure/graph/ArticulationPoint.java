@@ -42,7 +42,7 @@ public class ArticulationPoint extends ConnectivityGraph {
    * Actually, low[node]=min(low(child), low(node), not min(disc[child], low(node))
    */
 	
-	// A recursive function that find articulation points using DFS
+	// A recursive function that findUsingArray articulation points using DFS
     // u --> The vertex to be visited next
     // visited[] --> keeps tract of visited vertices
     // disc[] --> Stores discovery times of visited vertices. time means depth in graph traversal
@@ -122,7 +122,7 @@ public class ArticulationPoint extends ConnectivityGraph {
             ap[i] = false;
         }
  
-        // Call the recursive helper function to find articulation
+        // Call the recursive helper function to findUsingArray articulation
         // points in DFS tree rooted with vertex 'i'
         for (int i = 0; i < V; i++)
             if (visited[i] == false)

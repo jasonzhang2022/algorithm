@@ -23,7 +23,7 @@ public class Parenthesesis {
 	private static void printOutput(int totalNum, Consumer<String> processResult) {
 
 		char[] result=new char[totalNum*2];
-		printParenth(result, 0, 0, totalNum, processResult);
+		printParenth(result,  0, totalNum, totalNum, processResult);
 
 	}
 	/*
@@ -35,33 +35,28 @@ public class Parenthesesis {
 	 * If we output equal number of { and }, the next char has to be {
 	 * if we have k space need filling, and we k unbalanced {, the remaining k elements has to be } 
 	 */
-	public static void printParenth(char[] result, int numOfLeftBrace,
-			int numOfrightBrace, int totalNum, Consumer<String> processResult) {
+	public static void printParenth(char[] result, int offset,  int remaingLeft, int remaingRight, Consumer<String> processResult){
 
-			if (numOfLeftBrace==totalNum){
-				//if we have k space need filling, and we have k unbalanced {, the remaining k elements has to be }
-				for (int i=numOfrightBrace+1; i<=totalNum; i++){
-					result[numOfLeftBrace+i-1]='}';
-				}
-				processResult.accept(new String(result));
-				return;
-			}
-			
-			if (numOfLeftBrace==numOfrightBrace){
-				//if we output equal number of { and }, the next char has to be {
-				result[numOfLeftBrace+numOfrightBrace]='{';
-				printParenth(result, numOfLeftBrace+1, numOfrightBrace, totalNum, processResult);
-				return;
-			}
-			
-			//char at this position can be { or }
-			//case 1: use {
-			result[numOfLeftBrace+numOfrightBrace]='{';
-			printParenth(result, numOfLeftBrace+1, numOfrightBrace, totalNum, processResult);
-			
-			//case 2: use }
-			result[numOfLeftBrace+numOfrightBrace]='}';
-			printParenth(result, numOfLeftBrace, numOfrightBrace+1, totalNum, processResult);
+		if (remaingLeft==0 && remaingRight ==0){
+			processResult.accept(String.valueOf(result));
+			return;
+		}
+
+		// at the offset position, what we can have (, or ),
+		// remainingRight can't be less than than remaingLeft. This means we have more right in before
+
+		// can we have left.
+		if (remaingLeft!=0){
+			result[offset] ='(';
+			printParenth(result, offset+1, remaingLeft-1, remaingRight, processResult);
+		}
+		// can we have right:
+		if (remaingRight-1 >=remaingLeft){
+			result[offset] =')';
+			printParenth(result, offset+1, remaingLeft, remaingRight-1, processResult);
+		}
+
+
 	}
 
 	@Test

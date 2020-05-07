@@ -23,6 +23,8 @@
 + f be a flow in flow network G => net flow cross any S, T is |f|
 + f is bounded from above by the capacity of any cut in G (S, T)
 
+# Bipartile graph
+[check whether graph is bipartite or not](https://www.geeksforgeeks.org/bipartite-graph/)
 
 #bipartite matching
 + [reference](https://lucatrevisan.wordpress.com/2011/02/23/cs261-lecture14-algorithms-in-bipartite-graphs/)
@@ -31,6 +33,7 @@
 
 #proof Koning theorem
 **Koning theorem**: 	For bipartite graph, the cardinality of maximum matching equals to the minimum of vertex cover
+
 Proof
 
  First we know that maximum matching is equivalently maximum flow. Given a graph **G=(V, E)**. Divide V into **L (left)** and **R (right vertex)**.  Add two vertices s(source) and t(target), run a maximum flow algorithm,  obtain the residual graph.  After this we obtain a matching with cardinality |M|=|Lm|=|Rm|. 

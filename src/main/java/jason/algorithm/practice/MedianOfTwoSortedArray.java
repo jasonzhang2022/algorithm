@@ -38,7 +38,7 @@ public class MedianOfTwoSortedArray {
 			return A[aStart + k ];
 		}
 		if (k == 0) {
-			// find the first element
+			// findUsingArray the first element
 			if (A[aStart] < B[bStart]) {
 				return A[aStart];
 			} else {

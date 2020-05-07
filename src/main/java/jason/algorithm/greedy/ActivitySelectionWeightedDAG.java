@@ -67,7 +67,7 @@ public class ActivitySelectionWeightedDAG {
 		for (int u=0; u<n; u++){
 			Activity from=vertices[u];
 			Activity firstTo=null;
-			//find the first vertex which is compatible.
+			//findUsingArray the first vertex which is compatible.
 			for (int v=u+1; v<n; v++){
 				if (vertices[v].start>=from.end){
 					firstTo=vertices[v];

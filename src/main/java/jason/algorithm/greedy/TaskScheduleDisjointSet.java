@@ -59,7 +59,7 @@ public class TaskScheduleDisjointSet {
 			return k;
 		}
 		
-		//recursive traverse the parent tree to find the root.
+		//recursive traverse the parent tree to findUsingArray the root.
 		//path compression
 		int root=find(next, next[k]);
 		next[k]=root;
@@ -154,7 +154,7 @@ public class TaskScheduleDisjointSet {
 		
 		Task[] tasksClone=Arrays.copyOf(tasks, n);
 
-		TaskSchedule1 ts=new TaskSchedule1();
+		TaskSchedulePQ ts=new TaskSchedulePQ();
 		int expectedPenalty = ts.scheduleImproved(tasks);
 		int calcultedPenalty = schedule(tasksClone);
 		

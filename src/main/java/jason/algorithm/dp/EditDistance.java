@@ -3,6 +3,7 @@ package jason.algorithm.dp;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 import org.junit.Test;
 
@@ -12,77 +13,80 @@ public class EditDistance {
 	int[][] cost;
 	char[] from;
 	char[] to;
-	public int edit(char[] from, char[] to){
-		this.from=from;
-		this.to=to;
-		
-		
-		cost=new int[from.length+1][to.length+1];
-		for (int[] row:cost){
-			Arrays.fill(row, -1);
+	public  int edit(char[] from, char[] to){
+		this.from = from;
+		this.to = to;
+		cost = new int[from.length+1][to.length+1];
+
+		// suppose the from has 0 charatcer.
+		for (int i=0; i<=to.length; i++){
+			// insert the last character from end.
+			cost[0][i]=i;
 		}
-		for(int i=0; i<=to.length; i++){
-			cost[0][i]=i; //from "" to to[0...i-1], each operation is a insetion
+
+		for (int i=1; i<=from.length; i++){
+			Arrays.fill(cost[i], -1);
+			cost[i][0]=i; //delete this characters.
 		}
-		for (int i=0; i<=from.length; i++){
-			cost[i][0]=i; //i deletion
-		}
-		
-		
-		
 		return editSub(from.length, to.length);
 	}
 	
 	/*
 	 * Index starting from 1
 	 */
-	public int editSub(int fromEnd,  int toEnd){
-		if (cost[fromEnd][toEnd]!=-1){
-			return cost[fromEnd][toEnd];
+	public int editSub(int fromLength,  int toLength){
+
+		if (fromLength==0 || toLength==0){
+			return cost[fromLength][toLength];
 		}
-		
-		int fromc=from[fromEnd-1];
-		int toc=to[toEnd-1];
-		if (fromc==toc){
-			cost[fromEnd][toEnd]=editSub(fromEnd-1, toEnd-1);
-			return cost[fromEnd][toEnd];
+		if (cost[fromLength][toLength]!=-1){
+			return cost[fromLength][toLength];
 		}
-		
-		int edit=Integer.MAX_VALUE;
-		//replace
-		int replaceCost=editSub(fromEnd-1, toEnd-1)+1;
-		edit=Math.min(edit, replaceCost);
-		int deletionjCost=editSub(fromEnd-1, toEnd)+1; //delete last character from from
-		edit=Math.min(edit, deletionjCost);
-		int insertionCost=editSub(fromEnd, toEnd-1)+1; //insert toc at the end of from character
-		edit=Math.min(edit, insertionCost);
-		
-		cost[fromEnd][toEnd]=edit;
-		return edit;
-	}
-	
-	@Test
-	public void test1(){
-		String from="geek";
-		String to="gesek";
-		int expected=1;
-		assertEquals(expected, edit(from.toCharArray(), to.toCharArray()));
-	}
-	
-	@Test
-	public void test2(){
-		String from="cat";
-		String to="cut";
-		int expected=1;
-		assertEquals(expected, edit(from.toCharArray(), to.toCharArray()));
-	}
-	
-	@Test
-	public void test(){
-		String from="sunday";
-		String to="saturday";
-		int expected=3;
-		assertEquals(expected, edit(from.toCharArray(), to.toCharArray()));
+
+		// how can be the last charatcer at fromEnd can be moved to toEnd.
+		char f = from[fromLength-1];
+		char t = to[toLength-1];
+
+		int value;
+		if (f==t){
+			value = editSub(fromLength-1, toLength -1);
+		} else {
+			//delete f.
+			int deleteF = editSub(fromLength-1, toLength) +1;
+			int replace = editSub(fromLength-1, toLength-1)+1;
+			int insert = editSub(fromLength, toLength -1) +1;
+			value = IntStream.of(deleteF, replace, insert).min().getAsInt();
+
+		}
+		cost[fromLength][toLength]= value;
+
+		return value;
 	}
 
+	public static class TestCase {
+		@Test
+		public void test1() {
+			String from = "geek";
+			String to = "gesek";
+			int expected = 1;
+			assertEquals(expected, new EditDistance().edit(from.toCharArray(), to.toCharArray()));
+		}
+
+		@Test
+		public void test2() {
+			String from = "cat";
+			String to = "cut";
+			int expected = 1;
+			assertEquals(expected, new EditDistance().edit(from.toCharArray(), to.toCharArray()));
+		}
+
+		@Test
+		public void test() {
+			String from = "sunday";
+			String to = "saturday";
+			int expected = 3;
+			assertEquals(expected, new EditDistance().edit(from.toCharArray(), to.toCharArray()));
+		}
+
+	}
 }

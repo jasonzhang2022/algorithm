@@ -45,7 +45,7 @@ public class EnglishDictTrie {
 		child.findWord(word, offset, prefix.append(c), consumer);
 	}
 	
-	//find word with one missing letter.
+	//findUsingArray word with one missing letter.
 	//Find in dictionary which has less than one letter than target. Other letter has the same order.
 	
 	public void findMissingLetterWord(char[] word, int offset, Consumer<String> consumer) {
@@ -57,7 +57,7 @@ public class EnglishDictTrie {
 		char c=word[offset++];
 		int index=c-'a';
 		if (children==null || children[index]==null){
-			//we could not find current character at offset. 
+			//we could not findUsingArray current character at offset.
 			//we can miss this letter
 			StringBuilder sb=new StringBuilder();
 			sb.append(word, 0, offset-1);

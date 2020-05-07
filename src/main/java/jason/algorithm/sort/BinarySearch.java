@@ -11,6 +11,9 @@ public class BinarySearch extends TestSetup {
 		if (input.length==0){
 			return 0;
 		}
+		if(input[input.length-1]<=value){
+			return input.length;
+		}
 		return binarySearch(input, 0, input.length-1, value);
 	}
 	
@@ -23,25 +26,22 @@ public class BinarySearch extends TestSetup {
 	public static int binarySearch(int[] input, int startIndex, int endIndex, int value){
 		
 		
-		//end case
 		if (startIndex==endIndex){
-			if (input[startIndex]<=value){
-				return startIndex+1;
-			} else {
+			return startIndex;
+		}
+
+		if (endIndex-startIndex==1){
+			if (input[startIndex]>value){
 				return startIndex;
 			}
+			return endIndex;
 		}
-		
-		//when we come here: endIndex-startIndex>1
-		int middle=(int) Math.floor( ((double)startIndex)/2 +((double)endIndex)/2 );
-		//Here middle >=startIndex
-		
-		//is the middle the one we want?
-		if (input[middle]<=value){
-			//middle can not be since middle is not larger than right.
-			return binarySearch(input, middle+1, endIndex, value);
-		} else {
+
+		int middle = (startIndex + endIndex)/2;
+		if (input[middle]>value){
 			return binarySearch(input, startIndex, middle, value);
+		} else {
+			return binarySearch(input, middle, endIndex, value);
 		}
 	}
 	
@@ -72,8 +72,9 @@ public class BinarySearch extends TestSetup {
 		}
 		int[] needles= {0, 20, 100, 200, 855,  1000, 101, 102, 103, inputLen-1};
 		for (int needle: needles) {
-			int j=BinarySearch.binarySearch(input, 0, inputLen-1, needle);
-			assertThat(needle, equalTo(input[j-1]));
+			int j=BinarySearch.binarySearch(input,  needle);
+			System.out.printf("%d, %d\n", needle, j);
+			assertThat(needle, equalTo(j-1));
 		}
 	}
 	

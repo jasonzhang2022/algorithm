@@ -110,7 +110,7 @@ public class BoryeMoore {
 				We go next one. According to theorem 1, we need to go the widest border of current border.
 				
 				The starting position for current border is j. The border is S=pattern[j, end].
-				We need to find the starting position of border for String S=pattern[j, end] which is f[j].
+				We need to findUsingArray the starting position of border for String S=pattern[j, end] which is f[j].
 				
 				*/
 				j = f[j];

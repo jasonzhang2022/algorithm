@@ -1,98 +1,246 @@
 package jason.datastructure.segmenttree;
 
+import jason.algorithm.util.Shuffler;
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Random;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 //Full binary tree can be represented by an array.
 public class SegmentTree {
-	/*
-	 *use an array to represent the segment tree.
-	 *For a node at index i, the left child is 2*i+1, the right child is 2*i+2, the parent is floor((i-1)/2) 
-	 *leave node contains the elements from input array. All internal node contains the summary information
-	 *
-	 *How can we know the internal a node represents for.
-	 *We do not: we use the same logic in the building tree process so that we calculate the internal when we walk down the 
-	 *tree.
-	 *
-	 */
-	int[] tree;
-	ChildProcessor processor;
-	int inputLen=0;
-	
-	
-	public SegmentTree(int[] input, ChildProcessor processor) {
-		inputLen=input.length;
-		//We need to allocate enough memory for the tree.
-		//suppose we have n node, the Tree height will be h=Ceil(log2(n)).
-		//A full tree will have 2^h+2^-1 nodes.
-		//But some array element will has empty value.
-		int h=(int) Math.ceil(Math.log((double)input.length)/Math.log(2.0d));
-		tree=new int[ (1<<(2*h))-1 ];
-		buildSegmentTree(input, 0, input.length-1, tree, 0, processor);
-		this.processor=processor;
-	}
-	
-	public int queryRange(int start, int end) {
-		return queryRange(tree, 0, 0, inputLen-1, start, end);
-	}
-	
-	/**
-	 * Complexity: We are effectively walk down the edge of the range. So we have logN.
-	 * @param tree
-	 * @param nodeIndex
-	 * @param segmentStart
-	 * @param segmentEnd
-	 * @param queryStart
-	 * @param queryEnd
-	 * @return
-	 */
-	protected int queryRange(int[] tree, int nodeIndex, int segmentStart, int segmentEnd, int queryStart, int queryEnd) {
-		if (segmentEnd<queryStart) {
-			//out our range
-			return processor.outRangeValue();
-		}
-		
-		if (segmentStart>queryEnd) {
-			return processor.outRangeValue();
-		}
-		
-		//we have overlap.
-		//segment in our range.
-		if (segmentStart>=queryStart && segmentEnd<=queryEnd) {
-			return tree[nodeIndex];
-		}
-		
-		int leftValue=queryRange(tree, nodeIndex*2+1, segmentStart, (segmentStart+segmentEnd)/2, queryStart, queryEnd);
-		int rightValue=queryRange(tree, nodeIndex*2+2, (segmentStart+segmentEnd)/2+1, segmentEnd, queryStart, queryEnd);
-		
-		return processor.process(leftValue, rightValue);
-		
-	}
-	
-	
-	
-	
-	/**
-	 * Build a tree for segments from start to end inclusive.  Store the value at tree[nodeIndex]
-	 * @param input
-	 * @param start
-	 * @param end
-	 * @param tree
-	 * @param nodeIndex
-	 * @param processor
-	 * @return processed value for the whole tree
-	 * 
-	 * Complexity: We walk down the tree once: Which is logarithmic.
-	 */
-	protected int buildSegmentTree(int[] input, int start, int end, int[] tree, int nodeIndex, ChildProcessor processor) {
-		
-		if (start==end) {
-			//we are build segments for a node.
-			tree[nodeIndex]=input[start];
-			return input[start];
-		}
-		
-		int leftTreeValue=buildSegmentTree(input, start, (start+end)/2, tree, nodeIndex*2+1, processor);
-		int rightTreeValue=buildSegmentTree(input, (start+end)/2+1, end, tree, nodeIndex*2+2, processor);
-		int nodeValue=processor.process(leftTreeValue, rightTreeValue);
-		tree[nodeIndex]=nodeValue;
-		return nodeValue;
-	}
+    /*
+     *use an array to represent the segment tree.
+     *For a node at index i, the left child is 2*i+1, the right child is 2*i+2, the parent is floor((i-1)/2)
+     *leave node contains the elements from input array. All internal node contains the summary information
+     *
+     *How can we know the internal a node represents for.
+     *We do not: we use the same logic in the building tree process so that we calculate the internal when we walk down the
+     *tree.
+     *
+     */
+    public int[] tree;
+    ChildProcessor processor;
+    int inputLen = 0;
+
+
+    public SegmentTree(int inputLen, ChildProcessor processor) {
+        this.inputLen = inputLen;
+
+        int mostSignifiantBit = Double.valueOf(Math.floor(Math.log(inputLen) / Math.log(2))).intValue();
+
+        if (1 << mostSignifiantBit < inputLen) {
+            mostSignifiantBit++;
+        }
+
+        // although inputLength is requested, we can handle more than that.
+        int numberOfLeafNodes = 1 << mostSignifiantBit;
+        int numberOfInternalNodes = numberOfLeafNodes - 1;
+        // this also works
+       // this.inputLen = numberOfInternalNodes;
+
+        tree = new int[numberOfInternalNodes + numberOfLeafNodes];
+
+        this.processor = processor;
+
+
+    }
+
+    public int queryRange(int start, int end) {
+
+        start = Math.min(start, inputLen - 1);
+        end = Math.min(inputLen - 1, end);
+
+
+        return queryRange(0, 0, inputLen - 1, start, end);
+    }
+
+    private int queryRange(int root, int segmentStart, int segmentEnd, int queryStart, int queryEnd) {
+
+        if (segmentStart == segmentEnd) {
+            // leaf node
+            assert queryEnd == queryStart : "query is the same node";
+            assert segmentStart == queryStart : "query has the same index as segment";
+            return tree[root];
+        }
+
+        if (segmentStart == queryStart && segmentEnd ==queryEnd) {
+            return tree[root];
+        }
+
+        int middle = (segmentEnd - segmentStart) / 2 + segmentStart;
+        int leftRoot = 2 * root + 1;
+        int rightRoot = 2 * root + 2;
+        if (queryEnd <= middle) {
+            return queryRange(leftRoot, segmentStart, middle, queryStart, queryEnd);
+        }
+        if (queryStart > middle) {
+            return queryRange(rightRoot, middle + 1, segmentEnd, queryStart, queryEnd);
+        }
+
+
+        int leftValue = queryRange(leftRoot, segmentStart, middle, queryStart, middle);
+        int rightValue = queryRange(rightRoot, middle + 1, segmentEnd, middle + 1, queryEnd);
+
+        return processor.process(leftValue, rightValue);
+    }
+
+    public void update(int i, int value) {
+        update(0, 0, inputLen-1, i, value);
+    }
+
+
+    private void update(int root, int segmentStart, int segmentEnd, int i, int value) {
+
+        if (segmentStart == segmentEnd) {
+            // leaf node
+            assert i == segmentEnd : "index is correct";
+            tree[root] = value;
+            return;
+        }
+
+
+        int middle = (segmentEnd - segmentStart) / 2 + segmentStart;
+        int leftRoot = 2 * root + 1;
+        int rightRoot = 2 * root + 2;
+
+        if (i <= middle) {
+            update(leftRoot, segmentStart, middle, i, value);
+        } else {
+            update(rightRoot, middle + 1, segmentEnd, i, value);
+        }
+        tree[root] = processor.process(tree[leftRoot], tree[rightRoot]);
+    }
+
+
+    public static class TestCase {
+
+
+
+        @Test
+        public void basicTest(){
+            SegmentTree segmentTree=new SegmentTree(5, new SumProcessor());
+            segmentTree.update(1, 2);
+            assertThat(segmentTree.queryRange(0,3), equalTo(2));
+            segmentTree.update(3, 3);
+
+            assertThat(segmentTree.queryRange(0,3), equalTo(5));
+            assertThat(segmentTree.queryRange(2,4), equalTo(3));
+        }
+
+
+
+        public int scanMinimum(int[] input, int start, int end) {
+            int min=Integer.MAX_VALUE;
+            for (int i=start; i<=end; i++) {
+                if (input[i]<min) {
+                    min=input[i];
+                }
+            }
+            return min;
+        }
+
+
+        @Test
+        public void testMin() {
+            int[] input=new int[100];
+            for (int i=0; i<100; i++) {
+                input[i]=i;
+            }
+
+            Shuffler.shuffle(input);
+            for (int i=0; i<10; i++) {
+                System.out.print(i*10+": ");
+                for (int j=0; j<10; j++) {
+                    System.out.print(input[i*10+j]+" ");
+                }
+                System.out.println("");
+            }
+
+            Random random=new Random(new Date().getTime());
+
+            SegmentTree segmentTree=new SegmentTree(input.length, new MinimumProcessor());
+            Arrays.fill(segmentTree.tree, 200);
+            for (int i=0; i<input.length; i++) {
+                segmentTree.update(i, input[i]);
+            }
+
+            for (int i=0; i<input.length; i++){
+                assertThat(input[i], equalTo(segmentTree.queryRange(i, i)));
+            }
+
+
+            for (int i=0; i<20; i++) {
+                int start=random.nextInt(100);
+                int end=random.nextInt(100);
+                if (start>end) {
+                    int temp=start;
+                    start=end;
+                    end=temp;
+                }
+
+                int min=scanMinimum(input, start, end);
+                int stmin=segmentTree.queryRange(start, end);
+                System.out.println("min :("+start+","+end+")="+min);
+                assertThat(min, equalTo(stmin));
+            }
+        }
+
+
+        public int scanSum(int[] input, int start, int end) {
+            int sum=0;
+            for (int i=start; i<=end; i++) {
+                sum+=input[i];
+            }
+            return sum;
+        }
+
+        @Test
+        public void testSum() {
+            int[] input=new int[100];
+            for (int i=0; i<100; i++) {
+                input[i]=i;
+            }
+
+            Shuffler.shuffle(input);
+            for (int i=0; i<10; i++) {
+                System.out.print(i*10+": ");
+                for (int j=0; j<10; j++) {
+                    System.out.print(input[i*10+j]+" ");
+                }
+                System.out.println("");
+            }
+
+            Random random=new Random(new Date().getTime());
+
+            SegmentTree segmentTree=new SegmentTree(input.length, new SumProcessor());
+            for (int i=0; i<input.length; i++) {
+                segmentTree.update(i, input[i]);
+            }
+            for (int i=0; i<input.length; i++){
+                assertThat(input[i], equalTo(segmentTree.queryRange(i, i)));
+            }
+            for (int i=0; i<20; i++) {
+                int start=random.nextInt(100);
+                int end=random.nextInt(100);
+                if (start>end) {
+                    int temp=start;
+                    start=end;
+                    end=temp;
+                }
+
+                int sum=scanSum(input, start, end);
+                int stsum=segmentTree.queryRange(start, end);
+                System.out.println(String.format("sum %d, %d, %d", start, end, i));
+                assertThat(sum, equalTo(stsum));
+            }
+
+
+
+        }
+
+    }
 }

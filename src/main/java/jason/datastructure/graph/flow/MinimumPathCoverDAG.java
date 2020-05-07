@@ -23,7 +23,7 @@ public class MinimumPathCoverDAG {
 		String[]  pathes=new String[n];
 		for (int i=0; i<graph.length; i++){
 			if (pair[i]!=0){
-				//find the path starting from
+				//findUsingArray the path starting from
 				int start=i;
 				List<Integer> path=new LinkedList<>();
 				

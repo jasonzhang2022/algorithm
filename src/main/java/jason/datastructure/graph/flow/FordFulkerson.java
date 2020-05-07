@@ -177,7 +177,7 @@ public class FordFulkerson {
 					unprocessed.offer(v);
 					parent[v]=u;
 					if (v==f){
-						//we find path to f.
+						//we findUsingArray path to f.
 						
 						break outer;
 					}
@@ -190,7 +190,7 @@ public class FordFulkerson {
 		if (parent[f]==-1){
 			return 0;
 		}
-		//find the minimal flow of the path
+		//findUsingArray the minimal flow of the path
 		int minFlow=Integer.MAX_VALUE;
 		int end=f;
 		int start=-1;

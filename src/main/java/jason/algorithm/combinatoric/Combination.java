@@ -28,55 +28,51 @@ public class Combination {
 	 * select k element from nOffset
 	 */
 	public static void subCombination(int n,  int k, int[] result, int resultOffset, int nOffset,Consumer<int[]> consumer){
+
 		if (k==0){
 			consumer.accept(result);
 			return;
 		}
-		if (n-nOffset==k){
-			//we only have K elements, add call them and return;
-			for (int i=0; i<k; i++){
-				result[resultOffset+i]=nOffset+i;
-			}
-			consumer.accept(result);
+
+		if (nOffset>=n){
+			//invalid
 			return;
-			//clean up; not needed
-			//Arrays.fill(result,  resultOffset, resultOffset+k, -1);
 		}
-		
-		//combination with element at nOffset
+
+
+		// we skip nOffset
+		subCombination(n, k, result, resultOffset, nOffset+1, consumer);
+
+		// we include
 		result[resultOffset]=nOffset;
 		subCombination(n, k-1, result, resultOffset+1, nOffset+1, consumer);
-		//result[resultOffset]=-1;
-		
-		//combination without element at nOffset
-		subCombination(n, k, result, resultOffset, nOffset+1, consumer);
-		
-		
 	}
 	
 	public static class Count {
 		int count;
 	}
-	
-	@Test
-	public void TestCombination(){
-		String input="ABCDEFGH";
-		int n=input.length();
-		int k=3;
-		
-		int expectedCombination=n*(n-1)*(n-2)/3/2;
-		Count c=new Count();
-		
-		Consumer<int[]> consumer= a->{
-			for (int index: a){
-				System.out.print(input.charAt(index));
-			}
-			System.out.print("\n");
-			c.count++;
-		};
-		
-		Combination.combination(n, k, consumer);
-		assertEquals(expectedCombination, c.count);
+
+	public static  class TestCase {
+		@Test
+		public void TestCombination() {
+			String input = "ABCDEFGH";
+			int n = input.length();
+			int k = 3;
+
+			int expectedCombination = n * (n - 1) * (n - 2) / 3 / 2;
+			Count c = new Count();
+
+			Consumer<int[]> consumer = a -> {
+				for (int index : a) {
+					System.out.print(input.charAt(index));
+				}
+				System.out.print("\n");
+				c.count++;
+			};
+
+			Combination.combination(n, k, consumer);
+			assertEquals(expectedCombination, c.count);
+		}
 	}
 
 }

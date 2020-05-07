@@ -116,52 +116,29 @@ public class LongestRactanguleAreaInHistogram {
 		 * This continuous area starts from stack[i-1];
 		 */
 		Stack<Integer> stack=new Stack<Integer>();
-		
-		
-		stack.push(0); //push index zero.
-		int max=Integer.MIN_VALUE;
-		for (int i=1; i<height.length; i++){
-			//historgram is increased. previous bar can be continued.
-			if (height[i]>height[stack.peek()]){
-				stack.push(i);
-				continue;
+		int max = 0;
+		for (int i=0; i<height.length; i++) {
+
+			while (!stack.isEmpty() && height[stack.peek()]>height[i]){
+				int j = stack.pop();
+				int jstart = stack.isEmpty()?0: stack.peek()+1;
+				max = Math.max(max, (i-jstart)*height[j]);
 			}
-			
-			//we have a lower bar. All continuous area consisting of high bar is finalized
-			while (!stack.isEmpty() && height[i]<height[stack.peek()]){
-				int sindex=stack.pop();
-				int len=sindex-0+1;
-				if (!stack.isEmpty()){
-					len=sindex-stack.peek();
-				}
-				
-				int newMax=len*height[sindex];
-				max=Math.max(max, newMax);
-			}
-			if (stack.isEmpty()){
-				stack.push(i);
-			} else{
-				//push it only if previous one is smaller than current one.
-				if (height[i]>height[stack.peek()]){
-					stack.push(i);
-				}else {
-					stack.pop(); //pop the old right edge,
-					stack.push(i); //push the new edge.
-				}
-			}
-			
+
+			stack.push(i);
+		}
+
+		while (!stack.isEmpty()) {
+			// from i to end, no height less than h
+			int i = stack.pop();
+			int h = height[i];
+
+			int istart = stack.isEmpty()?0: stack.peek()+1;
+
+			max = Math.max(max, (height.length -istart)*h);
 		}
 		
-		//every right edge is shifted to end.
-		while (!stack.isEmpty()){
-			int sindex=stack.pop();
-			int len=height.length-1-0+1;
-			if (!stack.isEmpty()){
-				len=height.length-1-stack.peek();
-			}
-			int newMax=len*height[sindex];
-			max=Math.max(max, newMax);
-		}
+
 		return max;
 	}
 
@@ -217,7 +194,14 @@ public class LongestRactanguleAreaInHistogram {
 		//2*4=8
 		assertEquals(8, largestRectangleArea(new int[]{1,1,3,3,2,2}));
 	}
-	
+
+	@Test
+	public void tempTest(){
+		int[] input1={2,3,2,4};
+		//2*4=8
+		assertEquals(8, largestRectangleArea1(input1));
+	}
+
 	@Test
 	public void testSelfCopy(){
 		

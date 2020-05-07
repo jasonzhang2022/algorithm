@@ -32,7 +32,7 @@ public class EulerTourUndirected extends ConnectivityGraph {
 		// all edges are connected.
 		int[] color = new int[V];
 		Arrays.fill(color, 0);
-		// find the first vertex with some edge
+		// findUsingArray the first vertex with some edge
 		int firstVertex = 0;
 		for (int i = 0; i < V; i++) {
 			if (adj[i].size() > 0) {

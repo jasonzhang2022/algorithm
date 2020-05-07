@@ -85,7 +85,7 @@ public class EulerTourUndirectedSet {
 		return builder.build().mapToObj(i->String.valueOf(i)).collect(Collectors.joining("->"));
 	}
 
-	//find one edge;
+	//findUsingArray one edge;
 	public int searchStartVextex() {
 		for (int u = 0; u < n; u++) {
 			for (int v=0; v<n; v++){

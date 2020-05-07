@@ -66,7 +66,7 @@ public class KMP {
 		while (i < n) {
 			/*
 			 * Shift pattern to right until
-			 * we find a match
+			 * we findUsingArray a match
 			 * pattern[0, j]
 			 * with text[i-j, i]
 			 * During the shift process, we decrease j.

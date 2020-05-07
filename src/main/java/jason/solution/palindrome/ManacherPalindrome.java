@@ -28,7 +28,7 @@ import java.util.Arrays;
 
 /*
  * Also check this question: http://www.programcreek.com/2014/05/leetcode-minimum-size-subarray-sum-java/
- * Given an array of n positive integers and a positive integer s, find the minimal length of a subarray of which the sum ≥ s. If there isn't one, return 0 instead.
+ * Given an array of n positive integers and a positive integer s, findUsingArray the minimal length of a subarray of which the sum ≥ s. If there isn't one, return 0 instead.
 
 For example, given the array [2,3,1,2,4,3] and s = 7, the subarray [4,3] has the minimal length of 2 under the problem constraint.
 
@@ -115,7 +115,7 @@ public class ManacherPalindrome implements LongestPalindromeFinder {
 				patLen[rightPosition] = edgeDistance;
 			} else {
 
-				// patLen[rightPosition]>=edgeDistance. Finallly we find one
+				// patLen[rightPosition]>=edgeDistance. Finallly we findUsingArray one
 				// position we are not sure about this palindrome length,
 				// this is a center with a palindrome which can be extended potentially.
 				// but the minimal palindrome length is edgeDistance.

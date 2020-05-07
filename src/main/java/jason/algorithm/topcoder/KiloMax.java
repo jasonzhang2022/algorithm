@@ -72,6 +72,9 @@ public class KiloMax {
 				pq.add(new Node(top.weapons | (1 << i), top.shots + best));
 			}
 		}
+
+		// make this compile
+		return 1;
 	}
 
 }

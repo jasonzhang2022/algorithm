@@ -31,16 +31,16 @@ public class SubstringTest {
 		testData.put("a", new Result(-1, "b"));
 		testData.put("aa", new Result(-1, "b"));
 		
-		//find at beginning
+		//findUsingArray at beginning
 		testData.put("a", new Result(0, "a"));
 		testData.put("aa", new Result(0, "a"));
 		
 		
-		//find at end.
+		//findUsingArray at end.
 		testData.put("ba", new Result(1, "a"));
 		testData.put("bba", new Result(2, "a"));
 
-		//find in the middle
+		//findUsingArray in the middle
 		testData.put("bac", new Result(1, "a"));
 		testData.put("bbac", new Result(2, "a"));
 		

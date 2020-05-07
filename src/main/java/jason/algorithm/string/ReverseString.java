@@ -19,7 +19,7 @@ public class ReverseString {
 	public static String reverse(String input) {
 		StringBuilder sb=new StringBuilder(input).reverse();
 		
-		//find word one by one and rotate.
+		//findUsingArray word one by one and rotate.
 		int start=0;
 		int end=0;
 		for (start=0; start<sb.length(); start++) {

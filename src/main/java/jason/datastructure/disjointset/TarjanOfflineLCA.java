@@ -112,7 +112,7 @@ public class TarjanOfflineLCA {
 				if (nodes.get(p.v).black){
 					//if myself (root) is first time visted (the black is just set to true)
 					//and the the other node of the pair(p.v) is already visited. 
-					//we need to find the set's ancestor.
+					//we need to findUsingArray the set's ancestor.
 					p.lca=find(nodes.get(p.v)).ancestor.c;
 				}
 			} else if (p.v.equals(root.c)){

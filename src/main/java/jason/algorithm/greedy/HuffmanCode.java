@@ -92,19 +92,21 @@ public class HuffmanCode {
 		return result;
 
 	}
-	@Test
-	public void test() {
-		char[] chars = {'a', 'b', 'c', 'd', 'e', 'f'};
-	    int freq[] = {5, 9, 12, 13, 16, 45};
-	    
-	    Map<Character, String> result=computeCode(freq, chars);
-	    for (Character c: result.keySet()){
-	    	System.out.printf("%c: %s\n", c, result.get(c));
-	    }
-	    assertThat(result.get('f'), equalTo("0"));
-	    assertThat(result.get('a'), equalTo("1100"));
-	    assertThat(result.get('c'), equalTo("100"));
-	    
+	public class TestCase {
+		@Test
+		public void test() {
+			char[] chars = {'a', 'b', 'c', 'd', 'e', 'f'};
+			int freq[] = {5, 9, 12, 13, 16, 45};
+
+			Map<Character, String> result = computeCode(freq, chars);
+			for (Character c : result.keySet()) {
+				System.out.printf("%c: %s\n", c, result.get(c));
+			}
+			assertThat(result.get('f'), equalTo("0"));
+			assertThat(result.get('a'), equalTo("1100"));
+			assertThat(result.get('c'), equalTo("100"));
+
+		}
 	}
 	
 }

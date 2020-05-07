@@ -46,7 +46,7 @@ public class CartesianTree {
 		Node current=lastAddedNode;
 		while (current!=null) {
 			if (input[current.index]<input[newNode.index]) {
-				//find one less than current one, current should be its left child
+				//findUsingArray one less than current one, current should be its left child
 				Node temp=current.rightNode;
 				
 				newNode.parent=current;

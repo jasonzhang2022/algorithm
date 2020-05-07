@@ -58,7 +58,7 @@ public class HowManySubgraph {
 		
 		/*
 		 * use a bit map to record what vertex is in the map.
-		 * we keep this vertex so we can quickly find out if one edge can be 
+		 * we keep this vertex so we can quickly findUsingArray out if one edge can be
 		 * connected to the subgraph or not. 
 		 */
 		short vertices=0;

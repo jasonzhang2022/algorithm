@@ -10,6 +10,8 @@ import org.junit.Test;
  * Different from http://www.geeksforgeeks.org/dynamic-programming-set-24-optimal-binary-search-tree/
  * 
  * The solution tries to solve Optimal Binary search tree at page 397
+ *
+ * THE ARRAY is SORTED ARRAY
  * 
  */
 public class OptimalBinaryTree {

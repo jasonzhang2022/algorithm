@@ -3,6 +3,7 @@ package jason.algorithm.combinatoric;
 import static org.junit.Assert.assertEquals;
 
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -115,74 +116,108 @@ public class Permutation {
 	public static class Count {
 		int count;
 	}
-	
-	/**
-	 * All elements in input are unique
-	 */
-	@Test
-	public void TestPermutationN(){
-		String input="ABCD";
-		int expectedPermutation=4*3*2*1;
-		Count c=new Count();
-		
-		Consumer<int[]> consumer= a->{
-			for (int index: a){
-				System.out.print(input.charAt(index));
-			}
-			System.out.print("\n");
-			c.count++;
-		};
-		Permutation.permute(new int[]{0, 1,2,3}, consumer, 4);
-		
-		assertEquals(c.count, expectedPermutation);
-	}
-	
-	/**
-	 * Some element are duplicated.
-	 * Here ABCDBC is a multiset. B  and C appear twice each time.
-	 */
-	@Test
-	public void TestPermutationNDuplicate(){
-		//this is a multiset
-		String input="ABCDBC";
-		int expectedPermutation=6*5*4*3*2*1/2/2;
-		Count c=new Count();
-		
-		Consumer<int[]> consumer= a->{
-			for (int index: a){
-				System.out.print(input.charAt(index));
-			}
-			System.out.print("\n");
-			c.count++;
-		};
-		Permutation.permute(new int[]{0, 1,2,3, 1,2}, consumer, 6);
-		//Permutation.permuteAvoidDuplicate(new int[]{0, 1,2,3, 1,2}, consumer);
-		
-		assertEquals(c.count, expectedPermutation);
-	}
-	@Test
-	public void TestPermutationNK(){
-		String input="ABCDEFGH";
-		int k=3;
-		
-		int expectedPermutation=8*7*6;
-		
-		Count c=new Count();
-		
-		Consumer<int[]> consumer= a->{
-			for (int i=0; i<k; i++){
-				System.out.print(input.charAt(a[i]));
-			}
-			System.out.print("\n");
-			c.count++;
-		};
-		;
-		Permutation.permute(IntStream.range(0, 8).toArray(), consumer, k);
-		//Permutation.permuteAvoidDuplicate(new int[]{0, 1,2,3, 1,2}, consumer);
-		
-		assertEquals(c.count, expectedPermutation);
-		
-		
+
+	public static class TestCase {
+
+		/**
+		 * All elements in input are unique
+		 */
+		@Test
+		public void TestPermutationN() {
+			String input = "ABCD";
+			int expectedPermutation = 4 * 3 * 2 * 1;
+			Count c = new Count();
+
+			Consumer<int[]> consumer = a -> {
+				for (int index : a) {
+					System.out.print(input.charAt(index));
+				}
+				System.out.print("\n");
+				c.count++;
+			};
+			Permutation.permute(new int[]{0, 1, 2, 3}, consumer, 4);
+
+			assertEquals(c.count, expectedPermutation);
+		}
+
+		/**
+		 * Some element are duplicated.
+		 * Here ABCDBC is a multiset. B  and C appear twice each time.
+		 */
+		@Test
+		public void TestPermutationNDuplicate() {
+			//this is a multiset
+			String input = "ABCDBC";
+			int expectedPermutation = 6 * 5 * 4 * 3 * 2 * 1 / 2 / 2;
+			Count c = new Count();
+
+			Set<String> sets = new HashSet<>();
+			Consumer<int[]> consumer = a -> {
+				StringBuilder sb = new StringBuilder();
+				for (int index : a) {
+					System.out.print(input.charAt(index));
+					sb.append(input.charAt(index));
+
+				}
+				sets.add(sb.toString());
+				System.out.print("\n");
+				c.count++;
+			};
+			int[] ints = new int[]{0, 1, 2, 3, 1, 2};
+			Arrays.sort(ints);
+			Permutation.permute(ints, consumer, 6);
+			//Permutation.permuteAvoidDuplicate(new int[]{0, 1,2,3, 1,2}, consumer);
+
+			assertEquals(c.count, expectedPermutation);
+			assertEquals(sets.size(), c.count);
+		}
+
+		@org.junit.Test
+		public void TestPermutationNDuplicate2() {
+			//this is a multiset
+			String input = "ABAB";
+			int expectedPermutation = 6;
+			Count c = new Count();
+
+			Consumer<int[]> consumer = a -> {
+				for (int index : a) {
+					System.out.print(input.charAt(index));
+				}
+				System.out.print("\n");
+				c.count++;
+			};
+			int[] ints = new int[]{0, 0, 1, 1};
+			Arrays.sort(ints);
+			Permutation.permute(ints, consumer, 4);
+			//Permutation.permuteAvoidDuplicate(new int[]{0, 1,2,3, 1,2}, consumer);
+
+			assertEquals(c.count, expectedPermutation);
+		}
+
+		@Test
+		public void TestPermutationNK() {
+			String input = "ABCDEFGH";
+			int k = 3;
+
+			int expectedPermutation = 8 * 7 * 6;
+
+			Count c = new Count();
+
+			Consumer<int[]> consumer = a -> {
+				for (int i = 0; i < k; i++) {
+					System.out.print(input.charAt(a[i]));
+				}
+				System.out.print("\n");
+				c.count++;
+			};
+			;
+			Permutation.permute(IntStream.range(0, 8).toArray(), consumer, k);
+			//Permutation.permuteAvoidDuplicate(new int[]{0, 1,2,3, 1,2}, consumer);
+
+			assertEquals(c.count, expectedPermutation);
+
+
+		}
 	}
 
 }

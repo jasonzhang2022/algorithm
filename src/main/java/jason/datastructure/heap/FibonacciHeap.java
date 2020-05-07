@@ -277,7 +277,7 @@ public final class FibonacciHeap<T> implements Heap<T>{
         List<Entry<T>> toVisit = new ArrayList<Entry<T>>();
 
         /* To add everything, we'll iterate across the elements until we
-         * find the first element twice.  We check this by looping while the
+         * findUsingArray the first element twice.  We check this by looping while the
          * list is empty or while the current element isn't the first element
          * of that list.
          */

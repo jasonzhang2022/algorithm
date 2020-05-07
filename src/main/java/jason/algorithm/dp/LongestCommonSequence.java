@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 import org.junit.Test;
 //http://www.geeksforgeeks.org/dynamic-programming-set-4-longest-common-subsequence/
@@ -56,41 +57,50 @@ public class LongestCommonSequence {
 	//-----------------------bottom up version
 	
 	public static int longestCommonSequenceIterative(char[] left, char[] right ){
-		int n=left.length+1;
-		int m=right.length+1;
-		int[][] lcs=new int[n][m];
-		for (int i=0; i<m; i++){
-			lcs[0][i]=0;
-		}
-		for (int i=0; i<n; i++){
-			lcs[i][0]=0;
-		}
-		
-		for (int row=1; row<n; row++){
-			for (int col=1; col<m; col++){
-				int temp=Integer.MIN_VALUE;
-				if (left[row-1]==right[col-1]){
-					temp=Math.max(temp, lcs[row-1][col-1]+1);
+		int row =left.length+1;
+		int col = right.length+1;
+		int[][] dp = new int[row][col];
+
+		for (int r=1; r<row; r++){
+			char lc = left[r-1];
+			for (int c=1; c<col; c++){
+				char rc=right[c-1];
+
+				if (lc==rc){
+					// extend the last character.
+					dp[r][c] = dp[r-1][c-1]+1;
 				} else {
-					temp=Math.max(temp, lcs[row-1][col]);
-					temp=Math.max(temp, lcs[row][col-1]);
+					//discard both end character
+					int max1 = dp[r-1][c-1];
+					//discard last character at left. But keep character right.
+					int max2 = dp[r-1][c];
+
+					//discard last character at right. but keep last charatcer in left.
+					int max3 = dp[r][c-1];
+
+					dp[r][c] = IntStream.of(max1, max2, max3).max().getAsInt();
 				}
-				lcs[row][col]=temp;
+
+
 			}
 		}
-		return lcs[n-1][m-1];
-		
+
+		return dp[row-1][col-1];
+
+
 	}
-	
-	@Test
-	public void testNonRecursion(){
-		String a="ABCBDAB";
-		String b="BDCABA";
-		
-		int expected=4;
-		
-		
-		assertEquals(expected, longestCommonSequenceIterative(a.toCharArray(), b.toCharArray()));
+
+	public static class TestIterative {
+		@Test
+		public void testNonRecursion() {
+			String a = "ABCBDAB";
+			String b = "BDCABA";
+
+			int expected = 4;
+
+
+			assertEquals(expected, longestCommonSequenceIterative(a.toCharArray(), b.toCharArray()));
+		}
 	}
 	
 }

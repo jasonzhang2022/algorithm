@@ -11,14 +11,14 @@ import org.junit.Test;
  * path can be extended further by walking from X to one of its leaf node. 
  * 
  * 
- *  So the problem becomes find the longest path between all pair of leaf nodes.
+ *  So the problem becomes findUsingArray the longest path between all pair of leaf nodes.
  *  
  * 2. Suppose the LCA(least common ancestor) of the longest path is A, and two leaf nodes are a, b. The path
  * is a->A->b. 
  *  A->a and A->b are two longest paths in each of A's subtrees.  Suppose c is leaf node and in the same subtree as a, 
  *  path sum of c->A is bigger than a->A, c->A->B is bigger than a->A->b.
  * 
- * To calculate the largest path sum through internal node A, we need to find out the longest path sum at each side of the tree.
+ * To calculate the largest path sum through internal node A, we need to findUsingArray out the longest path sum at each side of the tree.
  * 
  * 
  */

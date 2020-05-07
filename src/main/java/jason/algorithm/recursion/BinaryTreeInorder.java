@@ -59,52 +59,30 @@ public class BinaryTreeInorder {
 	}
 	
 	public <T> void genericIterative(TreeNode<T> root, Consumer<T> consumer){
-		
-		if (root==null){
-			return;
-		}
-	
 		Stack<TreeNode<T>> stack=new Stack<>();
-		
-		TreeNode<T> current=null;
-		TreeNode<T> prev=null;
-		
-		stack.push(root);
-		while (!stack.isEmpty()){
-			current=stack.peek();
-			
-			//case 1: moved here from parent
-			if (prev==null || prev.left==current || prev.right==current){
-				if (current.left!=null){
-					stack.push(current.left);
-				} else if (current.right!=null){
-					stack.push(current.right);
+		fillNode(stack, root);
+		TreeNode<T> prev = null;
+		while (!stack.isEmpty()) {
+			if (prev == null || prev == stack.peek().left) {
+				consumer.accept(stack.peek().val);
+				if (stack.peek().right != null) {
+					fillNode(stack, stack.peek().right);
+					prev = null;
 				} else {
-					consumer.accept(current.val);
-					stack.pop();
+					prev = stack.pop();
 				}
-				prev=current;
-				continue;
+			} else if (prev == stack.peek().right) {
+				prev = stack.pop();
 			}
-			
-			//move to sibling
-			if (prev==current.left){
-				consumer.accept(current.val);
-				if (current.right!=null){
-					stack.push(current.right);
-				} else {
-					stack.pop();
-				}
-				prev=current;
-				continue;
-			}
-			
-			//move to parent
-			if (prev==current.right){
-				stack.pop();
-				prev=current;
-				continue;
-			}
+		}
+	}
+
+
+	public <T> void fillNode(Stack<TreeNode<T>> stack, TreeNode node){
+
+		while (node!=null){
+			stack.push(node);
+			node=node.left;
 		}
 	}
 	

@@ -36,7 +36,7 @@ public class COnstructBT {
 		}
 		
 		for (int i=inoffset; i<=inend; i++){
-			//find root in inorder
+			//findUsingArray root in inorder
 			if (inorder[i]==postorder[postend]){
 				
 				int leftLen=i-inoffset;
